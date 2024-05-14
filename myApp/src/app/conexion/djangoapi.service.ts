@@ -39,7 +39,7 @@ export class DjangoapiService {
   }
 
   getCategories(): Observable<any> {
-    return this.http.get(this.apiURL+'/categories').pipe(retry(3));
+    return this.http.get(this.apiURL+'/get_categories').pipe(retry(3));
   }
 
   createProduct(product: any): Observable<any> {

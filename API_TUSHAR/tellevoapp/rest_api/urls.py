@@ -9,6 +9,6 @@ urlpatterns=[
     path('lista_user', lista_user, name="Lista de Registro"),
     # path('lista_viaje', lista_viaje, name="Lista de Viajes"),
     path('login/', login, name="login"),
-    path('get_categories', get_categories, name='get_categories'),
-    path('create_product', create_product, name='create_product'),
+    path('api/get_categories/', get_categories, name='get_categories'),
+    path('api/create_product/', create_product, name='create_product'),
 ]

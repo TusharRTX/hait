@@ -1,26 +1,40 @@
-<div>
-  <label for="name">Nombre:</label>
-  <input type="text" id="name" name="name" [(ngModel)]="product.name">
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nuevo Producto</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <label for="description">Descripción:</label>
-  <textarea id="description" name="description" [(ngModel)]="product.description"></textarea>
+<ion-content>
+  <ion-item>
+    <ion-label position="floating">Nombre</ion-label>
+    <ion-input [(ngModel)]="nuevoProducto.name" type="text"></ion-input>
+  </ion-item>
 
-  <label for="price">Precio:</label>
-  <input type="number" id="price" name="price" [(ngModel)]="product.price">
+  <ion-item>
+    <ion-label position="floating">Descripción</ion-label>
+    <ion-textarea [(ngModel)]="nuevoProducto.description" rows="4"></ion-textarea>
+  </ion-item>
 
-  <label for="url_imagen">URL de la imagen:</label>
-  <input type="text" id="url_imagen" name="url_imagen" [(ngModel)]="product.url_imagen">
+  <ion-item>
+    <ion-label position="floating">Precio</ion-label>
+    <ion-input [(ngModel)]="nuevoProducto.price" type="number"></ion-input>
+  </ion-item>
 
-  <label for="category">Categoría:</label>
-  <select id="category" name="category" [(ngModel)]="product.category">
-    <!-- Aquí deberías iterar sobre las categorías disponibles y mostrarlas como opciones -->
-    <option value="1">test</option>
-    <option value="2">Categoría 2</option>
-    <option value="3">Categoría 3</option>
-  </select>
+  <ion-item>
+    <ion-label position="floating">URL de la imagen</ion-label>
+    <ion-input [(ngModel)]="nuevoProducto.url_imagen" type="text"></ion-input>
+  </ion-item>
 
-  <button (click)="createProduct()">Crear Producto</button>
-</div>
+  <ion-item>
+    <ion-label position="floating">Categoría</ion-label>
+    <ion-select [(ngModel)]="nuevoProducto.category">
+      <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.name }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="full" (click)="guardarProducto()">Guardar Producto</ion-button>
+</ion-content>
+
 
 
 

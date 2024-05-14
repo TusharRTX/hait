@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-import { HttpClient } from '@angular/common/http';
-import { Router, NavigationExtras } from '@angular/router';
-
 
 @Component({
   selector: 'app-recuperar',
@@ -10,34 +7,40 @@ import { Router, NavigationExtras } from '@angular/router';
   styleUrls: ['./recuperar.page.scss'],
 })
 export class RecuperarPage implements OnInit {
-  product: any = {
+
+  nuevoProducto = {
     name: '',
     description: '',
     price: 0,
     url_imagen: '',
-    category: 0 // Aquí deberías asignar el ID de la categoría seleccionada
+    category: 1 // ID de la categoría por defecto
   };
+  categorias: any[] = [];
 
-  constructor(private router: Router,private http: HttpClient,private djangoApi: DjangoapiService) { }
+  constructor(private djangoApi: DjangoapiService) {}
 
   ngOnInit() {
+    this.getCategories();
   }
-  
-  createProduct(): void {
-    this.djangoApi.createProduct(this.product).subscribe(
-      (response) => {
-        console.log('Producto creado exitosamente:', response);
-        // Reinicia los campos del producto después de crearlo exitosamente
-        this.product = {
-          name: '',
-          description: '',
-          price: 0,
-          url_imagen: '',
-          category: 0
-        };
+
+  getCategories() {
+    this.djangoApi.getCategories().subscribe(
+      (response: any) => {
+        this.categorias = response.categorias;
       },
-      (error) => {
-        console.error('Error al crear el producto:', error);
+      (error: any) => {
+        console.error('Error al obtener las categorías', error);
+      }
+    );
+  }
+
+  guardarProducto() {
+    this.djangoApi.createProduct(this.nuevoProducto).subscribe(
+      (response: any) => {
+        console.log('Producto creado exitosamente', response);
+      },
+      (error: any) => {
+        console.error('Error al crear el producto', error);
       }
     );
   }
