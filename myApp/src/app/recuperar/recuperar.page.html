@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="tushar">
+      <img src="assets/img/TeLlevoApp_preview_rev_1.png" alt="Descripción de la imagen" class="esquina-superior-izquierda">
+    </div>
+    <div class="tushar2">
+      <img src="assets/img/logo.png" alt="Descripción de la imagen" class="esquina-superior-izquierda">
+    </div>
+    <div class="centro">
+      <p class="texto-esquina-superior-derecha">Recuperar</p>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<div id="container">
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      
+      <ion-title size="large">recuperar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list>
+    <h1>Recuperar Contraseña</h1>
+    <ion-item>
+      <ion-input label="Usuario" labelPlacement="stacked" placeholder="Ingrese Usuario"></ion-input>
+    </ion-item>
+  </ion-list>
+    <!-- se crea una clase para poder modificarlo y se le pone button a los lados para que el estilo se pueda poner mejor-->
+     <ion-button [routerLink]="['/home']" class="tushi2">Listo</ion-button>
+  </ion-content>
+</div>
+
+

@@ -1,0 +1,39 @@
+.tushar {
+    position: relative;
+    max-width: 800px; 
+    margin: 0 auto; 
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .tushar2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px; 
+    height: auto; 
+  }
+
+  .texto-esquina-superior-derecha {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 30px;
+  }
+
+  .tushi {
+  position: center;
+  display: flex;
+  width: 100%; 
+  max-width: 1500px; 
+  height: auto; 
+  }
+
+
+  .tushi2 {
+      margin: 0 auto; /* Esto centrará horizontalmente el botón */
+      text-align: center; /* Esto centrará el texto dentro del botón */
+    }
+
+
