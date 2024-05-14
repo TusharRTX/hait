@@ -13,28 +13,30 @@ export class RecuperarPage implements OnInit {
     description: '',
     price: 0,
     url_imagen: '',
-    category: 1 // ID de la categoría por defecto
+    category: 0 // Inicializar con 0
   };
-  categorias: any[] = [];
+  categories: any[] = []; 
+  selectedCategory: number = 0;
 
   constructor(private djangoApi: DjangoapiService) {}
 
   ngOnInit() {
-    this.getCategories();
+    this.loadCategories();
   }
 
-  getCategories() {
+  loadCategories() {
     this.djangoApi.getCategories().subscribe(
-      (response: any) => {
-        this.categorias = response.categorias;
+      (response) => {
+        this.categories = response;
       },
-      (error: any) => {
-        console.error('Error al obtener las categorías', error);
+      (error) => {
+        console.error('Error al cargar las categorías:', error);
       }
     );
   }
 
   guardarProducto() {
+    this.nuevoProducto.category = this.selectedCategory; // Asignar la categoría seleccionada al nuevo producto
     this.djangoApi.createProduct(this.nuevoProducto).subscribe(
       (response: any) => {
         console.log('Producto creado exitosamente', response);
@@ -45,3 +47,4 @@ export class RecuperarPage implements OnInit {
     );
   }
 }
+

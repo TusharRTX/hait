@@ -1,38 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Nuevo Producto</ion-title>
+    <ion-title>Crear Producto</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Nombre</ion-label>
-    <ion-input [(ngModel)]="nuevoProducto.name" type="text"></ion-input>
-  </ion-item>
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input type="text" [(ngModel)]="nuevoProducto.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea rows="4" [(ngModel)]="nuevoProducto.description"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Precio</ion-label>
+      <ion-input type="number" [(ngModel)]="nuevoProducto.price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">URL de la Imagen</ion-label>
+      <ion-input type="text" [(ngModel)]="nuevoProducto.url_imagen"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Categoría</ion-label>
+      <ion-select [(ngModel)]="selectedCategory">
+        <ion-select-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 
-  <ion-item>
-    <ion-label position="floating">Descripción</ion-label>
-    <ion-textarea [(ngModel)]="nuevoProducto.description" rows="4"></ion-textarea>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Precio</ion-label>
-    <ion-input [(ngModel)]="nuevoProducto.price" type="number"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">URL de la imagen</ion-label>
-    <ion-input [(ngModel)]="nuevoProducto.url_imagen" type="text"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Categoría</ion-label>
-    <ion-select [(ngModel)]="nuevoProducto.category">
-      <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.name }}</ion-select-option>
-    </ion-select>
-  </ion-item>
-
-  <ion-button expand="full" (click)="guardarProducto()">Guardar Producto</ion-button>
+  <ion-button expand="block" (click)="guardarProducto()">Guardar Producto</ion-button>
 </ion-content>
 
 

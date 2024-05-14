@@ -6,13 +6,24 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
-from core.models import Usuario
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 from core.models import Product
+from .serializers import ProductSerializer
+from .serializers import CategorySerializer
+from core.models import Usuario
 from core.models import Category
+from core.models import Product
+
+from core.models import Product
 # from core.models import Viaje
-from .serializers import CategorySerializer, UsuarioSerializer
+from .serializers import UsuarioSerializer
+
 # from .serializers import ViajeSerializer
 from .serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticated
+
 from django.contrib.auth.models import User
 
 from django.shortcuts import get_object_or_404
@@ -64,8 +75,6 @@ def login(request):
         token, created = Token.objects.get_or_create(user=user)
 
         return Response(token.key)
-
-@csrf_exempt
 # @api_view(['GET','POST'])
 # def lista_viaje(request):
 #     if request.method == 'GET':
@@ -113,13 +122,12 @@ def create_product(request):
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def get_categories(request):
     if request.method == 'GET':
         categories = Category.objects.all()
-        serializer = CategorySerializer(categories, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        data = {"categories": list(categories.values())}
+        return JsonResponse(data)
     else:
-        return JsonResponse({'error': 'Only GET method allowed'}, status=405)
-    
+        return JsonResponse({"error": "Método no permitido"})
