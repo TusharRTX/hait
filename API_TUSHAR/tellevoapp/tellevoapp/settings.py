@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'tellevoapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tellevoapp',
-        'USER': 'admin',
-        'PASSWORD': 'root2023',
-        'HOST': 'database-tellevo.c1zy6n1dj1pi.us-east-2.rds.amazonaws.com',
+        'NAME': 'test',
+        'USER': 'root',
+        'PASSWORD': 'tushar200',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
