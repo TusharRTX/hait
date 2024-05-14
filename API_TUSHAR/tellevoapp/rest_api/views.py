@@ -122,3 +122,4 @@ def get_categories(request):
         return JsonResponse(serializer.data, safe=False)
     else:
         return JsonResponse({'error': 'Only GET method allowed'}, status=405)
+    

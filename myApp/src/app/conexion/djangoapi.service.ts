@@ -12,7 +12,7 @@ export class DjangoapiService {
   getNombreDeCorreo(duenno: any) {
     throw new Error('Method not implemented.');
   }
-  apiURL = 'https://127.0.0.1/3306/api';
+  apiURL = 'http://127.0.0.1:8000/api';
   
   constructor(private http: HttpClient) { }
 
