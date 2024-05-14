@@ -1,4 +1,5 @@
 
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -6,9 +7,12 @@ from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from core.models import Usuario
-from core.models import Viaje
-from .serializers import UsuarioSerializer
-from .serializers import ViajeSerializer
+from core.models import Product
+from core.models import Category
+# from core.models import Viaje
+from .serializers import CategorySerializer, UsuarioSerializer
+# from .serializers import ViajeSerializer
+from .serializers import ProductSerializer
 from django.contrib.auth.models import User
 
 from django.shortcuts import get_object_or_404
@@ -61,43 +65,60 @@ def login(request):
 
         return Response(token.key)
 
-
 @csrf_exempt
-@api_view(['GET','POST'])
-def lista_viaje(request):
-    if request.method == 'GET':
-        categorias = Viaje.objects.all()
-        serializer = ViajeSerializer(categorias, many = True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
+# @api_view(['GET','POST'])
+# def lista_viaje(request):
+#     if request.method == 'GET':
+#         categorias = Viaje.objects.all()
+#         serializer = ViajeSerializer(categorias, many = True)
+#         return Response(serializer.data)
+#     elif request.method == 'POST':
 
-        serializer = ViajeSerializer(data=request.data)
-        print(serializer)
-        if serializer.is_valid():
-            patente = request.POST.get('patente', None)
-            print(patente)
-            if patente in Viaje.objects.values_list('patente', flat=True):
-                print("ingresao")
-                return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else: 
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = ViajeSerializer(data=request.data)
+#         print(serializer)
+#         if serializer.is_valid():
+#             patente = request.POST.get('patente', None)
+#             print(patente)
+#             if patente in Viaje.objects.values_list('patente', flat=True):
+#                 print("ingresao")
+#                 return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+#             else:
+#                 serializer.save()
+#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else: 
+#             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
 
-@csrf_exempt
+# @csrf_exempt
+# @api_view(['POST'])
+# def descontar(request):
+#     data = JSONParser().parse(request)
+#     viaje_id = data.get('viajeId', None)
+
+#     viaje = get_object_or_404(Viaje, id=viaje_id)
+
+#     if viaje.capacidad > 0:
+#         viaje.capacidad -= 1
+#         viaje.save(update_fields=['capacidad'])
+
+#         return Response({'message': 'Viaje seleccionado correctamente'})
+#     else:
+#         return Response({'error': 'No hay pasajeros disponibles en este viaje'}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
 @api_view(['POST'])
-def descontar(request):
-    data = JSONParser().parse(request)
-    viaje_id = data.get('viajeId', None)
+def create_product(request):
+    serializer = ProductSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
 
-    viaje = get_object_or_404(Viaje, id=viaje_id)
-
-    if viaje.capacidad > 0:
-        viaje.capacidad -= 1
-        viaje.save(update_fields=['capacidad'])
-
-        return Response({'message': 'Viaje seleccionado correctamente'})
+def get_categories(request):
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        serializer = CategorySerializer(categories, many=True)
+        return JsonResponse(serializer.data, safe=False)
     else:
-        return Response({'error': 'No hay pasajeros disponibles en este viaje'}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({'error': 'Only GET method allowed'}, status=405)

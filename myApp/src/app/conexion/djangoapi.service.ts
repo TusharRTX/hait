@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { retry } from 'rxjs/internal/operators/retry';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +12,7 @@ export class DjangoapiService {
   getNombreDeCorreo(duenno: any) {
     throw new Error('Method not implemented.');
   }
-  apiURL = 'https://mjz9373v-8000.brs.devtunnels.ms/api';
+  apiURL = 'https://127.0.0.1/3306/api';
   
   constructor(private http: HttpClient) { }
 
@@ -35,6 +36,14 @@ export class DjangoapiService {
   }
   public sumar(x:number, y:number):number{
     return x+y;
+  }
+
+  getCategories(): Observable<any> {
+    return this.http.get(this.apiURL+'/categories').pipe(retry(3));
+  }
+
+  createProduct(product: any): Observable<any> {
+    return this.http.post(this.apiURL + '/create_product', product);
   }
 
 
