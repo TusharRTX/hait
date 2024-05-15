@@ -1,33 +1,21 @@
 
 from django.http import JsonResponse
 from django.shortcuts import render
-from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from core.models import Product
-from .serializers import ProductSerializer
-from .serializers import CategorySerializer
-from core.models import Usuario
-from core.models import Category
-from core.models import Product
-
-from core.models import Product
-# from core.models import Viaje
-from .serializers import UsuarioSerializer
-
-# from .serializers import ViajeSerializer
-from .serializers import ProductSerializer
 from rest_framework.permissions import IsAuthenticated
-
 from django.contrib.auth.models import User
-
 from django.shortcuts import get_object_or_404
-
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import check_password
+from core.models import Productos
+from .serializers import ProductosSerializer
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
 
@@ -55,6 +43,7 @@ def lista_user(request):
         else: 
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
 def login(request):
     data = JSONParser().parse(request)
@@ -75,59 +64,28 @@ def login(request):
         token, created = Token.objects.get_or_create(user=user)
 
         return Response(token.key)
-# @api_view(['GET','POST'])
-# def lista_viaje(request):
-#     if request.method == 'GET':
-#         categorias = Viaje.objects.all()
-#         serializer = ViajeSerializer(categorias, many = True)
-#         return Response(serializer.data)
-#     elif request.method == 'POST':
-
-#         serializer = ViajeSerializer(data=request.data)
-#         print(serializer)
-#         if serializer.is_valid():
-#             patente = request.POST.get('patente', None)
-#             print(patente)
-#             if patente in Viaje.objects.values_list('patente', flat=True):
-#                 print("ingresao")
-#                 return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-#             else:
-#                 serializer.save()
-#                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else: 
-#             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        
-
-# @csrf_exempt
-# @api_view(['POST'])
-# def descontar(request):
-#     data = JSONParser().parse(request)
-#     viaje_id = data.get('viajeId', None)
-
-#     viaje = get_object_or_404(Viaje, id=viaje_id)
-
-#     if viaje.capacidad > 0:
-#         viaje.capacidad -= 1
-#         viaje.save(update_fields=['capacidad'])
-
-#         return Response({'message': 'Viaje seleccionado correctamente'})
-#     else:
-#         return Response({'error': 'No hay pasajeros disponibles en este viaje'}, status=status.HTTP_400_BAD_REQUEST)
-    
 
 
-@api_view(['POST'])
-def create_product(request):
-    serializer = ProductSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-def get_categories(request):
+@api_view(['GET','POST'])
+def creacion(request):
     if request.method == 'GET':
-        categories = Category.objects.all()
-        data = {"categories": list(categories.values())}
-        return JsonResponse(data)
-    else:
-        return JsonResponse({"error": "Método no permitido"})
+        productos = Productos.objects.all()
+        serializer = ProductosSerializer(productos, many = True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+
+        serializer = ProductosSerializer(data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            codigo = request.POST.get('codigo', None)
+            print(codigo)
+            if codigo in Productos.objects.values_list('codigo', flat=True):
+                print("Producto Ingresado")
+                return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        
