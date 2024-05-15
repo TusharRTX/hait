@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 
 @Component({
@@ -11,6 +10,7 @@ export class CreacionPage implements OnInit {
 
   productoData: any = {
     codigo: "",
+    categoria: "",
     marca: "",
     nombre: "",
     precio: "",

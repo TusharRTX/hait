@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from core.models import Usuario
 from rest_framework import serializers
-from core.models import Productos
+from core.models import Producto
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,5 +12,5 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class ProductosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Productos
-        fields = ['codigo', 'marca', 'nombre', 'precio', 'url_imagen']
+        model = Producto
+        fields = ['codigo','categoria', 'marca', 'nombre', 'precio', 'url_imagen']

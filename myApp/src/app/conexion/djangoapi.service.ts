@@ -26,4 +26,9 @@ export class DjangoapiService {
     return this.http.post(this.apiURL + '/creacion', productoData);
   }
 
+  getCategories():Observable<any>{
+    return this.http.get(this.apiURL+'/categorias')
+    .pipe(retry(3));
+  }
+
 }

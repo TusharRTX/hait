@@ -12,12 +12,8 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
-from core.models import Productos
+from core.models import Producto
 from .serializers import ProductosSerializer
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
-from rest_framework.authtoken.models import Token
-from django.contrib.auth.hashers import check_password
 
 
 # Create your views here.
@@ -70,7 +66,7 @@ def login(request):
 @api_view(['GET','POST'])
 def creacion(request):
     if request.method == 'GET':
-        productos = Productos.objects.all()
+        productos = Producto.objects.all()
         serializer = ProductosSerializer(productos, many = True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -80,7 +76,7 @@ def creacion(request):
         if serializer.is_valid():
             codigo = request.POST.get('codigo', None)
             print(codigo)
-            if codigo in Productos.objects.values_list('codigo', flat=True):
+            if codigo in Producto.objects.values_list('codigo', flat=True):
                 print("Producto Ingresado")
                 return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -89,3 +85,6 @@ def creacion(request):
         else: 
             return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
         
+def get_categories(request):
+    categories = Producto.objects.values_list('categoria', flat=True).distinct()
+    return JsonResponse(list(categories), safe=False)

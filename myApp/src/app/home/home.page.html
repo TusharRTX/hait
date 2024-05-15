@@ -1,20 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Productos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-item>
+    <ion-label>Categorías</ion-label>
+    <ion-select [(ngModel)]="selectedCategory" (ionChange)="filterByCategory()">
+      <ion-select-option *ngFor="let category of categories">{{ category }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-list>
+    <ion-item-group *ngFor="let category of categories">
+      <ion-item-divider color="light">
+        <ion-label>{{ category.name }}</ion-label>
+      </ion-item-divider>
+      <ion-item *ngFor="let product of category.products">
+        <!-- <ion-card>
+          <ion-card-header>
+            <ion-label>CODIGO: {{ product.codigo }}</ion-label>
+            <ion-label>MARCA: {{ product.marca }}</ion-label>
+            <ion-label>NOMBRE: {{ product.nombre }}</ion-label>
+            <ion-label>PRECIO: {{ product.precio }}</ion-label> 
+          </ion-card-header>
+          <ion-card-content>
+            
+            <ion-img class="product-image" [src]="product.url_imagen"></ion-img>
+          </ion-card-content>
+        </ion-card> -->
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
 </ion-content>

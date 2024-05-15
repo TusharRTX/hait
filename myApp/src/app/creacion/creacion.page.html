@@ -25,6 +25,10 @@
       <ion-input [(ngModel)]="productoData.codigo" name="codigo" required></ion-input>
     </ion-item>
     <ion-item>
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-input [(ngModel)]="productoData.categoria" name="categoria"  required></ion-input>
+    </ion-item>
+    <ion-item>
       <ion-label position="floating">Marca</ion-label>
       <ion-input [(ngModel)]="productoData.marca" name="marca"  required></ion-input>
     </ion-item>
@@ -43,10 +47,6 @@
 
     <ion-item>
       <ion-button fill="outline" color="color" (click)="crearProducto()">Registrar Viaje</ion-button>
-      <!-- <ion-button fill="outline" color="color" (click)="logout()">Salir</ion-button> -->
-      <!-- <div *ngIf="loginerror" class="error-message" style="color: rgb(60, 199, 41);"> -->
-        <!-- Viaje Registrado Correctamente!
-      </div> -->
 
     </ion-item>
   </div>
