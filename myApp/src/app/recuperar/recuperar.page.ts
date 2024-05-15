@@ -9,14 +9,13 @@ import { DjangoapiService } from '../conexion/djangoapi.service';
 export class RecuperarPage implements OnInit {
 
   nuevoProducto = {
-    name: '',
-    description: '',
-    price: 0,
-    url_imagen: '',
-    category: 0 // Inicializar con 0
+    productName: '',
+    productDescription: '',
+    productPrice: 0,
+    productImageUrl: '',
+    selectedCategory: 0 // Inicializar con 0
   };
   categories: any[] = []; 
-  selectedCategory: number = 0;
 
   constructor(private djangoApi: DjangoapiService) {}
 
@@ -27,7 +26,15 @@ export class RecuperarPage implements OnInit {
   loadCategories() {
     this.djangoApi.getCategories().subscribe(
       (response) => {
-        this.categories = response;
+        // Verificar si response.categories es una matriz
+        if (Array.isArray(response.categories)) {
+          this.categories = response.categories;
+          if (this.categories.length > 0) {
+            this.nuevoProducto.selectedCategory = this.categories[0].id; 
+          }
+        } else {
+          console.error('El servidor no devolvió una lista de categorías válida:', response);
+        }
       },
       (error) => {
         console.error('Error al cargar las categorías:', error);
@@ -35,16 +42,24 @@ export class RecuperarPage implements OnInit {
     );
   }
 
-  guardarProducto() {
-    this.nuevoProducto.category = this.selectedCategory; // Asignar la categoría seleccionada al nuevo producto
-    this.djangoApi.createProduct(this.nuevoProducto).subscribe(
-      (response: any) => {
-        console.log('Producto creado exitosamente', response);
+
+
+  createProduct() {
+    const productData = {
+      name: this.nuevoProducto.productName,
+      description: this.nuevoProducto.productDescription,
+      price: this.nuevoProducto.productPrice,
+      url_imagen: this.nuevoProducto.productImageUrl,
+      category_id: this.nuevoProducto.selectedCategory
+    };
+  
+    this.djangoApi.createProduct(productData).subscribe(
+      (response) => {
+        console.log('Producto creado exitosamente:', response);
       },
-      (error: any) => {
-        console.error('Error al crear el producto', error);
+      (error) => {
+        console.error('Error al crear el producto:', error);
       }
     );
   }
 }
-

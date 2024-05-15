@@ -43,8 +43,8 @@ export class DjangoapiService {
     .pipe(retry(3));
   }
 
-  createProduct(nuevoProducto: any): Observable<any> {
-    return this.http.post(this.apiURL + '/create_product', nuevoProducto);
+  createProduct(productData: any): Observable<any> {
+    return this.http.post(this.apiURL + '/create_product', productData);
   }
 
 
