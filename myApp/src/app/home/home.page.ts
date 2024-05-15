@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DjangoapiService } from '../conexion/djangoapi.service';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,25 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  productos: any[] = [];
+
+  constructor(private djangoApi: DjangoapiService) {}
+
+  ngOnInit(){
+    this.cargaProductos()
+  }
+
+  cargaProductos(){
+    this.djangoApi.getProducto().subscribe(
+      (res)=>{
+       console.log(res);
+        this.productos = res;
+     }
+     ,
+     (error)=>{
+        console.log(error);
+     }
+   )
+ }
 
 }
