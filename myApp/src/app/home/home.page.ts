@@ -21,7 +21,7 @@ interface Category {
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
+  isMenuVisible = false;
   categories: any[] = [];
   selectedCategory: string;
 
@@ -34,7 +34,10 @@ export class HomePage {
     this.loadCategories();
   }
 
-
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+  
   login() {
     this.navCtrl.navigateForward('/iniciosesion');
   }

@@ -92,12 +92,13 @@ def get_categories(request):
     categories = Producto.objects.values_list('categoria', flat=True).distinct()
     return JsonResponse(list(categories), safe=False)
 
+
 @csrf_exempt
 def getexchangerate(request):
     user = 'mirwanitushar@gmail.com'
     password = 'Tushargamer200_'
-    firstdate = '2024-05-16'
-    lastdate = '2024-05-16'
+    firstdate = '2024-05-17'
+    lastdate = '2024-05-17'
     timeseries = 'F073.TCO.PRE.Z.D'
 
     url = f"https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx?user={user}&pass={password}&firstdate={firstdate}&lastdate={lastdate}&timeseries={timeseries}&function=GetSeries"

@@ -1,32 +1,53 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-img src="https://cdn.discordapp.com/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=6648af85&is=66475e05&hm=8f81e27e214f60881fe555b0b98fe6c99a8a5a1db813ccdd0a5c86656681a854&" class="logo"></ion-img>
-    </ion-buttons>
-    <div class="searchbar-container">
-      <ion-searchbar class="custom-searchbar" placeholder="Buscar aquí..."></ion-searchbar>
-    </div>
-    <ion-buttons slot="end" class="end-buttons">
-      <ion-button>
-        <ion-icon name="person-outline"></ion-icon>
-        <span>Mi cuenta</span>
-      </ion-button>
-      <ion-button color="primary" (click)="login()">
-        <ion-icon name="log-in-outline"></ion-icon>
-        <span>Iniciar sesión</span>
-      </ion-button>
-      <ion-button color="success" (click)="register()">
-        <ion-icon name="person-add-outline"></ion-icon>
-        <span>Registrarse</span>
-      </ion-button>
-      <ion-button>
-        <ion-icon name="cart-outline"></ion-icon>
-        <span>Carrito</span>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Categorías</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
+  <ion-content>
+    <ion-list>
+      <ion-item routerLink="/categorias/herramientas-manuales">Herramientas Manuales</ion-item>
+      <ion-item routerLink="/categorias/materiales-basicos">Materiales Básicos</ion-item>
+      <ion-item routerLink="/categorias/equipos-de-seguridad">Equipos de Seguridad</ion-item>
+      <ion-item routerLink="/categorias/tornillos">Tornillos</ion-item>
+      <ion-item routerLink="/categorias/equipo-de-medicion">Equipo de Medición</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="start" class="logo-buttons">
+        <ion-img src="https://cdn.discordapp.com/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=6648af85&is=66475e05&hm=8f81e27e214f60881fe555b0b98fe6c99a8a5a1db813ccdd0a5c86656681a854&" class="logo"></ion-img>
+      </ion-buttons>
+      <div class="searchbar-container">
+        <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+      </div>
+      <ion-buttons slot="end" class="end-buttons">
+        <ion-button>
+          <ion-icon name="person-outline"></ion-icon>
+          <span>Mi cuenta</span>
+        </ion-button>
+        <ion-button color="primary" (click)="login()">
+          <ion-icon name="log-in-outline"></ion-icon>
+          <span>Iniciar sesión</span>
+        </ion-button>
+        <ion-button color="success" (click)="register()">
+          <ion-icon name="person-add-outline"></ion-icon>
+          <span>Registrarse</span>
+        </ion-button>
+        <ion-button>
+          <ion-icon name="cart-outline"></ion-icon>
+          <span>Carrito</span>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 <ion-content [fullscreen]="true">
   <div id="container">
     <ion-item>

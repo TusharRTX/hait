@@ -1,13 +1,42 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>iniciosesion</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Ferremas</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-app>
+  <ion-menu side="start" menuId="first" contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Todas las categorías</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item>Computadores y Tablets</ion-item>
+        <ion-item>Partes y Piezas / Componentes</ion-item>
+        <ion-item>Smartphones y Wearables</ion-item>
+        <ion-item>Gamer y Poder Gráfico</ion-item>
+        <ion-item>UPS / Energía y Energía Solar</ion-item>
+        <ion-item>Accesorios y Periféricos</ion-item>
+        <ion-item>Monitores y Proyectores</ion-item>
+        <ion-item>Almacenamiento y Discos Duros</ion-item>
+        <ion-item>Impresoras y Suministros</ion-item>
+        <ion-item>Smart TV y Audio</ion-item>
+        <ion-item>Oficinas y Puntos de Venta</ion-item>
+        <ion-item>Conectividad y Redes</ion-item>
+        <ion-item>Video, Fotografía y Drones</ion-item>
+        <ion-item>Hogar y Seguridad</ion-item>
+        <ion-item>Automóvil / GPS y Outdoor</ion-item>
+        <ion-item>Electrónica y Robótica</ion-item>
+        <ion-item>Marcas</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <div id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+</ion-app>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">iniciosesion</ion-title>
-    </ion-toolbar>
-  </ion-header>
-</ion-content>
