@@ -26,10 +26,31 @@ const routes: Routes = [
   {
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
-  },  {
+  },
+  {
     path: 'banco',
     loadChildren: () => import('./banco/banco.module').then( m => m.BancoPageModule)
   },
+  {
+    path: 'materiales',
+    loadChildren: () => import('./materiales/materiales.module').then( m => m.MaterialesPageModule)
+  },  {
+    path: 'herramientas',
+    loadChildren: () => import('./herramientas/herramientas.module').then( m => m.HerramientasPageModule)
+  },
+  {
+    path: 'equipos',
+    loadChildren: () => import('./equipos/equipos.module').then( m => m.EquiposPageModule)
+  },
+  {
+    path: 'tornillos',
+    loadChildren: () => import('./tornillos/tornillos.module').then( m => m.TornillosPageModule)
+  },
+  {
+    path: 'medicion',
+    loadChildren: () => import('./medicion/medicion.module').then( m => m.MedicionPageModule)
+  },
+
 
 
 

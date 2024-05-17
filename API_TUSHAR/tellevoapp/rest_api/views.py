@@ -106,3 +106,13 @@ def getexchangerate(request):
     data = response.json()
 
     return JsonResponse(data)
+
+@api_view(['GET'])
+def productos_por_categoria(request):
+    categoria = request.GET.get('categoria', None)
+    if categoria:
+        productos = Producto.objects.filter(categoria=categoria)
+        serializer = ProductosSerializer(productos, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({"error": "Categoría no especificada"}, status=status.HTTP_400_BAD_REQUEST)

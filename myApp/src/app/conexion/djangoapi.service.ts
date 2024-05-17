@@ -36,6 +36,12 @@ export class DjangoapiService {
     return this.http.get<any>(this.apiURL + '/getexchangerate')
      .pipe(retry(3));
  }
+
+ getProductosPorCategoria(categoria: string): Observable<any> {
+  const params = new HttpParams().set('categoria', categoria);
+  return this.http.get(this.apiURL + '/productos_por_categoria', { params })
+    .pipe(retry(3));
+}
   
 }
   
