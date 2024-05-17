@@ -14,6 +14,9 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
 from core.models import Producto
 from .serializers import ProductosSerializer
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -88,3 +91,17 @@ def creacion(request):
 def get_categories(request):
     categories = Producto.objects.values_list('categoria', flat=True).distinct()
     return JsonResponse(list(categories), safe=False)
+
+@csrf_exempt
+def getexchangerate(request):
+    user = 'mirwanitushar@gmail.com'
+    password = 'Tushargamer200_'
+    firstdate = '2024-05-10'
+    lastdate = '2024-05-16'
+    timeseries = 'F073.TCO.PRE.Z.D'
+
+    url = f"https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx?user={user}&pass={password}&firstdate={firstdate}&lastdate={lastdate}&timeseries={timeseries}&function=GetSeries"
+    response = requests.get(url)
+    data = response.json()
+
+    return JsonResponse(data)
