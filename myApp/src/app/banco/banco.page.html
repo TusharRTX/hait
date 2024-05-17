@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Exchange Rate
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="exchangeRateData">
+    <h2>Exchange Rate Data:</h2>
+    <pre>{{ exchangeRateData | json }}</pre>
+  </div>
+  <div *ngIf="!exchangeRateData">
+    <ion-spinner></ion-spinner>
+  </div>
+</ion-content>
+

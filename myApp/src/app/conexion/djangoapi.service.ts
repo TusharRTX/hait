@@ -31,7 +31,16 @@ export class DjangoapiService {
       .pipe(retry(3));
   }
 
+
+  getExchangeRate(): Observable<any> {
+    return this.http.get<any>(this.apiURL + '/getexchangerate')
+     .pipe(retry(3));
+ }
+  
 }
+  
+
+
 
 
 

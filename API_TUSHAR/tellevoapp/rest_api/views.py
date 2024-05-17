@@ -96,7 +96,7 @@ def get_categories(request):
 def getexchangerate(request):
     user = 'mirwanitushar@gmail.com'
     password = 'Tushargamer200_'
-    firstdate = '2024-05-10'
+    firstdate = '2024-05-16'
     lastdate = '2024-05-16'
     timeseries = 'F073.TCO.PRE.Z.D'
 
