@@ -17,7 +17,6 @@ export class CreacionPage implements OnInit {
     precio: "",
     url_imagen: ""
   }
-
   constructor(private djangoApi: DjangoapiService,private navCtrl: NavController) { }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-
+from rest_framework import generics
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
@@ -17,6 +17,19 @@ from .serializers import ProductosSerializer
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from core.models import Categorias
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from core.models import Categorias, Producto
+from .serializers import CategoriaSerializer
+
+
+from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from core.models import Categorias, Producto
+from .serializers import CategoriaSerializer, ProductosSerializer
 
 
 # Create your views here.
@@ -107,12 +120,17 @@ def getexchangerate(request):
 
     return JsonResponse(data)
 
+
 @api_view(['GET'])
-def productos_por_categoria(request):
-    categoria = request.GET.get('categoria', None)
-    if categoria:
-        productos = Producto.objects.filter(categoria=categoria)
-        serializer = ProductosSerializer(productos, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({"error": "Categoría no especificada"}, status=status.HTTP_400_BAD_REQUEST)
+def productos_por_categoria(request, categoria_id):
+    categoria = get_object_or_404(Categorias, id=categoria_id)
+    productos = Producto.objects.filter(categoria=categoria)
+    serializer = ProductosSerializer(productos, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    
+
+
+
+
