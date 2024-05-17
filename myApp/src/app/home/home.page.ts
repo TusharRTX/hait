@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
+import { NavController } from '@ionic/angular';
 
 interface Product {
   codigo: string;
@@ -24,13 +25,22 @@ export class HomePage {
   categories: any[] = [];
   selectedCategory: string;
 
-  constructor(private djangoApi: DjangoapiService) {
+  constructor(private djangoApi: DjangoapiService, private navCtrl: NavController) {
     this.selectedCategory = '';
   }
 
   ngOnInit(){
     // this.cargaProductos()
     this.loadCategories();
+  }
+
+
+  login() {
+    this.navCtrl.navigateForward('/iniciosesion');
+  }
+
+  register() {
+    this.navCtrl.navigateForward('/registro');
   }
 
 //   cargaProductos(){

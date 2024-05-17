@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-creacion',
@@ -17,9 +18,17 @@ export class CreacionPage implements OnInit {
     url_imagen: ""
   }
 
-  constructor(private djangoApi: DjangoapiService) { }
+  constructor(private djangoApi: DjangoapiService,private navCtrl: NavController) { }
 
   ngOnInit() {
+  }
+
+  login() {
+    this.navCtrl.navigateForward('/iniciosesion');
+  }
+
+  register() {
+    this.navCtrl.navigateForward('/registro');
   }
 
   crearProducto() {
@@ -34,5 +43,7 @@ export class CreacionPage implements OnInit {
       }
     );
   }
+
+
 
 }
