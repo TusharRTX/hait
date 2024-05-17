@@ -27,9 +27,6 @@ const routes: Routes = [
     path: 'registro',
     loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)
   },
-  { path: 'bancochile', 
-    loadChildren: () => import('./bancochile/bancochile.module').then(m => m.BancochilePageModule) 
-  },
 
 
 ];
