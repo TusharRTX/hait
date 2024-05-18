@@ -42,7 +42,7 @@ export class CartService {
   }
 
   removeItem(product: any) {
-    const index = this.items.findIndex((item) => item.id === product.id);
+    const index = this.items.findIndex(item => item.id === product.id);
     if (index > -1) {
       this.items.splice(index, 1);
       this.saveCart();
@@ -65,6 +65,7 @@ export class CartService {
     return this.items.reduce((total, item) => total + item.precio * item.quantity, 0);
   }
 }
+
 
 
 

@@ -8,23 +8,22 @@
   <ion-list>
     <ion-item *ngFor="let item of items">
       <ion-thumbnail slot="start">
-        <img [src]="item.url_imagen">
+        <img [src]="item.url_imagen" />
       </ion-thumbnail>
       <ion-label>
-        <h2>{{ item.marca }} - {{ item.nombre }}</h2>
-        <p>${{ item.precio | currency }}</p>
-        <ion-input
-          type="number"
-          min="1"
-          [value]="item.quantity"
-          (ionChange)="updateQuantity(item, $event)"
-        ></ion-input>
+        <h2>CLP{{ item.marca }} - {{ item.nombre }}</h2>
+        <p>{{ item.precio | currency }}</p>
+        <ion-input type="number" min="1" [value]="item.quantity" (ionChange)="updateQuantity(item, $event)"></ion-input>
       </ion-label>
       <ion-button color="danger" (click)="removeItem(item)">Eliminar</ion-button>
     </ion-item>
   </ion-list>
+
   <ion-item>
-    <ion-label>Total: {{ total | currency }}</ion-label>
+    <ion-label>Total en CLP: {{ total | currency }}</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Total en USD: {{ totalInUSD | currency:'USD' }}</ion-label>
   </ion-item>
   <ion-button expand="full" color="primary" (click)="clearCart()">Vaciar Carrito</ion-button>
 </ion-content>
