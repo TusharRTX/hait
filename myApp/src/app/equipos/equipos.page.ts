@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-import { NavController } from '@ionic/angular'; 
-import { CartService } from '../cart.service';
+import { NavController } from '@ionic/angular';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-equipos',
@@ -11,7 +11,11 @@ import { CartService } from '../cart.service';
 export class EquiposPage implements OnInit {
   products: any[] = [];
 
-  constructor(private apiService: DjangoapiService, private navCtrl: NavController,private cartService: CartService) { }
+  constructor(
+    private apiService: DjangoapiService,
+    private navCtrl: NavController,
+    private cartService: CartService
+  ) { }
 
   ngOnInit() {
     const categoryId = 1; // ID de la categoría "equipo"
@@ -20,19 +24,20 @@ export class EquiposPage implements OnInit {
     });
   }
 
+  addToCart(product: any) {
+    this.cartService.addToCart(product);
+  }
 
   login() {
     this.navCtrl.navigateForward('/iniciosesion');
   }
-  
+
   register() {
     this.navCtrl.navigateForward('/registro');
   }
-  
-  addToCarrito(product: any) {
-    this.cartService.addToCarrito(product);
-  }
-
-
 }
+
+
+
+
 

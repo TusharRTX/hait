@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../cart.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -7,27 +7,42 @@ import { CartService } from '../cart.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  carrito: any[] = [];
+  items: any[] = [];
   total: number = 0;
 
   constructor(private cartService: CartService) { }
 
   ngOnInit() {
-    this.loadCarrito();
-  }
-  ionViewWillEnter() {
-    this.loadCarrito(); // Recargar el carrito cada vez que se entra a la vista
+    
+    this.loadCart();
   }
 
-  loadCarrito() {
-    this.carrito = this.cartService.getCarrito();
+  loadCart() {
+    this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
   }
 
-  updateCantidad(productId: number, cantidad: number) {
-    this.cartService.updateCantidad(productId, cantidad);
-    this.loadCarrito();
+  removeItem(item: any) {
+    this.cartService.removeItem(item);
+    this.loadCart();
   }
-  
 
+  clearCart() {
+    this.cartService.clearCart();
+    this.loadCart();
+  }
+
+  updateQuantity(item: any, event: any) {
+    const quantity = +event.detail.value;
+    if (quantity > 0) {
+      this.cartService.updateQuantity(item, quantity);
+    } else {
+      this.cartService.removeItem(item);
+    }
+    this.loadCart();
+  }
 }
+
+
+
+

@@ -16,8 +16,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         fields = ['user','password','nombre','correo','rol']
 
 
-
-class ProductosSerializer(serializers.ModelSerializer):
+class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        fields = ['codigo','categoria', 'marca', 'nombre', 'precio', 'url_imagen']
+        fields = '__all__'

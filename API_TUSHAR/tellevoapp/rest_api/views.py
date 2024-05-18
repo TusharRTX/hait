@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
 from core.models import Producto
-from .serializers import ProductosSerializer
+from .serializers import ProductoSerializer
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -29,7 +29,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from core.models import Categorias, Producto
-from .serializers import CategoriaSerializer, ProductosSerializer
+from .serializers import CategoriaSerializer, ProductoSerializer
 
 
 # Create your views here.
@@ -83,11 +83,11 @@ def login(request):
 def creacion(request):
     if request.method == 'GET':
         productos = Producto.objects.all()
-        serializer = ProductosSerializer(productos, many = True)
+        serializer = ProductoSerializer(productos, many = True)
         return Response(serializer.data)
     elif request.method == 'POST':
 
-        serializer = ProductosSerializer(data=request.data)
+        serializer = ProductoSerializer(data=request.data)
         print(serializer)
         if serializer.is_valid():
             codigo = request.POST.get('codigo', None)
@@ -123,10 +123,9 @@ def getexchangerate(request):
 
 @api_view(['GET'])
 def productos_por_categoria(request, categoria_id):
-    categoria = get_object_or_404(Categorias, id=categoria_id)
-    productos = Producto.objects.filter(categoria=categoria)
-    serializer = ProductosSerializer(productos, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    productos = Producto.objects.filter(categoria_id=categoria_id)
+    serializer = ProductoSerializer(productos, many=True)
+    return Response(serializer.data)
 
 
     
