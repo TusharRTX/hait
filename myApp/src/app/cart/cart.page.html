@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Carrito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let item of carrito">
+      <ion-thumbnail slot="start">
+        <ion-img [src]="item.url_imagen"></ion-img>
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.marca }} - {{ item.nombre }}</h2>
+        <p>${{ item.precio }}</p>
+        <ion-item>
+          <ion-label position="floating">Cantidad</ion-label>
+          <ion-input type="number" [(ngModel)]="item.cantidad" (ionChange)="updateCantidad(item.id, item.cantidad)"></ion-input>
+        </ion-item>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-item>
+    <ion-label>Total Precio Efectivo</ion-label>
+    <ion-note slot="end">${{ total }}</ion-note>
+  </ion-item>
+
+  <ion-button expand="full" color="success">Comprar</ion-button>
+</ion-content>

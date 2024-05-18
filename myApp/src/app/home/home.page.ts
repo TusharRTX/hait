@@ -69,7 +69,7 @@ export class HomePage {
 }
 
  groupByCategory(products: Product[]): Category[] {
-  const categoryMap: { [key: string]: Category } = {}; // Correctly typed as a dictionary
+  const categoryMap: { [key: string]: Category } = {}; 
 
   products.forEach((product) => {
     if (!categoryMap[product.categoria]) {
@@ -78,11 +78,10 @@ export class HomePage {
     categoryMap[product.categoria].products.push(product);
   });
 
-  return Object.values(categoryMap); // Convert dictionary to array
+  return Object.values(categoryMap); 
 }
 
 filterByCategory() {
-  // Logic to filter or refresh products based on selected category
   console.log('Selected Category:', this.selectedCategory);
 }
 

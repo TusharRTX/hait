@@ -8,11 +8,15 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./tornillos.page.scss'],
 })
 export class TornillosPage implements OnInit {
-  
+  products: any[] = [];
 
-  constructor(private djangoApi: DjangoapiService, private navCtrl: NavController) { }
+  constructor(private apiService: DjangoapiService, private navCtrl: NavController) { }
 
   ngOnInit() {
+    const categoryId = 1; // ID de la categoría "equipo"
+    this.apiService.getProductsByCategory(categoryId).subscribe(data => {
+      this.products = data;
+    });
   }
   
   login() {
