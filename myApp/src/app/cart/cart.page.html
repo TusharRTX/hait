@@ -11,8 +11,8 @@
         <img [src]="item.url_imagen" />
       </ion-thumbnail>
       <ion-label>
-        <h2>CLP{{ item.marca }} - {{ item.nombre }}</h2>
-        <p>{{ item.precio | currency }}</p>
+        <h2>{{ item.marca }} - {{ item.nombre }}</h2>
+        <p>CLP{{ item.precio | currency }}</p>
         <ion-input type="number" min="1" [value]="item.quantity" (ionChange)="updateQuantity(item, $event)"></ion-input>
       </ion-label>
       <ion-button color="danger" (click)="removeItem(item)">Eliminar</ion-button>

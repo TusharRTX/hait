@@ -21,7 +21,7 @@ export class CartPage implements OnInit {
 
   loadDollarValue() {
     this.djangoApi.getExchangeRate().subscribe((data: any) => {
-      this.dollarValue = parseFloat(data.Series.Obs[0].value); // Ajusta la ruta según la estructura del JSON
+      this.dollarValue = parseFloat(data.Series.Obs[0].value); 
       this.loadCart();
     });
   }
