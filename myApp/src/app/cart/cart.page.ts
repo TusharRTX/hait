@@ -9,7 +9,7 @@ import { MercadopagoService } from '../mercadopago.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-  isMenuVisible = false;
+
   items: any[] = [];
   total: number = 0;
   dollarValue: number = 0;
@@ -21,10 +21,7 @@ export class CartPage implements OnInit {
     this.loadDollarValue();
   }
 
-  toggleMenu() {
-    this.isMenuVisible = !this.isMenuVisible;
-  }
-  
+
 
   loadDollarValue() {
     this.djangoApi.getExchangeRate().subscribe((data: any) => {
