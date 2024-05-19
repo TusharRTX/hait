@@ -20,7 +20,6 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button autoHide="false"></ion-menu-button>
-        <!-- <ion-title class="menu-title">Menú</ion-title> -->
       </ion-buttons>
       <ion-buttons slot="start" class="logo-buttons">
         <ion-img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664b5285&is=664a0105&hm=f1d9f69df1e7a27b6af326eee22ebda56a54d7e8af92a28a88770fd8d8e18d3c&=&format=webp&quality=lossless"></ion-img>
@@ -43,39 +42,52 @@
         </ion-button>
         <ion-button>
           <ion-icon name="cart-outline"></ion-icon>
-          <span [routerLink]="['/cart']">Carrito</span> 
+          <span [routerLink]="['/cart']">Carrito</span>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 </div>
 
-
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let item of items">
-      <ion-thumbnail slot="start">
-        <img [src]="item.url_imagen" />
-      </ion-thumbnail>
-      <ion-label>
-        <h2>{{ item.marca }} - {{ item.nombre }}</h2>
-        <p>CLP{{ item.precio | currency }}</p>
-        <ion-input type="number" min="1" [value]="item.quantity" (ionChange)="updateQuantity(item, $event)"></ion-input>
-      </ion-label>
-      <ion-button color="danger" (click)="removeItem(item)">Eliminar</ion-button>
-    </ion-item>
-  </ion-list>
-
-  <ion-item>
-    <ion-label>Total en CLP: {{ total | currency }}</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Total en USD: {{ totalInUSD | currency:'USD' }}</ion-label>
-  </ion-item>
-  <ion-button expand="full" color="primary" (click)="clearCart()">Vaciar Carrito</ion-button>
-  <ion-button expand="full" color="secondary" (click)="checkout('CLP')">Pagar en CLP</ion-button>
-  <ion-button expand="full" color="tertiary" (click)="checkout('USD')">Pagar en USD</ion-button>
+  <div class="cart-container">
+    <div class="cart-items">
+      <h2 class="section-title">PRODUCTOS</h2>
+      <ion-list>
+        <ion-item *ngFor="let item of items" class="cart-item">
+          <ion-thumbnail slot="start">
+            <img [src]="item.url_imagen" />
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ item.marca }} - {{ item.nombre }}</h2>
+            <p>CLP{{ item.precio | currency }}</p>
+            <div class="quantity-controls">
+              <ion-button size="small" (click)="updateQuantity(item, { detail: { value: item.quantity - 1 } })">-</ion-button>
+              <ion-input type="number" min="1" [value]="item.quantity" (ionChange)="updateQuantity(item, $event)"></ion-input>
+              <ion-button size="small" (click)="updateQuantity(item, { detail: { value: item.quantity + 1 } })">+</ion-button>
+            </div>
+          </ion-label>
+          <ion-button color="danger" size="small" class="remove-button" (click)="removeItem(item)">Eliminar</ion-button>
+        </ion-item>
+      </ion-list>
+    </div>
+    <div class="cart-summary">
+      <h2 class="section-title">RESUMEN DE LA COMPRA</h2>
+      <ion-item>
+        <ion-label>Total en CLP: {{ total | currency }}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Total en USD: {{ totalInUSD | currency:'USD' }}</ion-label>
+      </ion-item>
+      <div class="summary-buttons">
+        <ion-button expand="block" color="primary" (click)="clearCart()">Vaciar Carrito</ion-button>
+        <ion-button expand="block" color="secondary" (click)="checkout('CLP')">Pagar en CLP</ion-button>
+        <ion-button expand="block" color="tertiary" (click)="checkout('USD')">Pagar en USD</ion-button>
+      </div>
+    </div>
+  </div>
 </ion-content>
+
 
 
 
