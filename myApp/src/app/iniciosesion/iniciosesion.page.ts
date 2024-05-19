@@ -6,10 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./iniciosesion.page.scss'],
 })
 export class IniciosesionPage implements OnInit {
+  isMenuVisible = false;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
   }
 
 }

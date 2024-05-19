@@ -1,17 +1,16 @@
 <ion-menu side="start" menuId="first" contentId="main-content">
   <ion-header>
-    <ion-toolbar color="primary">
-      <ion-title>Categorías</ion-title>
+    <ion-toolbar class="menu-header-toolbar">
+      <ion-title class="menu-header-title">Categorías</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-content>
     <ion-list>
-      <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
-      <ion-item routerLink="/materiales">Materiales Básicos</ion-item>
-      <ion-item routerLink="/equipos">Equipos de Seguridad</ion-item>
-      <ion-item routerLink="/tornillos">Tornillos</ion-item>
-      <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
+      <ion-item routerLink="/herramientas" class="menu-item">Herramientas Manuales</ion-item>
+      <ion-item routerLink="/materiales" class="menu-item">Materiales Básicos</ion-item>
+      <ion-item routerLink="/equipos" class="menu-item">Equipos de Seguridad</ion-item>
+      <ion-item routerLink="/tornillos" class="menu-item">Tornillos</ion-item>
+      <ion-item routerLink="/medicion" class="menu-item">Equipo de Medición</ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
@@ -21,33 +20,34 @@
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button autoHide="false"></ion-menu-button>
+        <!-- <ion-title class="menu-title">Menú</ion-title> -->
       </ion-buttons>
       <ion-buttons slot="start" class="logo-buttons">
-        <ion-img src="https://cdn.discordapp.com/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=6648af85&is=66475e05&hm=8f81e27e214f60881fe555b0b98fe6c99a8a5a1db813ccdd0a5c86656681a854&" class="logo"></ion-img>
+        <ion-img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664b5285&is=664a0105&hm=f1d9f69df1e7a27b6af326eee22ebda56a54d7e8af92a28a88770fd8d8e18d3c&=&format=webp&quality=lossless"></ion-img>
       </ion-buttons>
       <div class="searchbar-container">
         <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
       </div>
       <ion-buttons slot="end" class="end-buttons">
         <ion-button>
-          <ion-icon name="person-outline"></ion-icon>
-          <span>Mi cuenta</span>
+          <ion-icon name="home-outline"></ion-icon>
+          <span [routerLink]="['/home']">Home</span>
         </ion-button>
-        <ion-button color="primary" (click)="login()">
+        <ion-button color="primary">
           <ion-icon name="log-in-outline"></ion-icon>
-          <span>Iniciar sesión</span>
+          <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
         </ion-button>
-        <ion-button color="success" (click)="register()">
+        <ion-button color="success">
           <ion-icon name="person-add-outline"></ion-icon>
-          <span>Registrarse</span>
+          <span [routerLink]="['/registro']">Registrarse</span>
         </ion-button>
         <ion-button>
           <ion-icon name="cart-outline"></ion-icon>
-          <span>Carrito</span>
+          <span [routerLink]="['/cart']">Carrito</span> 
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
-  </ion-header>  
+  </ion-header>
 </div>
 
 <ion-content>
@@ -62,7 +62,7 @@
           </ion-card-header>
           <ion-card-content>
             <p>${{ product.precio }}</p>
-            <ion-button expand="full" color="primary">Añadir al carrito</ion-button>
+            <ion-button expand="full" color="primary" (click)="addToCart(product)">Añadir al carrito</ion-button>
           </ion-card-content>
         </ion-card>
       </ion-col>

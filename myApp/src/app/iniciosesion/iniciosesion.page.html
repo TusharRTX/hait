@@ -1,42 +1,51 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button autoHide="false"></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Ferremas</ion-title>
-  </ion-toolbar>
-</ion-header>
-<ion-app>
-  <ion-menu side="start" menuId="first" contentId="main-content">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Todas las categorías</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-list>
-        <ion-item>Computadores y Tablets</ion-item>
-        <ion-item>Partes y Piezas / Componentes</ion-item>
-        <ion-item>Smartphones y Wearables</ion-item>
-        <ion-item>Gamer y Poder Gráfico</ion-item>
-        <ion-item>UPS / Energía y Energía Solar</ion-item>
-        <ion-item>Accesorios y Periféricos</ion-item>
-        <ion-item>Monitores y Proyectores</ion-item>
-        <ion-item>Almacenamiento y Discos Duros</ion-item>
-        <ion-item>Impresoras y Suministros</ion-item>
-        <ion-item>Smart TV y Audio</ion-item>
-        <ion-item>Oficinas y Puntos de Venta</ion-item>
-        <ion-item>Conectividad y Redes</ion-item>
-        <ion-item>Video, Fotografía y Drones</ion-item>
-        <ion-item>Hogar y Seguridad</ion-item>
-        <ion-item>Automóvil / GPS y Outdoor</ion-item>
-        <ion-item>Electrónica y Robótica</ion-item>
-        <ion-item>Marcas</ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-menu>
-  <div id="main-content">
-    <ion-router-outlet></ion-router-outlet>
-  </div>
-</ion-app>
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar class="menu-header-toolbar">
+      <ion-title class="menu-header-title">Categorías</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item routerLink="/herramientas" class="menu-item">Herramientas Manuales</ion-item>
+      <ion-item routerLink="/materiales" class="menu-item">Materiales Básicos</ion-item>
+      <ion-item routerLink="/equipos" class="menu-item">Equipos de Seguridad</ion-item>
+      <ion-item routerLink="/tornillos" class="menu-item">Tornillos</ion-item>
+      <ion-item routerLink="/medicion" class="menu-item">Equipo de Medición</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
 
+<div id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+        <!-- <ion-title class="menu-title">Menú</ion-title> -->
+      </ion-buttons>
+      <ion-buttons slot="start" class="logo-buttons">
+        <ion-img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664b5285&is=664a0105&hm=f1d9f69df1e7a27b6af326eee22ebda56a54d7e8af92a28a88770fd8d8e18d3c&=&format=webp&quality=lossless"></ion-img>
+      </ion-buttons>
+      <div class="searchbar-container">
+        <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+      </div>
+      <ion-buttons slot="end" class="end-buttons">
+        <ion-button>
+          <ion-icon name="home-outline"></ion-icon>
+          <span [routerLink]="['/home']">Home</span>
+        </ion-button>
+        <ion-button color="success">
+          <ion-icon name="person-add-outline"></ion-icon>
+          <span [routerLink]="['/registro']">Registrarse</span>
+        </ion-button>
+        <ion-button>
+          <ion-icon name="cart-outline"></ion-icon>
+          <span [routerLink]="['/cart']">Carrito</span> 
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+</div>
+
+<ion-content>
+
+</ion-content>

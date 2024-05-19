@@ -9,6 +9,7 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./equipos.page.scss'],
 })
 export class EquiposPage implements OnInit {
+  isMenuVisible = false;
   products: any[] = [];
 
   constructor(
@@ -24,17 +25,14 @@ export class EquiposPage implements OnInit {
     });
   }
 
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+
   addToCart(product: any) {
     this.cartService.addToCart(product);
   }
 
-  login() {
-    this.navCtrl.navigateForward('/iniciosesion');
-  }
-
-  register() {
-    this.navCtrl.navigateForward('/registro');
-  }
 }
 
 

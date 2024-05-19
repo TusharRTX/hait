@@ -8,7 +8,7 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./creacion.page.scss'],
 })
 export class CreacionPage implements OnInit {
-
+  isMenuVisible = false;
   productoData: any = {
     codigo: "",
     categoria: "",
@@ -22,14 +22,11 @@ export class CreacionPage implements OnInit {
   ngOnInit() {
   }
 
-  login() {
-    this.navCtrl.navigateForward('/iniciosesion');
-  }
 
-  register() {
-    this.navCtrl.navigateForward('/registro');
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
   }
-
+  
   crearProducto() {
     this.djangoApi.crearProducto(this.productoData).subscribe(
       (response) => {

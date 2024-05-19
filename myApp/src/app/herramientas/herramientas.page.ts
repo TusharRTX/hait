@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-import { NavController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 
 @Component({
@@ -9,9 +8,10 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./herramientas.page.scss'],
 })
 export class HerramientasPage implements OnInit {
+  isMenuVisible = false;
   products: any[] = [];
 
-  constructor(private apiService: DjangoapiService, private navCtrl: NavController, private cartService: CartService) { }
+  constructor(private apiService: DjangoapiService, private cartService: CartService) { }
 
   ngOnInit() {
     const categoryId = 2; // ID de la categoría "equipo"
@@ -20,12 +20,8 @@ export class HerramientasPage implements OnInit {
     });
   }
   
-  login() {
-    this.navCtrl.navigateForward('/iniciosesion');
-  }
-
-  register() {
-    this.navCtrl.navigateForward('/registro');
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
   }
 
   addToCart(product: any) {

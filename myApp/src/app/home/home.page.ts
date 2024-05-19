@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-import { NavController } from '@ionic/angular';
+
 
 interface Product {
   codigo: string;
@@ -25,12 +25,11 @@ export class HomePage {
   categories: any[] = [];
   selectedCategory: string;
 
-  constructor(private djangoApi: DjangoapiService, private navCtrl: NavController) {
+  constructor(private djangoApi: DjangoapiService) {
     this.selectedCategory = '';
   }
 
   ngOnInit(){
-    // this.cargaProductos()
     this.loadCategories();
   }
 
@@ -38,27 +37,6 @@ export class HomePage {
     this.isMenuVisible = !this.isMenuVisible;
   }
   
-  login() {
-    this.navCtrl.navigateForward('/iniciosesion');
-  }
-
-  register() {
-    this.navCtrl.navigateForward('/registro');
-  }
-
-//   cargaProductos(){
-//     this.djangoApi.getProducto().subscribe(
-//       (res)=>{
-//        console.log(res);
-//        this.categories = this.groupByCategory(res);
-//      }
-//      ,
-//      (error)=>{
-//         console.log(error);
-//      }
-//    )
-//  }
-
  loadCategories() {
   this.djangoApi.getCategories().subscribe(
     (data: string[]) => {
@@ -81,11 +59,9 @@ export class HomePage {
   return Object.values(categoryMap); 
 }
 
-filterByCategory() {
+ filterByCategory() {
   console.log('Selected Category:', this.selectedCategory);
-}
+ }
 
-
- 
 
 }

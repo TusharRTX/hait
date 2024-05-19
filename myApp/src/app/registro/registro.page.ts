@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./registro.page.scss'],
 })
 export class RegistroPage implements OnInit {
+  isMenuVisible = false;
 
   constructor() { }
 
   ngOnInit() {
   }
+
+  toggleMenu() {
+    this.isMenuVisible = !this.isMenuVisible;
+  }
+
 
 }
