@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { DjangoapiService } from '../conexion/djangoapi.service';
+import { MercadopagoService } from '../mercadopago.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,7 @@ export class CartPage implements OnInit {
   dollarValue: number = 0;
   totalInUSD: number = 0;
 
-  constructor(private cartService: CartService, private djangoApi: DjangoapiService) {}
+  constructor(private cartService: CartService, private djangoApi: DjangoapiService,private mercadopagoService: MercadopagoService) {}
 
   ngOnInit() {
     this.loadDollarValue();
@@ -53,6 +54,21 @@ export class CartPage implements OnInit {
     }
     this.loadCart();
   }
+
+  checkout(currency: string) {
+    const items = this.items.map(item => ({
+      title: item.nombre,
+      unit_price: currency === 'USD' ? item.precio / this.dollarValue : item.precio,
+      quantity: item.quantity,
+      currency_id: currency
+    }));
+
+    this.mercadopagoService.createPaymentPreference(items).subscribe((preference) => {
+      window.location.href = preference.init_point;
+    });
+  }
+
+
 }
 
 

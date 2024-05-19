@@ -6,6 +6,7 @@ from rest_api.views import get_categories
 from rest_api.views import getexchangerate
 from rest_api.views import get_categories
 from rest_api.views import productos_por_categoria
+from rest_api.views import create_payment_preference
 
 
 urlpatterns=[
@@ -15,6 +16,7 @@ urlpatterns=[
     path('categorias', get_categories, name='categorias'),
     path('getexchangerate', getexchangerate, name='getexchangerate'),
     path('productos_por_categoria/<int:categoria_id>/', productos_por_categoria, name='productos_por_categoria'),
+    path('create_payment_preference/', create_payment_preference, name='create_payment_preference'),
 ]
 
 

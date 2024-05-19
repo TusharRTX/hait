@@ -16,10 +16,6 @@ const routes: Routes = [
     loadChildren: () => import('./creacion/creacion.module').then( m => m.CreacionPageModule)
   },
   {
-    path: 'productos',
-    loadChildren: () => import('./productos/productos.module').then( m => m.ProductosPageModule)
-  },
-  {
     path: 'iniciosesion',
     loadChildren: () => import('./iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)
   },
@@ -34,7 +30,8 @@ const routes: Routes = [
   {
     path: 'materiales',
     loadChildren: () => import('./materiales/materiales.module').then( m => m.MaterialesPageModule)
-  },  {
+  },
+  {
     path: 'herramientas',
     loadChildren: () => import('./herramientas/herramientas.module').then( m => m.HerramientasPageModule)
   },

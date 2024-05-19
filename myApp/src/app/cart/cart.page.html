@@ -26,6 +26,8 @@
     <ion-label>Total en USD: {{ totalInUSD | currency:'USD' }}</ion-label>
   </ion-item>
   <ion-button expand="full" color="primary" (click)="clearCart()">Vaciar Carrito</ion-button>
+  <ion-button expand="full" color="secondary" (click)="checkout('CLP')">Pagar en CLP</ion-button>
+  <ion-button expand="full" color="tertiary" (click)="checkout('USD')">Pagar en USD</ion-button>
 </ion-content>
 
 

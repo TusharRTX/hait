@@ -18,18 +18,14 @@ import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from core.models import Categorias
-from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from core.models import Categorias, Producto
-from .serializers import CategoriaSerializer
-
-
-from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from core.models import Categorias, Producto
-from .serializers import CategoriaSerializer, ProductoSerializer
+import mercadopago
+from django.conf import settings
+
 
 
 # Create your views here.
@@ -126,6 +122,24 @@ def productos_por_categoria(request, categoria_id):
     productos = Producto.objects.filter(categoria_id=categoria_id)
     serializer = ProductoSerializer(productos, many=True)
     return Response(serializer.data)
+
+@csrf_exempt
+@api_view(['POST'])
+def create_payment_preference(request):
+    sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
+    items = request.data.get('items')
+    preference_data = {
+        "items": items,
+        "back_urls": {
+            "success": "http://localhost:8100/success",
+            "failure": "http://localhost:8100/failure",
+            "pending": "http://localhost:8100/pending"
+        },
+        "auto_return": "approved",
+    }
+    preference_response = sdk.preference().create(preference_data)
+    preference = preference_response["response"]
+    return JsonResponse(preference)
 
 
     
