@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { CartService } from '../services/cart.service';
+import { MenuController } from '@ionic/angular';
 
 
 @Component({
@@ -9,11 +10,11 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./medicion.page.scss'],
 })
 export class MedicionPage implements OnInit {
-  isMenuVisible = false;
+  
   products: any[] = [];
 
 
-  constructor(private apiService: DjangoapiService, private cartService: CartService) { }
+  constructor(private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
   ngOnInit() {
     const categoryId = 5; // ID de la categoría "equipo"
@@ -22,13 +23,16 @@ export class MedicionPage implements OnInit {
     });
   }
   
-  toggleMenu() {
-    this.isMenuVisible = !this.isMenuVisible;
-  }
+
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
   }
+
+  openCategoriesMenu() {
+    this.menu.open('first');
+  }
+
 
 
 }

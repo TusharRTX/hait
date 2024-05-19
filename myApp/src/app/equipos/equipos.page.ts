@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { NavController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
+import { MenuController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-equipos',
@@ -9,13 +11,14 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./equipos.page.scss'],
 })
 export class EquiposPage implements OnInit {
-  isMenuVisible = false;
+  
   products: any[] = [];
 
   constructor(
     private apiService: DjangoapiService,
     private navCtrl: NavController,
-    private cartService: CartService
+    private cartService: CartService,
+    private menu: MenuController
   ) { }
 
   ngOnInit() {
@@ -25,8 +28,10 @@ export class EquiposPage implements OnInit {
     });
   }
 
-  toggleMenu() {
-    this.isMenuVisible = !this.isMenuVisible;
+
+
+  openCategoriesMenu() {
+    this.menu.open('first');
   }
 
   addToCart(product: any) {

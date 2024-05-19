@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { CartService } from '../services/cart.service';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tornillos',
@@ -8,10 +9,9 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./tornillos.page.scss'],
 })
 export class TornillosPage implements OnInit {
-  isMenuVisible = false;
   products: any[] = [];
 
-  constructor(private apiService: DjangoapiService, private cartService: CartService) { }
+  constructor(private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
   ngOnInit() {
     const categoryId = 4; // ID de la categoría "equipo"
@@ -20,12 +20,14 @@ export class TornillosPage implements OnInit {
     });
   }
   
-  toggleMenu() {
-    this.isMenuVisible = !this.isMenuVisible;
-  }
+
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
+  }
+  
+  openCategoriesMenu() {
+    this.menu.open('first');
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
+import { MenuController } from '@ionic/angular';
 
 
 interface Product {
@@ -21,11 +22,11 @@ interface Category {
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  isMenuVisible = false;
+  
   categories: any[] = [];
   selectedCategory: string;
 
-  constructor(private djangoApi: DjangoapiService) {
+  constructor(private djangoApi: DjangoapiService,private menu: MenuController) {
     this.selectedCategory = '';
   }
 
@@ -33,10 +34,10 @@ export class HomePage {
     this.loadCategories();
   }
 
-  toggleMenu() {
-    this.isMenuVisible = !this.isMenuVisible;
+  openCategoriesMenu() {
+    this.menu.open('first');
   }
-  
+
  loadCategories() {
   this.djangoApi.getCategories().subscribe(
     (data: string[]) => {
