@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { CartService } from '../services/cart.service';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tornillos',
@@ -11,7 +11,7 @@ import { MenuController } from '@ionic/angular';
 export class TornillosPage implements OnInit {
   products: any[] = [];
 
-  constructor(private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
+  constructor(private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
   ngOnInit() {
     const categoryId = 4; // ID de la categoría "equipo"
@@ -19,13 +19,20 @@ export class TornillosPage implements OnInit {
       this.products = data;
     });
   }
-  
-
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
+    this.showToast();
   }
   
+  async showToast() {
+    const toast = await this.toastController.create({
+      message: 'Producto agregado al carrito',
+      duration: 2000,
+      color: 'success'
+    });
+    toast.present();
+  }
   openCategoriesMenu() {
     this.menu.open('first');
   }

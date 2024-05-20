@@ -22,6 +22,25 @@ body {
   color: var(--ion-text-color);
 }
 
+.footer-section.opening-hours {
+  margin-bottom: 20px;  
+}
+
+.footer-section.opening-hours h3 {
+  color: black;  
+  font-size: 1.5em;  
+}
+
+.footer-section.opening-hours ul {
+  list-style-type: square;  
+  padding-left: 20px;  
+}
+
+.footer-section.opening-hours ul li {
+  color: black;  
+  font-size: 1.2em;  
+}
+
 .footer-container {
   display: flex;
   justify-content: space-between;
@@ -29,6 +48,21 @@ body {
   background-color: #f8f8f8;
   color: #333;
   font-size: 14px;
+}
+
+.footer-section.product-type h3 {
+  color: black;  /* Cambia el color a negro */
+  font-size: 1.5em;  /* Aumenta el tamaño de la fuente del encabezado */
+}
+
+.footer-section.product-type ul li a {
+  color: black;  
+  font-size: 1.2em;  
+  text-decoration: none;  
+}
+
+.footer-section.product-type ul li a:hover {
+  text-decoration: underline;  
 }
 
 .footer-section {

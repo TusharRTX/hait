@@ -106,8 +106,8 @@ def get_categories(request):
 def getexchangerate(request):
     user = 'mirwanitushar@gmail.com'
     password = 'Tushargamer200_'
-    firstdate = '2024-05-17'
-    lastdate = '2024-05-17'
+    firstdate = '2024-05-20'
+    lastdate = '2024-05-20'
     timeseries = 'F073.TCO.PRE.Z.D'
 
     url = f"https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx?user={user}&pass={password}&firstdate={firstdate}&lastdate={lastdate}&timeseries={timeseries}&function=GetSeries"

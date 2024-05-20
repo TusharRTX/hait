@@ -3,6 +3,7 @@ import { DjangoapiService } from '../conexion/djangoapi.service';
 import { NavController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import { MenuController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class EquiposPage implements OnInit {
     private apiService: DjangoapiService,
     private navCtrl: NavController,
     private cartService: CartService,
-    private menu: MenuController
+    private menu: MenuController,
+    private toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -36,8 +38,18 @@ export class EquiposPage implements OnInit {
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
+    this.showToast();
   }
-
+  
+  async showToast() {
+    const toast = await this.toastController.create({
+      message: 'Producto agregado al carrito',
+      duration: 2000,
+      color: 'success'
+    });
+    toast.present();
+  }
+  
 }
 
 
