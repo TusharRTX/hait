@@ -16,6 +16,90 @@
     --ion-text-color: #ffffff;
   }
 }
+.categories-button-container {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+  padding-right: 20px; 
+}
+
+.right-side-content {
+  display: flex;
+  align-items: center; 
+  justify-content: flex-end; 
+  flex-grow: 1; 
+}
+
+.payment-text {
+  white-space: nowrap; 
+  margin-right: 10px; 
+  color: #272727; 
+  font-size: 17px; 
+  font-weight: bold;
+}
+
+.payment-logos {
+  display: flex;
+  align-items: center; 
+}
+
+.payment-logo {
+  width: 115px; 
+  height: auto; 
+}
+
+.promo-section {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.promo-image {
+  position: relative;
+  width: 49%;
+}
+
+.promo-image img {
+  width: 100%;
+  height: auto;
+}
+
+.promo-text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.shipping-options {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+}
+
+.shipping-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shipping-option ion-icon {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.shipping-option span {
+  display: block;
+}
+
+.shipping-option span:nth-child(2) {
+  font-weight: bold;
+}
 
 body {
   background-color: var(--ion-background-color);
