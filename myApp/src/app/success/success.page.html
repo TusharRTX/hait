@@ -1,0 +1,139 @@
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar class="menu-header-toolbar">
+      <ion-title class="menu-header-title">Categorías</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item routerLink="/herramientas" class="menu-item">Herramientas Manuales</ion-item>
+      <ion-item routerLink="/materiales" class="menu-item">Materiales Básicos</ion-item>
+      <ion-item routerLink="/equipos" class="menu-item">Equipos de Seguridad</ion-item>
+      <ion-item routerLink="/tornillos" class="menu-item">Tornillos</ion-item>
+      <ion-item routerLink="/medicion" class="menu-item">Equipo de Medición</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start" class="logo-buttons">
+        <ion-img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664b5285&is=664a0105&hm=f1d9f69df1e7a27b6af326eee22ebda56a54d7e8af92a28a88770fd8d8e18d3c&=&format=webp&quality=lossless"></ion-img>
+      </ion-buttons>
+      <div class="searchbar-container">
+        <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+      </div>
+      <ion-buttons slot="end" class="end-buttons">
+        <ion-button>
+          <ion-icon name="home-outline"></ion-icon>
+          <span [routerLink]="['/home']">Home</span>
+        </ion-button>
+        <ion-button color="primary">
+          <ion-icon name="log-in-outline"></ion-icon>
+          <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
+        </ion-button>
+        <ion-button color="success">
+          <ion-icon name="person-add-outline"></ion-icon>
+          <span [routerLink]="['/registro']">Registrarse</span>
+        </ion-button>
+        <ion-button>
+          <ion-icon name="cart-outline"></ion-icon>
+          <span [routerLink]="['/cart']">Carrito</span> 
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-buttons class="categories-button-container">
+    <ion-button slot="start" color="dark" (click)="openCategoriesMenu()">
+      <ion-icon name="menu-outline"></ion-icon>
+      Categorías de productos
+    </ion-button>
+  </ion-buttons>
+</div>
+
+<ion-content>
+
+  <h2>Gracias por tu compra!</h2>
+  <ion-list>
+    <ion-item *ngFor="let item of items">
+      <ion-thumbnail slot="start">
+        <img [src]="item.url_imagen" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ item.marca }} - {{ item.nombre }}</h2>
+        <p>Cantidad: {{ item.quantity }}</p>
+        <p>Precio: {{ item.precio | currency:'CLP' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <h2>Total: {{ total | currency:'CLP' }}</h2>
+
+
+
+
+  <ion-footer>
+    <ion-toolbar>
+      <div class="footer-container">
+        <div class="footer-section logo-section">
+          <img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664b5285&is=664a0105&hm=f1d9f69df1e7a27b6af326eee22ebda56a54d7e8af92a28a88770fd8d8e18d3c&=&format=webp&quality=lossless" alt="Logo" class="logo">
+          <p>Síguenos en:</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/profile.php?id=61559656572650&mibextid=ZbWKwL" target="_blank">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+            <a href="https://x.com/FerremasHait?t=5mMbR5RLsYTDPiVHQ-POeQ&s=33" target="_blank">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+            <a href="https://www.instagram.com/ferremashait?igsh=aXliemQ3NjhtaXlx" target="_blank">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+            <a href="https://www.youtube.com/@ferremas-mf3eg" target="_blank">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Ubicación</h3>
+          <ul>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d848480.2608293112!2d-71.6982604!3d-33.82841229999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663254a46dfba6b%3A0xa434c121def3b3de!2sFerremas!5e0!3m2!1sen!2scl!4v1716211363337!5m2!1sen!2scl" width="150" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </ul>
+        </div>
+        <div class="footer-section product-type">
+          <h3>Tipo de Productos</h3>
+          <ul>
+            <li><a routerLink="/herramientas">Herramientas</a></li>
+            <li><a routerLink="/medicion">Equipos de Medición</a></li>
+            <li><a routerLink="/materiales">Materiales Basicos</a></li>
+            <li><a routerLink="/equipos">Equipos de Seguridad</a></li>
+            <li><a routerLink="/tornillos">Tornillos</a></li>
+          </ul>
+        </div>        
+        <div class="footer-section product-type">
+          <h3>Cuenta/Carrito/Contacto</h3>
+          <ul>
+            <li><a routerLink="/registro">Registrarse</a></li>
+            <li><a routerLink="/iniciosesion">Iniciar Sesion</a></li>
+            <li><a routerLink="/cart">Mi Carrito</a></li>
+            <li><a routerLink="">Contacto</a></li>
+            <li><a routerLink="">Info Adicional</a></li>
+          </ul>
+        </div>
+        <div class="footer-section opening-hours">
+          <h3>Hora de Apertura</h3>
+          <ul>
+            <li>Lunes 10:00 AM – 19:00 PM</li>
+            <li>Martes 10:00 AM – 19:00 PM</li>
+            <li>Miércoles 10:00 AM – 19:00 PM</li>
+            <li>Jueves 10:00 AM – 19:00 PM</li>
+            <li>Viernes 10:00 AM – 19:00 PM</li>
+            <li>Sábado 10:30 AM – 15:00 PM</li>
+            <li>Domingo y Festivos Cerrado</li>
+          </ul>
+        </div>        
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+  
+</ion-content>
