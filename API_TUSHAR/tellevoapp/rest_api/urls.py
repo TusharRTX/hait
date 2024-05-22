@@ -9,6 +9,8 @@ from rest_api.views import productos_por_categoria
 from rest_api.views import create_payment_preference
 
 
+# http://127.0.0.1:8000/api/"ENDPOINT"
+
 urlpatterns=[
     path('lista_user', lista_user, name="Lista de Registro"),
     path('creacion', creacion, name="creacion"),
