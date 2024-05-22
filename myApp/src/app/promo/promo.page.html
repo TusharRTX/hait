@@ -4,28 +4,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="false">
-  <div class="shipping-options">
-    <div class="shipping-option">
-      <ion-icon name="car-outline"></ion-icon>
-      <span>Despacho Gratis</span>
-      <span>Por compras superiores a $50.000 en la Región Metropolitana</span>
-    </div>
-    <div class="shipping-option">
-      <ion-icon name="time-outline"></ion-icon>
-      <span>Envío el mismo día</span>
-      <span>Por compras antes de las 12:00 hrs. en la Región Metropolitana</span>
-    </div>
-  </div>
-  
-  <div class="promo-section">
-    <div class="promo-image">
-      <img src="path_to_your_image1.jpg" alt="Promotional Image 1">
-    </div>
-    <div class="promo-image">
-      <img src="path_to_your_image2.jpg" alt="Promotional Image 2">
-    </div>
-  </div>
-  
-  
+<ion-content> 
+ <swiper-container
+    [loop]="true"
+    [pagination]="true">
+   <swiper-slide>
+    <img src="https://example.com/image1.jpg" alt="Imagen 1">
+   </swiper-slide>
+   <swiper-slide>
+    <img src="https://example.com/image2.jpg" alt="Imagen 2">
+   </swiper-slide>
+   <swiper-slide>
+    <img src="https://example.com/image3.jpg" alt="Imagen 3">
+   </swiper-slide>
+ </swiper-container>
 </ion-content>

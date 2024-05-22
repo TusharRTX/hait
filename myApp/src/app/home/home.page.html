@@ -73,14 +73,19 @@
     </div>
   </div>
   
-  <div class="promo-section">
-    <div class="promo-image">
-      <img src="path_to_your_image1.jpg" alt="Promotional Image 1">
-    </div>
-    <div class="promo-image">
-      <img src="path_to_your_image2.jpg" alt="Promotional Image 2">
-    </div>
-  </div>
+  <swiper-container
+  [loop]="true"
+  [pagination]="true">
+ <swiper-slide>
+  <img src="https://example.com/image1.jpg" alt="Imagen 1">
+ </swiper-slide>
+ <swiper-slide>
+  <img src="https://example.com/image2.jpg" alt="Imagen 2">
+ </swiper-slide>
+ <swiper-slide>
+  <img src="https://example.com/image3.jpg" alt="Imagen 3">
+ </swiper-slide>
+</swiper-container>
   
 
 
