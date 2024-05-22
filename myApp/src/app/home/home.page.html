@@ -73,19 +73,25 @@
     </div>
   </div>
   
-  <swiper-container
-  [loop]="true"
-  [pagination]="true">
- <swiper-slide>
-  <img src="https://example.com/image1.jpg" alt="Imagen 1">
- </swiper-slide>
- <swiper-slide>
-  <img src="https://example.com/image2.jpg" alt="Imagen 2">
- </swiper-slide>
- <swiper-slide>
-  <img src="https://example.com/image3.jpg" alt="Imagen 3">
- </swiper-slide>
-</swiper-container>
+  <swiper-container 
+    navigation="true" 
+    pagination="true" 
+    loop="true" 
+    autoplay="true" 
+    autoplay-delay="7000" 
+    autoplay-disable-on-interaction="false">
+    <swiper-slide>
+      <img src="ruta/a/tu/imagen1.jpg" alt="Imagen 1">
+    </swiper-slide>
+    <swiper-slide>
+      <img src="ruta/a/tu/imagen2.jpg" alt="Imagen 2">
+    </swiper-slide>
+    <swiper-slide>
+      <img src="ruta/a/tu/imagen3.jpg" alt="Imagen 3">
+    </swiper-slide>
+  </swiper-container>
+  
+  
   
 
 
