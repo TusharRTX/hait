@@ -73,8 +73,7 @@
       <ion-input [(ngModel)]="productoData.precio" name="precio" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">URL Imagen del Producto 600x600 PNG (OBLIGATORIO)</ion-label>
-      <ion-input [(ngModel)]="productoData.url_imagen" name="url_imagen" required></ion-input>
+      <input type="file" (change)="onFileSelected($event)" />
     </ion-item>
     <ion-item>
       <ion-button fill="outline" color="primary" (click)="crearProducto()">Registrar Porducto</ion-button>

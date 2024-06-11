@@ -24,7 +24,7 @@ class Producto(models.Model):
     marca = models.CharField(max_length=50)
     nombre = models.CharField(max_length=50)
     precio = models.IntegerField()
-    url_imagen = models.URLField(max_length=500)
+    imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
 
     def __str__(self):
         return self.codigo

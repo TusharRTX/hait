@@ -21,9 +21,17 @@ export class DjangoapiService {
     return this.http.get(this.apiURL + '/creacion')
       .pipe(retry(3));
   }
-
-  crearProducto(productoData: any): Observable<any> {
-    return this.http.post(this.apiURL + '/creacion', productoData);
+  crearProducto(productoData: any, imagen: File): Observable<any> {
+    const formData: FormData = new FormData();
+    for (const key in productoData) {
+      if (productoData.hasOwnProperty(key)) {
+        formData.append(key, productoData[key]);
+      }
+    }
+    if (imagen) {
+      formData.append('imagen', imagen);
+    }
+    return this.http.post(this.apiURL + '/creacion', formData);
   }
 
   getCategories(): Observable<any> {

@@ -73,33 +73,37 @@ def login(request):
 
         return Response(token.key)
 
-
-
-@api_view(['GET','POST'])
+@api_view(['GET', 'POST'])
 def creacion(request):
     if request.method == 'GET':
         productos = Producto.objects.all()
-        serializer = ProductoSerializer(productos, many = True)
+        serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
+        # Usar request.data en lugar de request.POST para obtener datos JSON y archivos
+        data = request.data.copy()
+        file = request.FILES.get('imagen')
 
-        serializer = ProductoSerializer(data=request.data)
-        print(serializer)
+        serializer = ProductoSerializer(data=data)
         if serializer.is_valid():
-            codigo = request.POST.get('codigo', None)
-            print(codigo)
+            codigo = data.get('codigo')
             if codigo in Producto.objects.values_list('codigo', flat=True):
-                print("Producto Ingresado")
-                return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "Producto ya ingresado"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                serializer.save()
+                # Guardar el producto sin la imagen primero
+                producto = serializer.save()
+                # Si hay una imagen, se añade al producto
+                if file:
+                    producto.imagen = file
+                    producto.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else: 
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-        
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 def get_categories(request):
     categories = Producto.objects.values_list('categoria', flat=True).distinct()
     return JsonResponse(list(categories), safe=False)
+
 
 
 @csrf_exempt

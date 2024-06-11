@@ -10,36 +10,40 @@ import { NavController } from '@ionic/angular';
 export class CreacionPage implements OnInit {
   isMenuVisible = false;
   productoData: any = {
-    codigo: "",
-    categoria: "",
-    marca: "",
-    nombre: "",
-    precio: "",
-    url_imagen: ""
-  }
-  constructor(private djangoApi: DjangoapiService,private navCtrl: NavController) { }
+    codigo: '',
+    categoria: '',
+    marca: '',
+    nombre: '',
+    precio: ''
+  };
+  selectedFile: File | null = null;
 
-  ngOnInit() {
-  }
+  constructor(private djangoApi: DjangoapiService, private navCtrl: NavController) { }
 
+  ngOnInit() {}
 
   toggleMenu() {
     this.isMenuVisible = !this.isMenuVisible;
   }
-  
-  crearProducto() {
-    this.djangoApi.crearProducto(this.productoData).subscribe(
-      (response) => {
-        
-        console.log('Registro exitoso:', response);
-      },
-      (error) => {
-        
-        console.error('Error en el registro:', error);
-      }
-    );
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
   }
 
-
-
+  crearProducto() {
+    if (this.selectedFile) {
+      this.djangoApi.crearProducto(this.productoData, this.selectedFile).subscribe(
+        (response) => {
+          console.log('Registro exitoso:', response);
+        },
+        (error) => {
+          console.error('Error en el registro:', error);
+        }
+      );
+    } else {
+      console.error('No file selected');
+    }
+  }
 }
+
+
