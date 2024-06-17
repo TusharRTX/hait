@@ -45,10 +45,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8100',
+    'http://127.0.0.1:8100',
 ]
 
 ROOT_URLCONF = 'tellevoapp.urls'
@@ -81,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tello',
         'USER': 'root',
-        'PASSWORD': '',
+        'PASSWORD': 'tushar200',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
