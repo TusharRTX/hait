@@ -9,6 +9,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# def load_credentials(file_path):
+#     credentials = {}
+#     with open(file_path, 'r') as file:
+#         lines = file.readlines()
+#         for line in lines:
+#             key, value = line.strip().split('=')
+#             credentials[key] = value
+#     return credentials
+
+
+# credentials_file = os.path.join(BASE_DIR, 'test.txt')
+# credentials = load_credentials(credentials_file)
+
+# BANCENTRAL_USER = credentials.get('BANCENTRAL_USER')
+# BANCENTRAL_PASSWORD = credentials.get('BANCENTRAL_PASSWORD')
+
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

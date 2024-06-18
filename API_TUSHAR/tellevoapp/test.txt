@@ -1,0 +1,2 @@
+BANCENTRAL_USER=mirwanitushar@gmail.com
+BANCENTRAL_PASSWORD=Tushargamer200_

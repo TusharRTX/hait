@@ -25,6 +25,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import mercadopago
 from django.conf import settings
+import os
 
 
 
