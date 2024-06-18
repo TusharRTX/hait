@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>MAMUT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="3" *ngFor="let product of products">
+        <ion-card>
+          <img [src]="'http://127.0.0.1:8000' + product.imagen" />
+          <ion-card-header>
+            <ion-card-title>{{ product.nombre }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p>Marca: {{ product.marca }}</p>
+            <p>Precio: {{ product.precio | currency }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

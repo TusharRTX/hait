@@ -55,6 +55,11 @@ export class DjangoapiService {
   getProductsByCategory(categoryId: number): Observable<any> {
     return this.http.get(this.apiURL + `/productos_por_categoria/${categoryId}/`).pipe(retry(3));
   }
+
+  getProductosPorMarca(marca: string): Observable<any> {
+    return this.http.get(`${this.apiURL}/productos_por_marca/${marca}/`)
+      .pipe(retry(3));
+  }
   
 }
 

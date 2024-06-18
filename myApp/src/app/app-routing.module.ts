@@ -54,7 +54,11 @@ const routes: Routes = [
   {
     path: 'success',
     loadChildren: () => import('./success/success.module').then( m => m.SuccessPageModule)
+  },  {
+    path: 'mamut',
+    loadChildren: () => import('./mamut/mamut.module').then( m => m.MAMUTPageModule)
   },
+
 
 
 

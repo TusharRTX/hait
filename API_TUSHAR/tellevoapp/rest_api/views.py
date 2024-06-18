@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.hashers import check_password
 from core.models import Producto
-from .serializers import ProductoSerializer
+from .serializers import CategoriaSerializer, ProductoSerializer
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -73,6 +73,12 @@ def login(request):
         token, created = Token.objects.get_or_create(user=user)
 
         return Response(token.key)
+    
+@api_view(['GET'])
+def get_categories(request):
+    categories = Categorias.objects.all()
+    serializer = CategoriaSerializer(categories, many=True)
+    return Response(serializer.data)    
 
 @api_view(['GET', 'POST'])
 def creacion(request):
@@ -139,6 +145,29 @@ def create_payment_preference(request):
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]
     return JsonResponse(preference)
+
+
+
+
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from core.models import Producto
+from rest_api.serializers import ProductoSerializer
+
+@api_view(['GET'])
+def productos_por_marca(request, marca):
+    try:
+        productos = Producto.objects.filter(marca=marca)
+        serializer = ProductoSerializer(productos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Producto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+
 
 
     

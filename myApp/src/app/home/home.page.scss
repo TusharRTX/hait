@@ -17,17 +17,6 @@
   }
 }
 
-// swiper-container {
-//   width: 100%;
-//   height: 100%;
-// }
-
-// swiper-slide {
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-// }
 swiper-container {
   width: 100%;
   height: 500px; 
@@ -378,19 +367,134 @@ ion-menu ion-list ion-item:hover {
 }
 
 
-.menu-item {
-  padding: 10px 20px;
-  margin: 0; 
-  border-radius: 0; 
-  background: #fff; 
-  color: #000; 
-  font-weight: bold; 
+ion-header {
+  --background: #3880ff;
+  --color: white;
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ion-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+ion-button {
+  --background: transparent;
+  --color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 0.3s;
+}
+
+ion-button:hover {
+  transform: scale(1.1);
+}
+
+.section {
+  padding: 2rem;
+}
+
+.section h2 {
+  font-size: 1.75rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.category-card {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+  flex: 1 1 calc(25% - 1rem);
+}
+
+.category-card img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.category-card h3 {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.category-card p {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+.section {
+  padding: 2rem;
+}
+
+.brand-strip {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.brand-strip img {
+  height: 100px; /* Ajusta la altura de las imágenes */
+  width: auto; /* Deja que el ancho se ajuste automáticamente */
+  transition: transform 0.3s;
+}
+
+.brand-strip img:hover {
+  transform: scale(1.1);
 }
 
 
-.menu-item:hover {
-  background: #f0f0f0;
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  margin-top: -2px; /* Ajusta esto según sea necesario */
 }
+
+.dropdown-menu ion-list {
+  padding: 0;
+}
+
+.dropdown-menu ion-item {
+  --background: #636363;
+  --color: white;
+  --border-radius: 0;
+  --padding-start: 15px;
+  --min-height: 40px;
+}
+
+.dropdown-menu ion-item:hover {
+  --background: #535353;
+}
+
+
+
+
+
+
+
 
 
 

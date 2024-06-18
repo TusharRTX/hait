@@ -1,68 +1,97 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-import { MenuController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
 
-
-interface Product {
-  codigo: string;
-  categoria: string;
-  marca: string;
-  nombre: string;
-  precio: number;
-  url_imagen: string;
-}
-
-interface Category {
-  name: string;
-  products: Product[];
-}
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  
+export class HomePage implements OnInit {
   categories: any[] = [];
-  selectedCategory: string;
+  selectedCategory: string = '';
+  products: any[] = [];
 
-  constructor(private djangoApi: DjangoapiService,private menu: MenuController) {
-    this.selectedCategory = '';
-  }
 
-  ngOnInit(){
+  isDropdownOpen = false;
+
+  constructor(private djangoApi: DjangoapiService, private popoverController: PopoverController) {}
+
+  ngOnInit() {
     this.loadCategories();
   }
 
-  openCategoriesMenu() {
-    this.menu.open('first');
+
+
+  loadCategories() {
+    this.djangoApi.getCategories().subscribe(
+      (data: any[]) => {
+        this.categories = data;
+      },
+      error => console.error('Error fetching categories:', error)
+    );
   }
 
- loadCategories() {
-  this.djangoApi.getCategories().subscribe(
-    (data: string[]) => {
-      this.categories = data;
-    },
-    error => console.error('Error fetching categories:', error)
-  );
-}
+  filterByCategory(category: string) {
+    this.selectedCategory = category;
+    this.djangoApi.getProductsByCategory(this.getCategoryIdByName(category)).subscribe(
+      (data: any[]) => {
+        this.products = data;
+      },
+      error => console.error('Error fetching products by category:', error)
+    );
+  }
 
- groupByCategory(products: Product[]): Category[] {
-  const categoryMap: { [key: string]: Category } = {}; 
+  getCategoryIdByName(categoryName: string): number {
+    const category = this.categories.find(cat => cat.nombre === categoryName);
+    return category ? category.id : 0;
+  }
 
-  products.forEach((product) => {
-    if (!categoryMap[product.categoria]) {
-      categoryMap[product.categoria] = { name: product.categoria, products: [] };
+
+
+  scrollToCategory(category: string) {
+    this.selectedCategory = category;
+    this.djangoApi.getProductsByCategory(this.getCategoryIdByName(category)).subscribe(
+      (data: any[]) => {
+        this.products = data;
+        setTimeout(() => {
+          const element = document.getElementById(category);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            console.error(`Element with id ${category} not found`);
+          }
+        }, 100); // delay to ensure the products are rendered
+      },
+      error => console.error('Error fetching products by category:', error)
+    );
+  }
+
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
     }
-    categoryMap[product.categoria].products.push(product);
-  });
+  }
 
-  return Object.values(categoryMap); 
+  scrollToSection(section: string) {
+    const element = document.getElementById(section);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      this.toggleDropdown(false);
+    } else {
+      console.error(`Element with id ${section} not found`);
+    }
+  }
 }
 
- filterByCategory() {
-  console.log('Selected Category:', this.selectedCategory);
- }
 
-
-}
