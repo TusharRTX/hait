@@ -19,7 +19,7 @@
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start" class="logo-buttons">
-        <ion-img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664f4705&is=664df585&hm=27e2174825c1ac0bf3f75997ab204e8ec9f2130366798dd45d3610b0c7d9af5a&=&format=webp&quality=lossless&width=420&height=420"></ion-img>
+        <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
       </ion-buttons>
       <div class="searchbar-container">
         <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
@@ -68,6 +68,7 @@
             <ion-button expand="full" color="primary" (click)="addToCart(product)">Añadir al carrito</ion-button>
           </ion-card-content>
         </ion-card>
+        
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -75,7 +76,7 @@
     <ion-toolbar>
       <div class="footer-container">
         <div class="footer-section logo-section">
-          <img src="https://media.discordapp.net/attachments/968742341613596692/1241022234265518242/logo2_preview_rev_1.png?ex=664f4705&is=664df585&hm=27e2174825c1ac0bf3f75997ab204e8ec9f2130366798dd45d3610b0c7d9af5a&=&format=webp&quality=lossless&width=420&height=420" alt="Logo" class="logo">
+          <img src="http://127.0.0.1:8000/media/productos/ferremas_logo.png" alt="Logo" class="logo">
           <p>Síguenos en:</p>
           <div class="social-icons">
             <a href="https://www.facebook.com/profile.php?id=61559656572650&mibextid=ZbWKwL" target="_blank">
@@ -134,6 +135,7 @@
     </ion-toolbar>
   </ion-footer>
 </ion-content>
+
 
 
 

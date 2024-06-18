@@ -17,6 +17,7 @@ export class HerramientasPage implements OnInit {
 
   ngOnInit() {
     const categoryId = 2; // ID de la categoría "equipo"
+
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });
