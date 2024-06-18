@@ -80,26 +80,20 @@ def creacion(request):
         serializer = ProductoSerializer(productos, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
-        # Usar request.data en lugar de request.POST para obtener datos JSON y archivos
-        data = request.data.copy()
+        data = request.data
         file = request.FILES.get('imagen')
-
+        
         serializer = ProductoSerializer(data=data)
         if serializer.is_valid():
             codigo = data.get('codigo')
             if codigo in Producto.objects.values_list('codigo', flat=True):
                 return Response({"error": "Producto ya ingresado"}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                # Guardar el producto sin la imagen primero
-                producto = serializer.save()
-                # Si hay una imagen, se añade al producto
-                if file:
-                    producto.imagen = file
-                    producto.save()
+                
+                producto = serializer.save(imagen=file)
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 def get_categories(request):
     categories = Producto.objects.values_list('categoria', flat=True).distinct()
     return JsonResponse(list(categories), safe=False)
