@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAMUTPage } from './mamut.page';
+import { baukerPage } from './bauker.page';
 
-describe('MAMUTPage', () => {
-  let component: MAMUTPage;
-  let fixture: ComponentFixture<MAMUTPage>;
+describe('baukerPage', () => {
+  let component: baukerPage;
+  let fixture: ComponentFixture<baukerPage>;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MAMUTPage);
+    fixture = TestBed.createComponent(baukerPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

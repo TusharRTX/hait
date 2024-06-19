@@ -54,17 +54,15 @@ const routes: Routes = [
   {
     path: 'success',
     loadChildren: () => import('./success/success.module').then( m => m.SuccessPageModule)
-  },  {
-    path: 'mamut',
-    loadChildren: () => import('./mamut/mamut.module').then( m => m.MAMUTPageModule)
   },
-
-
-
-
-
-
-
+  // marcas
+  { path: 'mamut', loadChildren: () => import('./MARCAS/mamut/mamut.module').then(m => m.MAMUTPageModule) },
+  { path: 'bauker', loadChildren: () => import('./MARCAS/bauker/bauker.module').then(m => m.baukerPageModule) },
+  { path: 'imporper', loadChildren: () => import('./MARCAS/imporper/imporper.module').then(m => m.imporperPageModule) },
+  { path: 'redline', loadChildren: () => import('./MARCAS/redline/redline.module').then(m => m.redlinePageModule) },
+  { path: 'stanley', loadChildren: () => import('./MARCAS/stanley/stanley.module').then(m => m.stanleyPageModule) },
+  { path: 'vinilit', loadChildren: () => import('./MARCAS/vinilit/vinilit.module').then(m => m.vinilitPageModule) },
+  { path: 'arauco', loadChildren: () => import('./MARCAS/arauco/arauco.module').then(m => m.araucoPageModule) },
 ];
 
 @NgModule({
