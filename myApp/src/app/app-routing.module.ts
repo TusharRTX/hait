@@ -56,13 +56,13 @@ const routes: Routes = [
     loadChildren: () => import('./success/success.module').then( m => m.SuccessPageModule)
   },
   // marcas
-  { path: 'mamut', loadChildren: () => import('./MARCAS/mamut/mamut.module').then(m => m.MAMUTPageModule) },
-  { path: 'bauker', loadChildren: () => import('./MARCAS/bauker/bauker.module').then(m => m.baukerPageModule) },
-  { path: 'imporper', loadChildren: () => import('./MARCAS/imporper/imporper.module').then(m => m.imporperPageModule) },
-  { path: 'redline', loadChildren: () => import('./MARCAS/redline/redline.module').then(m => m.redlinePageModule) },
-  { path: 'stanley', loadChildren: () => import('./MARCAS/stanley/stanley.module').then(m => m.stanleyPageModule) },
-  { path: 'vinilit', loadChildren: () => import('./MARCAS/vinilit/vinilit.module').then(m => m.vinilitPageModule) },
-  { path: 'arauco', loadChildren: () => import('./MARCAS/arauco/arauco.module').then(m => m.araucoPageModule) },
+  { path: 'MARCAS/mamut', loadChildren: () => import('./MARCAS/mamut/mamut.module').then(m => m.MAMUTPageModule) },
+  { path: 'MARCAS/bauker', loadChildren: () => import('./MARCAS/bauker/bauker.module').then(m => m.baukerPageModule) },
+  { path: 'MARCAS/imporper', loadChildren: () => import('./MARCAS/imporper/imporper.module').then(m => m.imporperPageModule) },
+  { path: 'MARCAS/redline', loadChildren: () => import('./MARCAS/redline/redline.module').then(m => m.redlinePageModule) },
+  { path: 'MARCAS/stanley', loadChildren: () => import('./MARCAS/stanley/stanley.module').then(m => m.stanleyPageModule) },
+  { path: 'MARCAS/vinilit', loadChildren: () => import('./MARCAS/vinilit/vinilit.module').then(m => m.vinilitPageModule) },
+  { path: 'MARCAS/arauco', loadChildren: () => import('./MARCAS/arauco/arauco.module').then(m => m.araucoPageModule) },
 ];
 
 @NgModule({
