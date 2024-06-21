@@ -35,28 +35,6 @@ export class araucoPage implements OnInit {
     );
   }
 
-  getCategoryIdByName(categoryName: string): number {
-    const category = this.categories.find(cat => cat.nombre === categoryName);
-    return category ? category.id : 0;
-  }
-
-  scrollToCategory(category: string) {
-    this.selectedCategory = category;
-    this.djangoApi.getProductsByCategory(this.getCategoryIdByName(category)).subscribe(
-      (data: any[]) => {
-        this.products = data;
-        setTimeout(() => {
-          const element = document.getElementById(category);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          } else {
-            console.error(`Element with id ${category} not found`);
-          }
-        }, 100); // delay to ensure the products are rendered
-      },
-      error => console.error('Error fetching products by category:', error)
-    );
-  }
 
   toggleDropdown(open: boolean) {
     this.isDropdownOpen = open;
@@ -74,15 +52,6 @@ export class araucoPage implements OnInit {
     }
   }
 
-  scrollToSection(section: string) {
-    const element = document.getElementById(section);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      this.toggleDropdown(false);
-    } else {
-      console.error(`Element with id ${section} not found`);
-    }
-  }
 
   addToCart(product: any) {
     this.cartService.addToCart(product);

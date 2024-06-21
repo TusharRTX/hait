@@ -11,7 +11,7 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./medicion.page.scss'],
 })
 export class MedicionPage implements OnInit {
-  
+  isDropdownOpen = false;
   products: any[] = [];
 
 
@@ -27,6 +27,22 @@ export class MedicionPage implements OnInit {
   addToCart(product: any) {
     this.cartService.addToCart(product);
     this.showToast();
+  }
+
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
   }
   
   async showToast() {

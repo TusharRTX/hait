@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-import { PopoverController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -11,16 +11,13 @@ export class HomePage implements OnInit {
   categories: any[] = [];
   selectedCategory: string = '';
   products: any[] = [];
-
-
   isDropdownOpen = false;
 
-  constructor(private djangoApi: DjangoapiService, private popoverController: PopoverController) {}
+  constructor(private route: ActivatedRoute,private djangoApi: DjangoapiService) {}
 
   ngOnInit() {
     this.loadCategories();
   }
-
 
 
   loadCategories() {

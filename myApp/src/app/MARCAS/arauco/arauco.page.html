@@ -1,4 +1,3 @@
-
 <div id="main-content">
   <ion-header>
     <ion-toolbar>
@@ -29,33 +28,19 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-buttons class="categories-button-container" slot="end">
-  <ion-button (click)="scrollToSection('categories')" id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
-    Productos por Categoría
-  </ion-button>
-  <ion-button (click)="scrollToSection('brands')">Productos por Marca</ion-button>
-
-    <div class="right-side-content">
-      <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
-      <div class="payment-logos">
-        <img src="http://127.0.0.1:8000/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
+  <ion-buttons class="categories-button-container" slot="end">
+    <ion-button id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
+      Productos por Categoría
+    </ion-button>
+    <ion-button>Productos por Marca</ion-button>
+  
+      <div class="right-side-content">
+        <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
+        <div class="payment-logos">
+          <img src="http://127.0.0.1:8000/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
+        </div>
       </div>
-    </div>
-  </ion-buttons>
-</div>
-
-<ion-content>
-  <div class="shipping-options">
-    <div class="shipping-option">
-      <ion-icon name="car-outline"></ion-icon>
-      <span>Despacho Gratis</span>
-      <span>Por compras superiores a $50.000 en la Región Metropolitana</span>
-    </div>
-    <div class="shipping-option">
-      <ion-icon name="time-outline"></ion-icon>
-      <span>Envío el mismo día</span>
-      <span>Por compras antes de las 12:00 hrs. en la Región Metropolitana</span>
-    </div>
+    </ion-buttons>
   </div>
   
   <ion-content>
@@ -77,51 +62,6 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
-  <div id="categories" class="section">
-    <h2>Todas las Categorías</h2>
-    <div class="category-grid">
-      <div id="herramientas" class="category-card" routerLink="/herramientas">
-        <img src="https://via.placeholder.com/150?text=Aseo" alt="herramientas">
-        <h3>Herramientas Manuales</h3>
-        <p>Descripción de la categoría Aseo</p>
-      </div>
-      <div id="materiales" class="category-card" routerLink="/materiales">
-        <img src="https://via.placeholder.com/150?text=Construcción" alt="materiales">
-        <h3>Materiales Básicos</h3>
-        <p>Descripción de la categoría Construcción</p>
-      </div>
-      <div id="seguridad" class="category-card" routerLink="/equipos">
-        <img src="https://via.placeholder.com/150?text=Electricidad" alt="seguridad">
-        <h3>Equipos de Seguridad</h3>
-        <p>Descripción de la categoría Electricidad</p>
-      </div>
-      <div id="tornillos" class="category-card" routerLink="/tornillos">
-        <img src="https://via.placeholder.com/150?text=Electrónica" alt="tornillos">
-        <h3>Tornillos</h3>
-        <p>Descripción de la categoría Electrónica</p>
-      </div>
-      <div id="medicion" class="category-card" routerLink="/medicion">
-        <img src="https://via.placeholder.com/150?text=Gasfitería" alt="medicion">
-        <h3>Equipo de Medición</h3>
-        <p>Descripción de la categoría Gasfitería</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="brands" class="section">
-    <h2>Productos por Marca</h2>
-    <div class="brand-strip">
-      <img src="http://127.0.0.1:8000/media/productos/mamut.png" alt="MAMUT" routerLink="/mamut">
-      <img src="http://127.0.0.1:8000/media/productos/bauker.png" alt="bauker" routerLink="/">
-      <img src="http://127.0.0.1:8000/media/productos/imporper.png" alt="imporper" routerLink="/">
-      <img src="http://127.0.0.1:8000/media/productos/arauco.png" alt="arauco" routerLink="/">
-      <img src="http://127.0.0.1:8000/media/productos/stanley.png" alt="stanley" routerLink="/">
-      <img src="http://127.0.0.1:8000/media/productos/redline.png" alt="redline" routerLink="/">
-      <img src="http://127.0.0.1:8000/media/productos/vinilit.png" alt="vinilit" routerLink="/">
-    </div>
-  </div>
-  
 
   <ion-footer>
     <ion-toolbar>
@@ -188,7 +128,7 @@
 
 </ion-content>
 
-<!-- <div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
+<div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
   <ion-list>
     <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
     <ion-item routerLink="/materiales" >Materiales Básicos</ion-item>
@@ -196,4 +136,4 @@
     <ion-item routerLink="/tornillos">Tornillos</ion-item>
     <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
   </ion-list>
-</div> -->
+</div>

@@ -11,6 +11,7 @@ export class SuccessPage implements OnInit {
 
   items: any[] = [];
   total: number = 0;
+  isDropdownOpen = false;
 
   constructor(private menu: MenuController,private cartService: CartService) { }
 
@@ -18,9 +19,23 @@ export class SuccessPage implements OnInit {
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
   }
-  openCategoriesMenu() {
-    this.menu.open('first');
+  
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
   }
+
   
 }
 

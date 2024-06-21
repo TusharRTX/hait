@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { CartService } from '../services/cart.service';
-import { MenuController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-herramientas',
@@ -12,8 +12,9 @@ import { ToastController } from '@ionic/angular';
 export class HerramientasPage implements OnInit {
  
   products: any[] = [];
+  isDropdownOpen = false;
 
-  constructor(private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
+  constructor(private popoverController: PopoverController,private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService) { }
 
   ngOnInit() {
     const categoryId = 2; // ID de la categoría "equipo"
@@ -23,7 +24,6 @@ export class HerramientasPage implements OnInit {
     });
   }
   
-
 
   addToCart(product: any) {
     this.cartService.addToCart(product);
@@ -38,9 +38,21 @@ export class HerramientasPage implements OnInit {
     });
     toast.present();
   }
-  
-  openCategoriesMenu() {
-    this.menu.open('first');
-  }
 
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
+  }
+  
 }

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../services/cart.service';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { MercadopagoService } from '../mercadopago.service';
+import { PopoverController } from '@ionic/angular';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+
 
 @Component({
   selector: 'app-cart',
@@ -9,18 +12,17 @@ import { MercadopagoService } from '../mercadopago.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
+  isDropdownOpen = false;
   items: any[] = [];
   total: number = 0;
   dollarValue: number = 0;
   totalInUSD: number = 0;
 
-  constructor(private cartService: CartService, private djangoApi: DjangoapiService,private mercadopagoService: MercadopagoService) {}
+  constructor(private router: Router,private popoverController: PopoverController,private cartService: CartService, private djangoApi: DjangoapiService,private mercadopagoService: MercadopagoService) {}
 
   ngOnInit() {
     this.loadDollarValue();
   }
-
 
 
   loadDollarValue() {
@@ -69,6 +71,22 @@ export class CartPage implements OnInit {
     this.mercadopagoService.createPaymentPreference(items).subscribe((preference) => {
       window.location.href = preference.init_point;
     });
+  }
+
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
   }
 
 

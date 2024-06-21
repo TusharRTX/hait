@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: baukerPage
+  },
+  {
+    path: 'reload',
+    component: baukerPage
   }
 ];
 

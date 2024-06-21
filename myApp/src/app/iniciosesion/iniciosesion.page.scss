@@ -284,3 +284,16 @@ ion-menu ion-list ion-item:hover {
 .menu-item:hover {
   background: #f0f0f0;
 }
+
+ion-button {
+  --background: transparent;
+  --color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 0.3s;
+}
+
+ion-button:hover {
+  transform: scale(1.1);
+}

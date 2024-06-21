@@ -15,8 +15,6 @@ export class MAMUTPage implements OnInit {
   marca: string = 'MAMUT';
   categories: any[] = [];
   selectedCategory: string = '';
-
-
   isDropdownOpen = false;
 
   constructor(private route: ActivatedRoute, private djangoApi: DjangoapiService, private popoverController: PopoverController,private cartService: CartService,

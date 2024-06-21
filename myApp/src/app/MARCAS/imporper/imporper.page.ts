@@ -15,8 +15,6 @@ export class imporperPage implements OnInit {
   marca: string = 'IMPORPER';
   categories: any[] = [];
   selectedCategory: string = '';
-
-
   isDropdownOpen = false;
 
   constructor(private route: ActivatedRoute, private djangoApi: DjangoapiService, private popoverController: PopoverController,private cartService: CartService,

@@ -300,6 +300,80 @@ ion-menu ion-list ion-item:hover {
   background: #f0f0f0;
 }
 
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  margin-top: -2px; /* Ajusta esto según sea necesario */
+}
+
+.dropdown-menu ion-list {
+  padding: 0;
+}
+
+.dropdown-menu ion-item {
+  --background: #636363;
+  --color: white;
+  --border-radius: 0;
+  --padding-start: 15px;
+  --min-height: 40px;
+}
+
+.dropdown-menu ion-item:hover {
+  --background: #535353;
+}
+
+.categories-button-container {
+  display: flex;
+  justify-content: flex-start; 
+  margin-top: 10px;
+}
+
+.categories-button-container ion-button {
+  display: flex;
+  align-items: center;
+}
+
+.categories-button-container ion-icon {
+  margin-right: 8px;
+}
+
+.categories-button-container {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+  padding-right: 20px; 
+}
+
+.right-side-content {
+  display: flex;
+  align-items: center; 
+  justify-content: flex-end; 
+  flex-grow: 1; 
+}
+
+.payment-text {
+  white-space: nowrap; 
+  margin-right: 10px; 
+  color: #272727; 
+  font-size: 17px; 
+  font-weight: bold;
+}
+
+.payment-logos {
+  display: flex;
+  align-items: center; 
+}
+
+.payment-logo {
+  width: 115px; 
+  height: auto; 
+}
+
 ion-button {
   --background: transparent;
   --color: white;
@@ -307,4 +381,8 @@ ion-button {
   font-weight: bold;
   text-transform: uppercase;
   transition: transform 0.3s;
+}
+
+ion-button:hover {
+  transform: scale(1.1);
 }

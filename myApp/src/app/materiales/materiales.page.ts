@@ -12,6 +12,7 @@ import { ToastController } from '@ionic/angular';
 export class MaterialesPage implements OnInit {
   
   products: any[] = [];
+  isDropdownOpen = false;
 
   constructor(private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
@@ -25,6 +26,22 @@ export class MaterialesPage implements OnInit {
   addToCart(product: any) {
     this.cartService.addToCart(product);
     this.showToast();
+  }
+
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
   }
   
   async showToast() {
