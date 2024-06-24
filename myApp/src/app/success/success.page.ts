@@ -8,18 +8,18 @@ import { CartService } from '../services/cart.service';
   styleUrls: ['./success.page.scss'],
 })
 export class SuccessPage implements OnInit {
-
   items: any[] = [];
   total: number = 0;
   isDropdownOpen = false;
 
-  constructor(private menu: MenuController,private cartService: CartService) { }
+  constructor(private menu: MenuController, private cartService: CartService) { }
 
   ngOnInit() {
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
+    this.cartService.clearCart();
   }
-  
+
   toggleDropdown(open: boolean) {
     this.isDropdownOpen = open;
     const dropdown = document.getElementById('dropdown-menu');

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MercadopagoService } from '../mercadopago.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CartService {
   private items: any[] = [];
 
-  constructor() {
+  constructor(private mercadopagoService: MercadopagoService) {
     this.loadCart();
   }
 
@@ -24,9 +26,17 @@ export class CartService {
   addToCart(product: any) {
     const existingItem = this.items.find(item => item.id === product.id);
     if (existingItem) {
-      existingItem.quantity += 1;
+      if (existingItem.quantity < product.stock_online) {
+        existingItem.quantity += 1;
+      } else {
+        console.log('No hay suficiente stock online');
+      }
     } else {
-      this.items.push({ ...product, quantity: 1 });
+      if (product.stock_online > 0) {
+        this.items.push({ ...product, quantity: 1 });
+      } else {
+        console.log('No hay suficiente stock online');
+      }
     }
     this.saveCart();
   }
@@ -38,7 +48,6 @@ export class CartService {
   clearCart() {
     this.items = [];
     this.saveCart();
-    return this.items;
   }
 
   removeItem(product: any) {
@@ -64,7 +73,12 @@ export class CartService {
   getTotal() {
     return this.items.reduce((total, item) => total + item.precio * item.quantity, 0);
   }
+
+  checkout(items: any[], stockSource: string): Observable<any> {
+    return this.mercadopagoService.createPaymentPreference(items, stockSource);
+  }
 }
+
 
 
 

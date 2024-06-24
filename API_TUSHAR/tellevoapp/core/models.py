@@ -25,6 +25,8 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=50)
     precio = models.IntegerField()
     imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
+    stock_online = models.IntegerField(default=0)
+    stock_tienda = models.IntegerField(default=0)
 
     def __str__(self):
         return self.codigo

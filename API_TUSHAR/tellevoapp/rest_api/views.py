@@ -128,24 +128,46 @@ def productos_por_categoria(request, categoria_id):
     serializer = ProductoSerializer(productos, many=True)
     return Response(serializer.data)
 
-@csrf_exempt
 @api_view(['POST'])
 def create_payment_preference(request):
     sdk = mercadopago.SDK(settings.MERCADOPAGO_ACCESS_TOKEN)
     items = request.data.get('items')
+    stock_source = request.data.get('stock_source')
     preference_data = {
-        "items": items,
+        "items": [
+            {
+                "title": item["title"],
+                "quantity": item["quantity"],
+                "unit_price": float(item["unit_price"]),
+                "currency_id": item["currency_id"]
+            } for item in items
+        ],
         "back_urls": {
             "success": "http://localhost:8100/success",
             "failure": "http://localhost:8100/failure",
             "pending": "http://localhost:8100/pending"
         },
-        "auto_return": "approved",
+        "auto_return": "approved"
     }
+
     preference_response = sdk.preference().create(preference_data)
     preference = preference_response["response"]
-    return JsonResponse(preference)
 
+    # Actualizar el stock
+    for item in items:
+        product_id = item['id']
+        quantity = item['quantity']
+        try:
+            product = Producto.objects.get(id=product_id)
+            if stock_source == "online":
+                product.stock_online -= quantity
+            else:
+                product.stock_tienda -= quantity
+            product.save()
+        except Producto.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    return JsonResponse(preference)
 
 
 

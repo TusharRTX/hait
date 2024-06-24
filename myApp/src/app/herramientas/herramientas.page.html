@@ -55,6 +55,8 @@
           </ion-card-header>
           <ion-card-content>
             <p>${{ product.precio }}</p>
+            <p>Stock Online: {{ product.stock_online }}</p>
+            <p>Stock en Tienda: {{ product.stock_tienda }}</p>
             <ion-button expand="full" color="primary" (click)="addToCart(product)">Añadir al carrito</ion-button>
           </ion-card-content>
         </ion-card>

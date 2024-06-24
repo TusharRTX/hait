@@ -10,7 +10,8 @@ export class MercadopagoService {
 
   constructor(private http: HttpClient) { }
 
-  createPaymentPreference(items: any[]): Observable<any> {
-    return this.http.post(`${this.apiURL}/create_payment_preference/`, { items });
+  createPaymentPreference(items: any[], stockSource: string): Observable<any> {
+    return this.http.post(`${this.apiURL}/create_payment_preference/`, {items, stock_source: stockSource})
   }
+
 }

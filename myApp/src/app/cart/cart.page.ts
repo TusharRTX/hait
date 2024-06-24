@@ -5,7 +5,6 @@ import { MercadopagoService } from '../mercadopago.service';
 import { PopoverController } from '@ionic/angular';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 
-
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -17,13 +16,19 @@ export class CartPage implements OnInit {
   total: number = 0;
   dollarValue: number = 0;
   totalInUSD: number = 0;
+  stockSource: string = 'online'; // Default stock source
 
-  constructor(private router: Router,private popoverController: PopoverController,private cartService: CartService, private djangoApi: DjangoapiService,private mercadopagoService: MercadopagoService) {}
+  constructor(
+    private router: Router,
+    private popoverController: PopoverController,
+    private cartService: CartService,
+    private djangoApi: DjangoapiService,
+    private mercadopagoService: MercadopagoService
+  ) {}
 
   ngOnInit() {
     this.loadDollarValue();
   }
-
 
   loadDollarValue() {
     this.djangoApi.getExchangeRate().subscribe((data: any) => {
@@ -62,15 +67,27 @@ export class CartPage implements OnInit {
 
   checkout(currency: string) {
     const items = this.items.map(item => ({
+      id: item.id,
+      quantity: item.quantity,
       title: item.nombre,
       unit_price: currency === 'USD' ? item.precio / this.dollarValue : item.precio,
-      quantity: item.quantity,
       currency_id: currency
     }));
 
-    this.mercadopagoService.createPaymentPreference(items).subscribe((preference) => {
-      window.location.href = preference.init_point;
-    });
+    this.cartService.checkout(items, this.stockSource).subscribe(
+      response => {
+        // Handle success response
+        if (response.init_point) {
+          window.location.href = response.init_point;
+        } else {
+          console.error('No init_point in response', response);
+        }
+      },
+      error => {
+        // Handle error response
+        console.error('Payment initiation failed', error);
+      }
+    );
   }
 
   toggleDropdown(open: boolean) {
@@ -88,9 +105,8 @@ export class CartPage implements OnInit {
       }
     }
   }
-
-
 }
+
 
 
 
