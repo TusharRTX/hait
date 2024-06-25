@@ -24,7 +24,10 @@
           <ion-icon name="cart-outline"></ion-icon>
           <span [routerLink]="['/cart']">Carrito</span> 
         </ion-button>
-        <ion-button *ngIf="isAuthenticated" (click)="logout()">Cerrar Sesión</ion-button>
+          <ion-button color="danger" *ngIf="isAuthenticated" (click)="presentLogoutAlert()">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <span>Cerrar sesión</span>
+         </ion-button>
         <ion-button *ngIf="role === 'comprador'" routerLink="/medicion">
           Mi Cuenta (Comprador)
         </ion-button>

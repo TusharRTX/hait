@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class HomePage implements OnInit {
   isAuthenticated: boolean = false;
   role: string = '';
 
-  constructor(private router: Router,private route: ActivatedRoute,private djangoApi: DjangoapiService) {}
+  constructor(private alertController: AlertController,private router: Router,private route: ActivatedRoute,private djangoApi: DjangoapiService) {}
 
 
   async ngOnInit() {
@@ -28,6 +29,26 @@ export class HomePage implements OnInit {
       this.isAuthenticated = true;
       this.role = await this.djangoApi.storage.get('rol');
     }
+  }
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        }, {
+          text: 'Sí',
+          handler: () => {
+            this.logout();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async logout() {
