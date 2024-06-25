@@ -4,19 +4,31 @@ import { Observable } from 'rxjs/internal/Observable';
 import { retry } from 'rxjs/internal/operators/retry';
 import axios from 'axios';
 import { Storage } from '@ionic/storage-angular';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DjangoapiService {
 
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+  private roleSubject = new BehaviorSubject<string>('');
+  public role$ = this.roleSubject.asObservable();
   apiURL = 'http://127.0.0.1:8000/api';
   
   constructor(private http: HttpClient, public storage: Storage) { this.init(); }
 
   async init() {
     await this.storage.create();
+    const token = await this.storage.get('token');
+    this.isAuthenticatedSubject.next(!!token);
+    if (token) {
+      const role = await this.storage.get('rol');
+      this.roleSubject.next(role);
+    }
   }
+
 
   getUser(): Observable<any> {
     return this.http.get(this.apiURL + '/lista_user')
@@ -78,6 +90,8 @@ export class DjangoapiService {
     const response = await axios.post(`${this.apiURL}/login/`, data);
     await this.storage.set('token', response.data.token);
     await this.storage.set('rol', response.data.rol);
+    this.isAuthenticatedSubject.next(true);
+    this.roleSubject.next(response.data.rol);
     return response.data;
   }
 
@@ -100,6 +114,8 @@ export class DjangoapiService {
   async logout() {
     await this.storage.remove('token');
     await this.storage.remove('rol');
+    this.isAuthenticatedSubject.next(false);
+    this.roleSubject.next('');
   }
   
 }

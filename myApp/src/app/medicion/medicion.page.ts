@@ -3,6 +3,9 @@ import { DjangoapiService } from '../conexion/djangoapi.service';
 import { CartService } from '../services/cart.service';
 import { MenuController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';  
+
 
 
 @Component({
@@ -13,17 +16,48 @@ import { ToastController } from '@ionic/angular';
 export class MedicionPage implements OnInit {
   isDropdownOpen = false;
   products: any[] = [];
+  isAuthenticated: boolean = false;
+  role: string = '';
 
 
-  constructor(private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
+  constructor(private alertController: AlertController,private router: Router,private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
   ngOnInit() {
     const categoryId = 5; // ID de la categoría "equipo"
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });
+
+    this.apiService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.apiService.role$.subscribe(role => {
+      this.role = role;
+    });
   }
   
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            await this.apiService.logout();
+            this.router.navigate(['/home']);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
   addToCart(product: any) {
     this.cartService.addToCart(product);
     this.showToast();

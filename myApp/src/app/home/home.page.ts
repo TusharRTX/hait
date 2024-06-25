@@ -20,16 +20,17 @@ export class HomePage implements OnInit {
 
   constructor(private alertController: AlertController,private router: Router,private route: ActivatedRoute,private djangoApi: DjangoapiService) {}
 
-
-  async ngOnInit() {
+  ngOnInit() {
     this.loadCategories();
 
-    const token = await this.djangoApi.storage.get('token');
-    if (token) {
-      this.isAuthenticated = true;
-      this.role = await this.djangoApi.storage.get('rol');
-    }
+    this.djangoApi.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.djangoApi.role$.subscribe(role => {
+      this.role = role;
+    });
   }
+
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',
@@ -38,24 +39,20 @@ export class HomePage implements OnInit {
         {
           text: 'Cancelar',
           role: 'cancel',
-          cssClass: 'secondary'
-        }, {
+          cssClass: 'secondary',
+        },
+        {
           text: 'Sí',
-          handler: () => {
-            this.logout();
+          handler: async () => {
+            await this.djangoApi.logout();
+            this.router.navigate(['/home']);
           }
         }
       ]
     });
-
     await alert.present();
   }
 
-  async logout() {
-    await this.djangoApi.logout();
-    this.isAuthenticated = false;
-    this.router.navigate(['/iniciosesion']);
-  }
 
   loadCategories() {
     this.djangoApi.getCategories().subscribe(

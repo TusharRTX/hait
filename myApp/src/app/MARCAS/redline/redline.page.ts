@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PopoverController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { CartService } from '../../services/cart.service';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';  
 
 @Component({
   selector: 'app-redline',
@@ -15,16 +17,46 @@ export class redlinePage implements OnInit {
   marca: string = 'REDLINE';
   categories: any[] = [];
   selectedCategory: string = '';
-
-
+  isAuthenticated: boolean = false;
+  role: string = '';
   isDropdownOpen = false;
 
-  constructor(private route: ActivatedRoute, private djangoApi: DjangoapiService, private popoverController: PopoverController,private cartService: CartService,
+  constructor(private alertController: AlertController,private router: Router,private route: ActivatedRoute, private djangoApi: DjangoapiService, private popoverController: PopoverController,private cartService: CartService,
     private toastController: ToastController) {}
 
   ngOnInit() {
     this.loadProducts();
+
+    this.djangoApi.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.djangoApi.role$.subscribe(role => {
+      this.role = role;
+    });
   }
+
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            await this.djangoApi.logout();
+            this.router.navigate(['/home']);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
 
   loadProducts() {
     this.djangoApi.getProductosPorMarca(this.marca).subscribe(

@@ -1,50 +1,65 @@
-<ion-menu side="start" menuId="first" contentId="main-content">
-  <ion-header>
-    <ion-toolbar class="menu-header-toolbar">
-      <ion-title class="menu-header-title">Categorías</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
-    <ion-list>
-      <ion-item routerLink="/herramientas" class="menu-item">Herramientas Manuales</ion-item>
-      <ion-item routerLink="/materiales" class="menu-item">Materiales Básicos</ion-item>
-      <ion-item routerLink="/equipos" class="menu-item">Equipos de Seguridad</ion-item>
-      <ion-item routerLink="/tornillos" class="menu-item">Tornillos</ion-item>
-      <ion-item routerLink="/medicion" class="menu-item">Equipo de Medición</ion-item>
-    </ion-list>
-  </ion-content>
-</ion-menu>
-
 <div id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-menu-button autoHide="false"></ion-menu-button>
-        <!-- <ion-title class="menu-title">Menú</ion-title> -->
-      </ion-buttons>
-      <ion-buttons slot="start" class="logo-buttons">
-        <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
-      </ion-buttons>
-      <div class="searchbar-container">
-        <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+      <div class="top-bar">
+        <ion-buttons slot="start" class="logo-buttons">
+          <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
+        </ion-buttons>
+        <div class="searchbar-container">
+          <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+        </div>
+        <ion-buttons slot="end" class="end-buttons">
+          <ion-button>
+            <ion-icon name="home-outline"></ion-icon>
+            <span [routerLink]="['/home']">Home</span>
+          </ion-button>
+          <ion-button *ngIf="!isAuthenticated" color="primary">
+            <ion-icon name="log-in-outline"></ion-icon>
+            <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
+          </ion-button>
+          <ion-button *ngIf="!isAuthenticated" color="success">
+            <ion-icon name="person-add-outline"></ion-icon>
+            <span [routerLink]="['/registro']">Registrarse</span>
+          </ion-button>
+          <ion-button>
+            <ion-icon name="cart-outline"></ion-icon>
+            <span [routerLink]="['/cart']">Carrito</span> 
+          </ion-button>
+          <ion-button color="danger" *ngIf="isAuthenticated" (click)="presentLogoutAlert()">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <span>Cerrar sesión</span>
+          </ion-button>
+          <ion-button *ngIf="role === 'comprador'" routerLink="/medicion">
+            Mi Cuenta (Comprador)
+          </ion-button>
+          <ion-button *ngIf="role === 'vendedor'" routerLink="/medicion">
+            Mi Cuenta (Vendedor)
+          </ion-button>
+          <ion-button *ngIf="role === 'bodeguero'" routerLink="/medicion">
+            Mi Cuenta (Bodeguero)
+          </ion-button>
+          <ion-button *ngIf="role === 'contador'" routerLink="/medicion">
+            Mi Cuenta (Contador)
+          </ion-button>
+        </ion-buttons>
       </div>
-      <ion-buttons slot="end" class="end-buttons">
-        <ion-button>
-          <ion-icon name="home-outline"></ion-icon>
-          <span [routerLink]="['/home']">Home</span>
-        </ion-button>
-        <ion-button color="primary">
-          <ion-icon name="log-in-outline"></ion-icon>
-          <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
-        </ion-button>
-        <ion-button>
-          <ion-icon name="cart-outline"></ion-icon>
-          <span [routerLink]="['/cart']">Carrito</span> 
-        </ion-button>
-      </ion-buttons>
     </ion-toolbar>
   </ion-header>
-</div>
+
+  <ion-buttons class="categories-button-container" slot="end">
+    <ion-button id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
+      Productos por Categoría
+    </ion-button>
+    <ion-button>Productos por Marca</ion-button>
+  
+      <div class="right-side-content">
+        <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
+        <div class="payment-logos">
+          <img src="http://127.0.0.1:8000/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
+        </div>
+      </div>
+    </ion-buttons>
+  </div>  
 
 <ion-content>
   <form (submit)="register()">
@@ -148,3 +163,13 @@
 </ion-footer>  
 
 </ion-content>
+
+<div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
+  <ion-list>
+    <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
+    <ion-item routerLink="/materiales" >Materiales Básicos</ion-item>
+    <ion-item routerLink="/equipos">Equipos de Seguridad</ion-item>
+    <ion-item routerLink="/tornillos">Tornillos</ion-item>
+    <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
+  </ion-list>
+</div>

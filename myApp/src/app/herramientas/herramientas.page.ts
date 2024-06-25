@@ -3,6 +3,8 @@ import { DjangoapiService } from '../conexion/djangoapi.service';
 import { CartService } from '../services/cart.service';
 import { ToastController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';  
 
 @Component({
   selector: 'app-herramientas',
@@ -13,15 +15,46 @@ export class HerramientasPage implements OnInit {
  
   products: any[] = [];
   isDropdownOpen = false;
+  isAuthenticated: boolean = false;
+  role: string = '';
 
-  constructor(private popoverController: PopoverController,private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService) { }
+
+  constructor(private alertController: AlertController,private router: Router,private popoverController: PopoverController,private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService) { }
 
   ngOnInit() {
     const categoryId = 2; // ID de la categoría "equipo"
-
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });
+
+    this.apiService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.apiService.role$.subscribe(role => {
+      this.role = role;
+    });
+  }
+
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            await this.apiService.logout();
+            this.router.navigate(['/home']);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
   
 

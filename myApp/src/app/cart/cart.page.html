@@ -1,32 +1,48 @@
 <div id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-buttons slot="start">
-      </ion-buttons>
-      <ion-buttons slot="start" class="logo-buttons">
-        <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
-      </ion-buttons>
-      <div class="searchbar-container">
-        <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+      <div class="top-bar">
+        <ion-buttons slot="start" class="logo-buttons">
+          <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
+        </ion-buttons>
+        <div class="searchbar-container">
+          <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+        </div>
+        <ion-buttons slot="end" class="end-buttons">
+          <ion-button>
+            <ion-icon name="home-outline"></ion-icon>
+            <span [routerLink]="['/home']">Home</span>
+          </ion-button>
+          <ion-button *ngIf="!isAuthenticated" color="primary">
+            <ion-icon name="log-in-outline"></ion-icon>
+            <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
+          </ion-button>
+          <ion-button *ngIf="!isAuthenticated" color="success">
+            <ion-icon name="person-add-outline"></ion-icon>
+            <span [routerLink]="['/registro']">Registrarse</span>
+          </ion-button>
+          <ion-button>
+            <ion-icon name="cart-outline"></ion-icon>
+            <span [routerLink]="['/cart']">Carrito</span> 
+          </ion-button>
+          <ion-button color="danger" *ngIf="isAuthenticated" (click)="presentLogoutAlert()">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <span>Cerrar sesión</span>
+          </ion-button>
+          <ion-button *ngIf="role === 'comprador'" routerLink="/medicion">
+            Mi Cuenta (Comprador)
+          </ion-button>
+          <ion-button *ngIf="role === 'vendedor'" routerLink="/medicion">
+            Mi Cuenta (Vendedor)
+          </ion-button>
+          <ion-button *ngIf="role === 'bodeguero'" routerLink="/medicion">
+            Mi Cuenta (Bodeguero)
+          </ion-button>
+          <ion-button *ngIf="role === 'contador'" routerLink="/medicion">
+            Mi Cuenta (Contador)
+          </ion-button>
+        </ion-buttons>
       </div>
-      <ion-buttons slot="end" class="end-buttons">
-        <ion-button>
-          <ion-icon name="home-outline"></ion-icon>
-          <span [routerLink]="['/home']">Home</span>
-        </ion-button>
-        <ion-button color="primary">
-          <ion-icon name="log-in-outline"></ion-icon>
-          <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
-        </ion-button>
-        <ion-button color="success">
-          <ion-icon name="person-add-outline"></ion-icon>
-          <span [routerLink]="['/registro']">Registrarse</span>
-        </ion-button>
-        <ion-button>
-          <ion-icon name="cart-outline"></ion-icon>
-          <span [routerLink]="['/cart']">Carrito</span>
-        </ion-button>
-      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 

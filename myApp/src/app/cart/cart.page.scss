@@ -17,12 +17,106 @@
   }
 }
 
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .logo-buttons {
+    margin-bottom: 10px;
+  }
+  .searchbar-container {
+    width: 100%;
+    margin-left: 0;
+  }
+  .end-buttons {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .categories-button-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .shipping-options {
+    flex-direction: column;
+  }
+  .right-side-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-section {
+    width: 100%;
+    text-align: center;
+  }
+  .footer-section.product-type ul,
+  .footer-section.opening-hours ul {
+    text-align: left;
+    padding-left: 20px;
+  }
+
+}
+
+
+.categories-button-container {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+  padding-right: 20px; 
+}
+
+.right-side-content {
+  display: flex;
+  align-items: center; 
+  justify-content: flex-end; 
+  flex-grow: 1; 
+}
+
+.payment-text {
+  white-space: nowrap; 
+  margin-right: 10px; 
+  color: #272727; 
+  font-size: 17px; 
+  font-weight: bold;
+}
+
+.payment-logos {
+  display: flex;
+  align-items: center; 
+}
+
+.payment-logo {
+  width: 115px; 
+  height: auto; 
+}
+
+.promo-text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
 body {
   background-color: var(--ion-background-color);
   color: var(--ion-text-color);
 }
-
-
 
 .footer-section.opening-hours {
   margin-bottom: 20px;  
@@ -114,7 +208,7 @@ body {
 
 .categories-button-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; 
   margin-top: 10px;
 }
 
@@ -126,6 +220,7 @@ body {
 .categories-button-container ion-icon {
   margin-right: 8px;
 }
+
 
 #container {
   text-align: center;
@@ -163,44 +258,50 @@ body {
 .menu-header-title {
   text-align: center;
   width: 100%;
-  color: var(--ion-text-color);
+  color: #fff; 
 }
 
 .menu-header-toolbar {
-  --background: #252525;
-  --ion-toolbar-background: #252525;
+  --background: #252525; 
+  --ion-toolbar-background: #252525; 
 }
+
 
 .logo-buttons ion-img {
   height: 88px;
   margin-left: 0px;
 }
 
+
 .custom-searchbar {
   width: 100%;
   max-width: 600px;
 }
 
+
 .searchbar-container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-start; 
   align-items: center;
   flex: 1;
-  margin-left: 23px;
+  margin-left: 23px; 
 }
+
 
 .searchbar-container ion-searchbar {
   --background: #333;
   --color: #fff;
   --border-radius: 100px;
-  width: 50%;
-  max-width: 450px;
+  width: 50%; 
+  max-width: 450px; 
 }
+
 
 ion-toolbar {
   --background: #252525;
   --color: #fff;
 }
+
 
 ion-title {
   color: #fff;
@@ -208,9 +309,10 @@ ion-title {
   padding-left: 0;
 }
 
+
 ion-menu {
   --width: 250px;
-  --background: var(--ion-background-color);
+  --background: #fff; 
 }
 
 ion-menu ion-list {
@@ -218,21 +320,22 @@ ion-menu ion-list {
 }
 
 ion-menu ion-list ion-item {
-  font-size: 18px;
+  font-size: 18px; 
   padding: 15px 20px;
-  color: var(--ion-text-color);
+  color: #000; 
   --border-color: #e0e0e0;
-  --border-width: 0;
+  --border-width: 0; 
   --border-style: none;
-  --ion-item-background: var(--ion-background-color);
-  --ion-item-color: var(--ion-text-color);
-  --ion-border-color: transparent;
-  border-bottom: 1px solid #e0e0e0;
+  --ion-item-background: #fff; 
+  --ion-item-color: #000; 
+  --ion-border-color: transparent; 
+  border-bottom: 1px solid #e0e0e0; 
 }
 
 ion-menu ion-list ion-item:hover {
-  --ion-item-background: #f0f0f0;
+  --ion-item-background: #f0f0f0; 
 }
+
 
 .end-buttons {
   display: flex;
@@ -241,59 +344,136 @@ ion-menu ion-list ion-item:hover {
 
 .end-buttons ion-button {
   margin-left: 10px;
-  color: var(--ion-text-color);
-  --color-focused: var(--ion-text-color);
-  --color-hover: var(--ion-text-color);
-  --color-activated: var(--ion-text-color);
+  color: #fff;
+  --color-focused: #fff;
+  --color-hover: #fff;
+  --color-activated: #fff;
 }
 
+
 .end-buttons ion-button[color="primary"] {
-  color: #1e90ff;
+  color: #1e90ff; 
 }
 
 .end-buttons ion-button[color="success"] {
-  color: #32cd32;
+  color: #32cd32; 
 }
+
 
 .end-buttons ion-icon {
   margin-right: 5px;
   color: inherit;
 }
 
+
 .end-buttons span {
-  color: var(--ion-text-color);
+  color: #fff;
 }
 
+
 .end-buttons span[routerLink] {
-  color: var(--ion-text-color);
+  color: #fff;
 }
+
 
 .menu-title {
   margin-left: 0;
   font-size: 18px;
-  color: var(--ion-text-color);
+  color: white;
 }
 
-.menu-item {
-  padding: 10px 20px;
-  margin: 0;
-  border-radius: 0;
-  background: var(--ion-background-color);
-  color: var(--ion-text-color);
+
+ion-header {
+  --background: #3880ff;
+  --color: white;
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+ion-title {
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
-.menu-item:hover {
-  background: #f0f0f0;
+ion-button {
+  --background: transparent;
+  --color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: transform 0.3s;
 }
 
-/* Button styles */
-.end-buttons ion-button span {
-  margin-left: 5px;
+ion-button:hover {
+  transform: scale(1.1);
 }
 
-.end-buttons ion-button {
-  margin: 0 5px;
+
+.category-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.category-card {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+  flex: 1 1 calc(25% - 1rem);
+}
+
+.category-card img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.category-card h3 {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.category-card p {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+}
+
+
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  background: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  margin-top: -2px; /* Ajusta esto según sea necesario */
+}
+
+.dropdown-menu ion-list {
+  padding: 0;
+}
+
+.dropdown-menu ion-item {
+  --background: #636363;
+  --color: white;
+  --border-radius: 0;
+  --padding-start: 15px;
+  --min-height: 40px;
+}
+
+.dropdown-menu ion-item:hover {
+  --background: #535353;
 }
 
 /* Cart container styles */
@@ -379,6 +559,7 @@ ion-menu ion-list ion-item:hover {
   --padding-top: 0;
   --padding-bottom: 0;
   --border-radius: 5px;
+  color: #000000;
 }
 
 .remove-button {
@@ -394,15 +575,7 @@ ion-menu ion-list ion-item:hover {
 /* Responsiveness */
 @media (max-width: 768px) {
   .logo-buttons ion-img {
-    max-height: 30px;
-  }
-
-  .end-buttons ion-button span {
-    display: none;
-  }
-
-  .end-buttons ion-button {
-    padding: 0;
+    max-height: 500px;
   }
 
   .cart-container {
@@ -417,92 +590,6 @@ ion-menu ion-list ion-item:hover {
     margin-top: 20px;
   }
 }
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  z-index: 1000;
-  background: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  width: 200px;
-  margin-top: -2px; /* Ajusta esto según sea necesario */
-}
-
-.dropdown-menu ion-list {
-  padding: 0;
-}
-
-.dropdown-menu ion-item {
-  --background: #636363;
-  --color: white;
-  --border-radius: 0;
-  --padding-start: 15px;
-  --min-height: 40px;
-}
-
-.dropdown-menu ion-item:hover {
-  --background: #535353;
-}
-
-.categories-button-container {
-  display: flex;
-  justify-content: flex-start; 
-  margin-top: 10px;
-}
-
-.categories-button-container ion-button {
-  display: flex;
-  align-items: center;
-}
-
-.categories-button-container ion-icon {
-  margin-right: 8px;
-}
-
-.categories-button-container {
-  display: flex;
-  align-items: center; 
-  justify-content: space-between; 
-  width: 100%; 
-  padding-right: 20px; 
-}
-
-.right-side-content {
-  display: flex;
-  align-items: center; 
-  justify-content: flex-end; 
-  flex-grow: 1; 
-}
-
-.payment-text {
-  white-space: nowrap; 
-  margin-right: 10px; 
-  color: #272727; 
-  font-size: 17px; 
-  font-weight: bold;
-}
-
-.payment-logos {
-  display: flex;
-  align-items: center; 
-}
-
-.payment-logo {
-  width: 115px; 
-  height: auto; 
-}
-
-ion-button {
-  font-size: 1rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  transition: transform 0.3s;
-}
-
-ion-button:hover {
-  transform: scale(1.1);
-}
-
 
 
 

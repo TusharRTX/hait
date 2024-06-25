@@ -17,6 +17,65 @@
   }
 }
 
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .logo-buttons {
+    margin-bottom: 10px;
+  }
+
+  .logo-buttons ion-img {
+    max-height: 500px;
+  }
+
+  .searchbar-container {
+    width: 100%;
+    margin-left: 0;
+  }
+  .end-buttons {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .categories-button-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .shipping-options {
+    flex-direction: column;
+  }
+  .right-side-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer-section {
+    width: 100%;
+    text-align: center;
+  }
+  .footer-section.product-type ul,
+  .footer-section.opening-hours ul {
+    text-align: left;
+    padding-left: 20px;
+  }
+  .brand-strip {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 swiper-container {
   width: 100%;
   height: 500px; 
@@ -405,7 +464,6 @@ ion-button:hover {
   color: #333;
   margin-bottom: 1rem;
 }
-
 .category-grid {
   display: flex;
   flex-wrap: wrap;
@@ -441,9 +499,6 @@ ion-button:hover {
   transform: scale(1.05);
 }
 
-.section {
-  padding: 2rem;
-}
 
 .brand-strip {
   display: flex;
@@ -488,6 +543,16 @@ ion-button:hover {
 .dropdown-menu ion-item:hover {
   --background: #535353;
 }
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .logo-buttons ion-img {
+    max-height: 70000px;
+  }
+} 
+
+
+
 
 
 

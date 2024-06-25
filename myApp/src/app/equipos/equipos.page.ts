@@ -4,7 +4,8 @@ import { NavController } from '@ionic/angular';
 import { CartService } from '../services/cart.service';
 import { ToastController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
-
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';  
 
 @Component({
   selector: 'app-equipos',
@@ -15,13 +16,17 @@ export class EquiposPage implements OnInit {
   
   products: any[] = [];
   isDropdownOpen = false;
+  isAuthenticated: boolean = false;
+  role: string = '';
 
   constructor(
     private apiService: DjangoapiService,
     private navCtrl: NavController,
     private cartService: CartService,
     private toastController: ToastController,
-    private popoverController: PopoverController
+    private popoverController: PopoverController,
+    private alertController: AlertController,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -29,6 +34,34 @@ export class EquiposPage implements OnInit {
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });
+    this.apiService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.apiService.role$.subscribe(role => {
+      this.role = role;
+    });
+  }
+
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            await this.apiService.logout();
+            this.router.navigate(['/home']);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   toggleDropdown(open: boolean) {
@@ -46,7 +79,6 @@ export class EquiposPage implements OnInit {
       }
     }
   }
-
 
   addToCart(product: any) {
     this.cartService.addToCart(product);

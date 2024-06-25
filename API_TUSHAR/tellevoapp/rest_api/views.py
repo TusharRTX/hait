@@ -47,26 +47,52 @@ def user_detail(request):
     return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+# @api_view(['POST'])
+# def reset_password(request):
+#     username = request.data.get('username')
+#     email = request.data.get('email')
+#     new_password = request.data.get('new_password')
+    
+#     try:
+#         user = User.objects.get(username=username) if username else User.objects.get(email=email)
+#         user.set_password(new_password)
+#         user.save()
+#         send_mail(
+#             'Password Reset',
+#             f'Hello {user.username}, your password has been reset.',
+#             settings.DEFAULT_FROM_EMAIL,
+#             [user.email],
+#         )
+#         return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
+#     except User.DoesNotExist:
+#         return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['POST'])
 def reset_password(request):
-    username = request.data.get('username')
-    email = request.data.get('email')
+    username_or_email = request.data.get('username_or_email')
     new_password = request.data.get('new_password')
     
     try:
-        user = User.objects.get(username=username) if username else User.objects.get(email=email)
-        user.set_password(new_password)
-        user.save()
-        send_mail(
-            'Password Reset',
-            f'Hello {user.username}, your password has been reset.',
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email],
-        )
-        return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
+        user = User.objects.get(username=username_or_email)
     except User.DoesNotExist:
-        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+        try:
+            user = User.objects.get(email=username_or_email)
+        except User.DoesNotExist:
+            return Response({"error": "Usuario no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+    
+    user.set_password(new_password)
+    user.save()
 
+    # Enviar un correo electrónico confirmando el cambio de contraseña
+    send_mail(
+        'Cambio de Contraseña',
+        'Tu contraseña ha sido cambiada exitosamente.',
+        'tu.mirwani@duocuc.cl',
+        [user.email],
+        fail_silently=False,
+    )
+    
+    return Response({"success": "Contraseña cambiada exitosamente."}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def get_categories(request):
