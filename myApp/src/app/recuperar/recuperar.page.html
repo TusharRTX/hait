@@ -47,17 +47,17 @@
 </div>
 
 <ion-content>
-
-  <form (submit)="login()">
+  
+  <form (submit)="resetPassword()">
     <ion-item>
-      <ion-label position="floating">Username</ion-label>
-      <ion-input [(ngModel)]="username" name="username"></ion-input>
+      <ion-label position="floating">Nombre de Usuario o Correo</ion-label>
+      <ion-input [(ngModel)]="usernameOrEmail" name="usernameOrEmail" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
+      <ion-label position="floating">Nueva Contraseña</ion-label>
+      <ion-input [(ngModel)]="newPassword" name="newPassword" type="password" required></ion-input>
     </ion-item>
-    <ion-button expand="full" type="submit" class="custom-button">Iniciar Sesión</ion-button>
+    <ion-button expand="full" type="submit">Recuperar Contraseña</ion-button>
   </form>
 
   <ion-footer>

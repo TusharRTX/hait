@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-home',
@@ -12,13 +14,27 @@ export class HomePage implements OnInit {
   selectedCategory: string = '';
   products: any[] = [];
   isDropdownOpen = false;
+  isAuthenticated: boolean = false;
+  role: string = '';
 
-  constructor(private route: ActivatedRoute,private djangoApi: DjangoapiService) {}
+  constructor(private router: Router,private route: ActivatedRoute,private djangoApi: DjangoapiService) {}
 
-  ngOnInit() {
+
+  async ngOnInit() {
     this.loadCategories();
+
+    const token = await this.djangoApi.storage.get('token');
+    if (token) {
+      this.isAuthenticated = true;
+      this.role = await this.djangoApi.storage.get('rol');
+    }
   }
 
+  async logout() {
+    await this.djangoApi.logout();
+    this.isAuthenticated = false;
+    this.router.navigate(['/iniciosesion']);
+  }
 
   loadCategories() {
     this.djangoApi.getCategories().subscribe(

@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_api.views import productos_por_marca, register, user_detail
-from .views import register, login, user_detail
+from .views import register, login, reset_password, user_detail
 from rest_api.views import creacion
 from rest_api.views import login
 from rest_api.views import get_categories
@@ -24,6 +24,7 @@ urlpatterns=[
     path('register/', register, name='register'),
     path('login/', login, name='login'),
     path('user/', user_detail, name='user_detail'),
+    path('reset-password/', reset_password, name='reset_password'),
     path('categorias', get_categories, name='categorias'),
     path('categorias/', get_categories, name="categorias"),
     path('getexchangerate', getexchangerate, name='getexchangerate'),

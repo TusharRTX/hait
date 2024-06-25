@@ -55,7 +55,11 @@ const routes: Routes = [
   { path: 'ACTORES/MARCAS/redline', loadChildren: () => import('./ACTORES/MARCAS/redline/redline.module').then(m => m.redlinePageModule) },
   { path: 'ACTORES/MARCAS/stanley', loadChildren: () => import('./ACTORES/MARCAS/stanley/stanley.module').then(m => m.stanleyPageModule) },
   { path: 'ACTORES/MARCAS/vinilit', loadChildren: () => import('./ACTORES/MARCAS/vinilit/vinilit.module').then(m => m.vinilitPageModule) },
-  { path: 'ACTORES/MARCAS/arauco', loadChildren: () => import('./ACTORES/MARCAS/arauco/arauco.module').then(m => m.araucoPageModule) },
+  { path: 'ACTORES/MARCAS/arauco', loadChildren: () => import('./ACTORES/MARCAS/arauco/arauco.module').then(m => m.araucoPageModule) },  {
+    path: 'recuperar',
+    loadChildren: () => import('./recuperar/recuperar.module').then( m => m.RecuperarPageModule)
+  },
+
 
 ];
 

@@ -17,8 +17,7 @@ import os
 from core.models import Producto, Categorias, User
 from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer
 from django.contrib.auth import authenticate
-
-
+from django.core.mail import send_mail
 
 @api_view(['POST'])
 def register(request):
@@ -46,6 +45,27 @@ def user_detail(request):
         serializer = UserSerializer(user)
         return Response(serializer.data)
     return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@api_view(['POST'])
+def reset_password(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    new_password = request.data.get('new_password')
+    
+    try:
+        user = User.objects.get(username=username) if username else User.objects.get(email=email)
+        user.set_password(new_password)
+        user.save()
+        send_mail(
+            'Password Reset',
+            f'Hello {user.username}, your password has been reset.',
+            settings.DEFAULT_FROM_EMAIL,
+            [user.email],
+        )
+        return Response({'message': 'Password has been reset successfully.'}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])

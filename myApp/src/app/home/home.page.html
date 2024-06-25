@@ -12,17 +12,30 @@
           <ion-icon name="home-outline"></ion-icon>
           <span [routerLink]="['/home']">Home</span>
         </ion-button>
-        <ion-button color="primary">
+        <ion-button *ngIf="!isAuthenticated" color="primary">
           <ion-icon name="log-in-outline"></ion-icon>
           <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
         </ion-button>
-        <ion-button color="success">
+        <ion-button *ngIf="!isAuthenticated" color="success">
           <ion-icon name="person-add-outline"></ion-icon>
           <span [routerLink]="['/registro']">Registrarse</span>
         </ion-button>
         <ion-button>
           <ion-icon name="cart-outline"></ion-icon>
           <span [routerLink]="['/cart']">Carrito</span> 
+        </ion-button>
+        <ion-button *ngIf="isAuthenticated" (click)="logout()">Cerrar Sesión</ion-button>
+        <ion-button *ngIf="role === 'comprador'" routerLink="/medicion">
+          Mi Cuenta (Comprador)
+        </ion-button>
+        <ion-button *ngIf="role === 'vendedor'" routerLink="/medicion">
+          Mi Cuenta (Vendedor)
+        </ion-button>
+        <ion-button *ngIf="role === 'bodeguero'" routerLink="/medicion">
+          Mi Cuenta (Bodeguero)
+        </ion-button>
+        <ion-button *ngIf="role === 'contador'" routerLink="/medicion">
+          Mi Cuenta (Contador)
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
