@@ -1,5 +1,6 @@
 from django.urls import path
-from rest_api.views import lista_user, productos_por_marca
+from rest_api.views import productos_por_marca, register, user_detail
+from .views import register, login, user_detail
 from rest_api.views import creacion
 from rest_api.views import login
 from rest_api.views import get_categories
@@ -20,9 +21,9 @@ from rest_api.views import productos_por_marca
 # http://127.0.0.1:8000/api/"ENDPOINT"
 
 urlpatterns=[
-    path('lista_user', lista_user, name="Lista de Registro"),
-    path('creacion', creacion, name="creacion"),
-    path('login/', login, name="login"),
+    path('register/', register, name='register'),
+    path('login/', login, name='login'),
+    path('user/', user_detail, name='user_detail'),
     path('categorias', get_categories, name='categorias'),
     path('categorias/', get_categories, name="categorias"),
     path('getexchangerate', getexchangerate, name='getexchangerate'),

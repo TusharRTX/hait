@@ -1,0 +1,140 @@
+<div id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start" class="logo-buttons">
+        <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
+      </ion-buttons>
+      <div class="searchbar-container">
+        <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+      </div>
+      <ion-buttons slot="end" class="end-buttons">
+        <ion-button>
+          <ion-icon name="home-outline"></ion-icon>
+          <span [routerLink]="['/home']">Home</span>
+        </ion-button>
+        <ion-button color="primary">
+          <ion-icon name="log-in-outline"></ion-icon>
+          <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
+        </ion-button>
+        <ion-button color="success">
+          <ion-icon name="person-add-outline"></ion-icon>
+          <span [routerLink]="['/registro']">Registrarse</span>
+        </ion-button>
+        <ion-button>
+          <ion-icon name="cart-outline"></ion-icon>
+          <span [routerLink]="['/cart']">Carrito</span> 
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-buttons class="categories-button-container" slot="end">
+    <ion-button id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
+      Productos por Categoría
+    </ion-button>
+    <ion-button>Productos por Marca</ion-button>
+  
+      <div class="right-side-content">
+        <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
+        <div class="payment-logos">
+          <img src="http://127.0.0.1:8000/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
+        </div>
+      </div>
+    </ion-buttons>
+  </div>
+  
+
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col size="10" size-md="6" size-lg="2" *ngFor="let product of products">
+          <ion-card>
+            <img [src]="'http://127.0.0.1:8000/' + product.imagen" alt="{{ product.nombre }}" />
+            <ion-card-header>
+              <ion-card-title>{{ product.marca }}</ion-card-title>
+              <ion-card-subtitle>{{ product.nombre }}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-card-title>${{ product.precio }}</ion-card-title>
+              <p>Stock Online: {{ product.stock_online }}</p>
+              <p>Stock en Tienda: {{ product.stock_tienda }}</p>
+              <ion-button expand="full" color="primary" (click)="addToCart(product)">Añadir al carrito</ion-button>
+            </ion-card-content>
+          </ion-card>
+        
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-footer>
+    <ion-toolbar>
+      <div class="footer-container">
+        <div class="footer-section logo-section">
+          <img src="http://127.0.0.1:8000/media/productos/ferremas_logo.png" alt="Logo" class="logo">
+          <p>Síguenos en:</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/profile.php?id=61559656572650&mibextid=ZbWKwL" target="_blank">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+            <a href="https://x.com/FerremasHait?t=5mMbR5RLsYTDPiVHQ-POeQ&s=33" target="_blank">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+            <a href="https://www.instagram.com/ferremashait?igsh=aXliemQ3NjhtaXlx" target="_blank">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+            <a href="https://www.youtube.com/@ferremas-mf3eg" target="_blank">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Ubicación</h3>
+          <ul>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d848480.2608293112!2d-71.6982604!3d-33.82841229999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663254a46dfba6b%3A0xa434c121def3b3de!2sFerremas!5e0!3m2!1sen!2scl!4v1716211363337!5m2!1sen!2scl" width="150" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </ul>
+        </div>
+        <div class="footer-section product-type">
+          <h3>Tipo de Productos</h3>
+          <ul>
+            <li><a routerLink="/herramientas">Herramientas</a></li>
+            <li><a routerLink="/medicion">Equipos de Medición</a></li>
+            <li><a routerLink="/materiales">Materiales Basicos</a></li>
+            <li><a routerLink="/equipos">Equipos de Seguridad</a></li>
+            <li><a routerLink="/tornillos">Tornillos</a></li>
+          </ul>
+        </div>        
+        <div class="footer-section product-type">
+          <h3>Cuenta/Carrito/Contacto</h3>
+          <ul>
+            <li><a routerLink="/registro">Registrarse</a></li>
+            <li><a routerLink="/iniciosesion">Iniciar Sesion</a></li>
+            <li><a routerLink="/cart">Mi Carrito</a></li>
+            <li><a routerLink="">Contacto</a></li>
+            <li><a routerLink="">Info Adicional</a></li>
+          </ul>
+        </div>
+        <div class="footer-section opening-hours">
+          <h3>Hora de Apertura</h3>
+          <ul>
+            <li>Lunes 10:00 AM – 19:00 PM</li>
+            <li>Martes 10:00 AM – 19:00 PM</li>
+            <li>Miércoles 10:00 AM – 19:00 PM</li>
+            <li>Jueves 10:00 AM – 19:00 PM</li>
+            <li>Viernes 10:00 AM – 19:00 PM</li>
+            <li>Sábado 10:30 AM – 15:00 PM</li>
+            <li>Domingo y Festivos Cerrado</li>
+          </ul>
+        </div>        
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>
+
+<div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
+  <ion-list>
+    <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
+    <ion-item routerLink="/materiales" >Materiales Básicos</ion-item>
+    <ion-item routerLink="/equipos">Equipos de Seguridad</ion-item>
+    <ion-item routerLink="/tornillos">Tornillos</ion-item>
+    <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
+  </ion-list>
+</div>

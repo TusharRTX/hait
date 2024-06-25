@@ -1,79 +1,53 @@
-from rest_framework import generics
-from django.http import JsonResponse
-from django.shortcuts import render
+from rest_framework import generics, status
 from rest_framework.response import Response
-from rest_framework.parsers import JSONParser
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
+from rest_framework.parsers import JSONParser
+from django.contrib.auth import authenticate, models as auth_models
 from django.contrib.auth.hashers import check_password
-from core.models import Producto
-from .serializers import CategoriaSerializer, ProductoSerializer
-import requests
 from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-from core.models import Categorias
-from django.http import JsonResponse
-from core.models import Categorias, Producto
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-import mercadopago
 from django.conf import settings
+import requests
+import mercadopago
 import os
+from core.models import Producto, Categorias, User
+from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer
+from django.contrib.auth import authenticate
 
-
-
-# Create your views here.
-@csrf_exempt
-@api_view(['GET','POST'])
-def lista_user(request):
-    if request.method == 'GET':
-        categorias = Usuario.objects.all()
-        serializer = UsuarioSerializer(categorias, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST': 
-        serializer = UsuarioSerializer(data=request.data)
-        print(serializer)
-        if serializer.is_valid():
-            user = request.POST.get('user', None)
-            print(user)
-            if user in Usuario.objects.values_list('user', flat=True):
-                print("ingresao")
-                return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else: 
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
-def login(request):
-    data = JSONParser().parse(request)
-
-    username = data['username'] 
-    password = data['password']
-
-    try:
-        user = User.objects.get(username= username)
-    except User.DoesNotExist:
-        return Response("Usuario Invalido")
-
-    validar =check_password(password, user.password)
-
-    if not validar:
-        return("Datos Incorrectos") 
-    else:
+def register(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
         token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(token.key)
-    
+@api_view(['POST'])
+def login(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    user = authenticate(username=username, password=password)
+    if user:
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key, 'rol': user.rol}, status=status.HTTP_200_OK)
+    return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def user_detail(request):
+    if request.user.is_authenticated:
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    return Response({'error': 'Unauthorized'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 @api_view(['GET'])
 def get_categories(request):
     categories = Categorias.objects.all()
@@ -170,15 +144,6 @@ def create_payment_preference(request):
     return JsonResponse(preference)
 
 
-
-
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from core.models import Producto
-from rest_api.serializers import ProductoSerializer
-
 @api_view(['GET'])
 def productos_por_marca(request, marca):
     try:
@@ -188,11 +153,6 @@ def productos_por_marca(request, marca):
     except Producto.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-
-
-
-
-    
 
 
 

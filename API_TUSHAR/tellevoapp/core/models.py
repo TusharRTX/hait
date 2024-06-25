@@ -1,15 +1,25 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
-class Usuario(models.Model):
-    
-    user = models.CharField(max_length=20,verbose_name = "Nombre Usuario")
-    password = models.CharField(max_length=20, verbose_name = "Contraseña Usuario")
-    nombre = models.CharField(max_length=20, verbose_name = "Nombre de la Persona")
-    correo = models.EmailField(max_length=50, verbose_name = "Correo de la Persona")
-    rol = models.CharField(max_length=15, verbose_name = "Rol")
+
+
+class User(AbstractUser):
+    ROL_CHOICES = [
+        ('comprador', 'Comprador'),
+        ('vendedor', 'Vendedor'),
+        ('bodeguero', 'Bodeguero'),
+        ('contador', 'Contador'),
+    ]
+    nombre = models.CharField(max_length=30)
+    apellido = models.CharField(max_length=30)
+    correo = models.EmailField(unique=True)
+    direccion = models.CharField(max_length=255)
+    rut = models.CharField(max_length=12, unique=True)
+    telefono = models.CharField(max_length=15)
+    rol = models.CharField(max_length=10, choices=ROL_CHOICES, default='comprador')
+
     def __str__(self):
-        return self.user
+        return self.username
 
 
 class Categorias(models.Model):
@@ -30,3 +40,4 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.codigo
+

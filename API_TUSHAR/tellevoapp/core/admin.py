@@ -1,10 +1,9 @@
 from django.contrib import admin
-from .models import Usuario
 from .models import Producto
 from .models import Categorias
+from .models import User
 
-# Register your models here.
-admin.site.register(Usuario)
+admin.site.register(User)
 admin.site.register(Producto)
 admin.site.register(Categorias)
 
