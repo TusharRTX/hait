@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {path: 'home',loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
@@ -33,6 +34,14 @@ const routes: Routes = [
   { path: 'MARCAS/stanley', loadChildren: () => import('./MARCAS/stanley/stanley.module').then(m => m.stanleyPageModule) },
   { path: 'MARCAS/vinilit', loadChildren: () => import('./MARCAS/vinilit/vinilit.module').then(m => m.vinilitPageModule) },
   { path: 'MARCAS/arauco', loadChildren: () => import('./MARCAS/arauco/arauco.module').then(m => m.araucoPageModule) },
+
+  // PAGINAS PRINCIPALES (home) cada actor
+
+  { path: 'comprador', loadChildren: () => import('./ACTORES/comprador/comprador.module').then(m => m.CompradorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'comprador' } },
+  { path: 'vendedor', loadChildren: () => import('./ACTORES/vendedor/vendedor.module').then(m => m.VendedorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
+  { path: 'bodeguero', loadChildren: () => import('./ACTORES/bodeguero/bodeguero.module').then(m => m.BodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
+  { path: 'contador', loadChildren: () => import('./ACTORES/contador/contador.module').then(m => m.ContadorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'contador' } },
+
 
 
   // PAGINAS PRINCIPALES (home) cada actor
