@@ -41,6 +41,11 @@ export class CartPage implements OnInit {
     this.djangoApi.role$.subscribe(role => {
       this.role = role;
     });
+
+    this.djangoApi.role$.subscribe(role => {
+      this.role = role;
+    });
+
   }
 
   async presentLogoutAlert() {

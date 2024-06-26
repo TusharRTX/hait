@@ -95,7 +95,7 @@
           <ion-label>Comprar desde:</ion-label>
           <ion-select [(ngModel)]="stockSource">
             <ion-select-option value="online">Stock Online</ion-select-option>
-            <ion-select-option value="tienda">Stock en Tienda</ion-select-option>
+            <ion-select-option *ngIf="role === 'vendedor'" value="tienda">Stock en Tienda</ion-select-option>
           </ion-select>
         </ion-item>
         <div class="summary-buttons">
