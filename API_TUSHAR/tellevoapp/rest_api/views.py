@@ -20,19 +20,13 @@ from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
-import logging
-
-logger = logging.getLogger(__name__)
 
 @api_view(['POST'])
 def registrar_compra_aprobada(request):
-    logger.debug(f'Request data: {request.data}')
     serializer = CompraAprobadaSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
-        logger.debug('Compra registrada exitosamente')
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    logger.error(f'Errores del serializer: {serializer.errors}')
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

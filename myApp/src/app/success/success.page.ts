@@ -15,56 +15,47 @@ export class SuccessPage implements OnInit {
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
   role: string = ''
+  userId?: number;
 
   constructor(private alertController: AlertController,private router: Router,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
   ngOnInit() {
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
-    this.cartService.clearCart();
-  
     this.apiService.isAuthenticated$.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
     });
-  
     this.apiService.role$.subscribe(role => {
       this.role = role;
     });
-  
-    this.apiService.getUserId().then(userId => {
-      console.log('User ID:', userId);
-      const compra = {
-        usuario: userId || null,  // ID del usuario o null si es invitado
-        productos: this.items.map(item => ({
-          producto: item.id,
-          cantidad: item.quantity
-        })),
-        total: this.total
-      };
-  
-      this.apiService.registrarCompra(compra).subscribe(
-        response => {
-          console.log('Compra registrada exitosamente', response);
-          // Puedes redirigir a otra página o mostrar un mensaje de éxito aquí
-        },
-        error => {
-          console.error('Error al registrar la compra', error);
-          // Mostrar mensaje de error al usuario
-          this.presentAlert('Error', 'Hubo un error al registrar la compra. Intenta nuevamente.');
-        }
-      );
+    this.apiService.getUserId().then(id => {
+      this.userId = id;
+      this.registerPurchase();
     });
+    this.cartService.clearCart();
   }
-  
 
-  async presentAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: header,
-      message: message,
-      buttons: ['OK']
-    });
-    await alert.present();
-  }  
+  async registerPurchase() {
+    const productIds = this.items.map(item => item.id);
+    const purchaseData = {
+      usuario: this.userId,
+      productos_ids: productIds,
+      total: this.total
+    };
+
+    try {
+      const response = await this.apiService.registerPurchase(purchaseData);
+      console.log('Compra registrada exitosamente', response);
+    } catch (error) {
+      console.error('Error al registrar la compra', error);
+      const alert = await this.alertController.create({
+        header: 'Error',
+        message: 'Hubo un error al registrar la compra. Intenta nuevamente.',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
+  }
 
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
@@ -75,8 +66,7 @@ export class SuccessPage implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
-        },
-        {
+        }, {
           text: 'Sí',
           handler: async () => {
             await this.apiService.logout();
@@ -85,9 +75,9 @@ export class SuccessPage implements OnInit {
         }
       ]
     });
+
     await alert.present();
   }
-
 
   toggleDropdown(open: boolean) {
     this.isDropdownOpen = open;

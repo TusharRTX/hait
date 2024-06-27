@@ -6,23 +6,19 @@ from core.models import User
 from rest_framework import serializers
 from core.models import CompraAprobada, CompraProducto
 
-class CompraProductoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CompraProducto
-        fields = ['producto', 'cantidad']
-
 class CompraAprobadaSerializer(serializers.ModelSerializer):
-    productos = CompraProductoSerializer(many=True)
+    productos_ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
 
     class Meta:
         model = CompraAprobada
-        fields = ['usuario', 'productos', 'total']
+        fields = ['usuario', 'productos_ids', 'total']
 
     def create(self, validated_data):
-        productos_data = validated_data.pop('productos')
+        productos_ids = validated_data.pop('productos_ids')
         compra = CompraAprobada.objects.create(**validated_data)
-        for producto_data in productos_data:
-            CompraProducto.objects.create(compra=compra, **producto_data)
+        for producto_id in productos_ids:
+            producto = Producto.objects.get(id=producto_id)
+            CompraProducto.objects.create(compra=compra, producto=producto, cantidad=1)
         return compra
 
 
