@@ -17,7 +17,9 @@ export class DjangoapiService {
   public role$ = this.roleSubject.asObservable();
   apiURL = 'http://127.0.0.1:8000/api';
   
-  constructor(private http: HttpClient, public storage: Storage) { this.init(); }
+  constructor(private http: HttpClient, public storage: Storage) { 
+    this.init(); 
+  }
 
   async init() {
     await this.storage.create();
@@ -29,6 +31,10 @@ export class DjangoapiService {
     }
   }
 
+  getUserId(): Promise<any> {
+    return this.storage.get('user_id');
+  }
+  
 
   getUser(): Observable<any> {
     return this.http.get(this.apiURL + '/lista_user')
@@ -39,6 +45,7 @@ export class DjangoapiService {
     return this.http.get(this.apiURL + '/creacion')
       .pipe(retry(3));
   }
+
   crearProducto(productoData: any, imagen: File): Observable<any> {
     const formData: FormData = new FormData();
     for (const key in productoData) {
@@ -57,12 +64,10 @@ export class DjangoapiService {
       .pipe(retry(3));
   }
 
-
   getExchangeRate(): Observable<any> {
     return this.http.get<any>(this.apiURL + '/getexchangerate')
      .pipe(retry(3));
   }
-
 
   // getProductosPorCategoria(categoriaId: number): Observable<any> {
   //   return this.http.get(`${this.apiURL}/productos_por_categoria/${categoriaId}`)
@@ -90,11 +95,12 @@ export class DjangoapiService {
     const response = await axios.post(`${this.apiURL}/login/`, data);
     await this.storage.set('token', response.data.token);
     await this.storage.set('rol', response.data.rol);
+    await this.storage.set('user_id', response.data.user_id); // Asegúrate de que el backend devuelva el user_id
     this.isAuthenticatedSubject.next(true);
     this.roleSubject.next(response.data.rol);
     return response.data;
   }
-
+  
   // Obtener detalles del usuario
   async getUserDetails() {
     const token = await this.storage.get('token');
@@ -117,8 +123,14 @@ export class DjangoapiService {
     this.isAuthenticatedSubject.next(false);
     this.roleSubject.next('');
   }
+
+  // Registrar compra aprobada
+  registrarCompra(compra: any) {
+    return this.http.post(`${this.apiURL}/registrar_compra/`, compra);
+  }
   
 }
+
   
 
 

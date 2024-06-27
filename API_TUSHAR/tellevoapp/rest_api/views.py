@@ -18,6 +18,23 @@ from core.models import Producto, Categorias, User
 from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
+from core.models import CompraAprobada
+from .serializers import CompraAprobadaSerializer
+import logging
+
+logger = logging.getLogger(__name__)
+
+@api_view(['POST'])
+def registrar_compra_aprobada(request):
+    logger.debug(f'Request data: {request.data}')
+    serializer = CompraAprobadaSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        logger.debug('Compra registrada exitosamente')
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    logger.error(f'Errores del serializer: {serializer.errors}')
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def register(request):
@@ -33,10 +50,14 @@ def login(request):
     username = request.data.get('username')
     password = request.data.get('password')
     user = authenticate(username=username, password=password)
-    if user:
+    if user is not None:
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key, 'rol': user.rol}, status=status.HTTP_200_OK)
-    return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            'token': token.key,
+            'rol': user.rol,
+            'user_id': user.id  # Incluye el user_id en la respuesta
+        })
+    return Response({'error': 'Invalid Credentials'}, status=400)
 
 @api_view(['GET'])
 def user_detail(request):

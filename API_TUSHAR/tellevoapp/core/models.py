@@ -1,14 +1,12 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-
+from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     ROL_CHOICES = [
         ('comprador', 'Comprador'),
         ('vendedor', 'Vendedor'),
         ('bodeguero', 'Bodeguero'),
-        ('contador', 'Contador'),
+        ('contador', 'Contador')
     ]
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
@@ -20,7 +18,6 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-
 
 class Categorias(models.Model):
     nombre = models.CharField(max_length=50)
@@ -41,3 +38,18 @@ class Producto(models.Model):
     def __str__(self):
         return self.codigo
 
+class CompraAprobada(models.Model):
+    usuario = models.ForeignKey('User', on_delete=models.CASCADE, related_name='compras', null=True, blank=True)
+    productos = models.ManyToManyField('Producto', through='CompraProducto')
+    total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'Compra {self.id} por {self.usuario.username if self.usuario else "Invitado"}'
+
+class CompraProducto(models.Model):
+    compra = models.ForeignKey('CompraAprobada', on_delete=models.CASCADE)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
+    cantidad = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.cantidad} de {self.producto.nombre} en compra {self.compra.id}'
