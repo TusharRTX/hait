@@ -29,16 +29,16 @@
             <ion-icon name="log-out-outline"></ion-icon>
             <span>Cerrar sesión</span>
           </ion-button>
-          <ion-button *ngIf="role === 'comprador'" routerLink="/medicion">
+          <ion-button *ngIf="role === 'comprador'" routerLink="/comprador">
             Mi Cuenta (Comprador)
           </ion-button>
-          <ion-button *ngIf="role === 'vendedor'" routerLink="/medicion">
+          <ion-button *ngIf="role === 'vendedor'" routerLink="/vendedor">
             Mi Cuenta (Vendedor)
           </ion-button>
-          <ion-button *ngIf="role === 'bodeguero'" routerLink="/medicion">
+          <ion-button *ngIf="role === 'bodeguero'" routerLink="/bodeguero">
             Mi Cuenta (Bodeguero)
           </ion-button>
-          <ion-button *ngIf="role === 'contador'" routerLink="/medicion">
+          <ion-button *ngIf="role === 'contador'" routerLink="/contador">
             Mi Cuenta (Contador)
           </ion-button>
         </ion-buttons>

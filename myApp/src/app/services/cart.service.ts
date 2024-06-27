@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MercadopagoService } from '../mercadopago.service';
+import { DjangoapiService } from '../conexion/djangoapi.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { MercadopagoService } from '../mercadopago.service';
 export class CartService {
   private items: any[] = [];
 
-  constructor(private mercadopagoService: MercadopagoService) {
+  constructor(private mercadopagoService: MercadopagoService, private djangoapiService: DjangoapiService) {
     this.loadCart();
   }
 
@@ -23,22 +24,34 @@ export class CartService {
     }
   }
 
-  addToCart(product: any) {
+  addToCart(product: any): boolean {
     const existingItem = this.items.find(item => item.id === product.id);
-    if (existingItem) {
-      if (existingItem.quantity < product.stock_online) {
-        existingItem.quantity += 1;
+    let added = false;
+
+    // Obtén el rol del usuario desde el servicio DjangoapiService
+    this.djangoapiService.role$.subscribe(role => {
+      if (existingItem) {
+        if (existingItem.quantity < product.stock_online || role === 'vendedor') {
+          existingItem.quantity += 1;
+          this.saveCart();
+          added = true;
+        } else {
+          console.log('No hay suficiente stock online');
+          added = false;
+        }
       } else {
-        console.log('No hay suficiente stock online');
+        if (product.stock_online > 0 || role === 'vendedor') {
+          this.items.push({ ...product, quantity: 1 });
+          this.saveCart();
+          added = true;
+        } else {
+          console.log('No hay suficiente stock online');
+          added = false;
+        }
       }
-    } else {
-      if (product.stock_online > 0) {
-        this.items.push({ ...product, quantity: 1 });
-      } else {
-        console.log('No hay suficiente stock online');
-      }
-    }
-    this.saveCart();
+    });
+
+    return added;
   }
 
   getItems() {

@@ -58,10 +58,7 @@ export class MedicionPage implements OnInit {
     await alert.present();
   }
 
-  addToCart(product: any) {
-    this.cartService.addToCart(product);
-    this.showToast();
-  }
+
 
   toggleDropdown(open: boolean) {
     this.isDropdownOpen = open;
@@ -79,15 +76,24 @@ export class MedicionPage implements OnInit {
     }
   }
   
-  async showToast() {
+  addToCart(product: any) {
+    const added = this.cartService.addToCart(product);
+    if (added) {
+      this.showToast('Producto agregado al carrito', 'success');
+    } else {
+      this.showToast('No hay suficiente stock online', 'danger');
+    }
+  }
+
+  async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
-      message: 'Producto agregado al carrito',
+      message: message,
       duration: 2000,
-      color: 'success'
+      color: color
     });
     toast.present();
   }
-
+  
   openCategoriesMenu() {
     this.menu.open('first');
   }

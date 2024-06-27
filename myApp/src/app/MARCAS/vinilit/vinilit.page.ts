@@ -116,19 +116,22 @@ export class vinilitPage implements OnInit {
   }
 
   addToCart(product: any) {
-    this.cartService.addToCart(product);
-    this.showToast();
+    const added = this.cartService.addToCart(product);
+    if (added) {
+      this.showToast('Producto agregado al carrito', 'success');
+    } else {
+      this.showToast('No hay suficiente stock online', 'danger');
+    }
   }
-  
-  async showToast() {
+
+  async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
-      message: 'Producto agregado al carrito',
+      message: message,
       duration: 2000,
-      color: 'success'
+      color: color
     });
     toast.present();
   }
-
 
 }
 
