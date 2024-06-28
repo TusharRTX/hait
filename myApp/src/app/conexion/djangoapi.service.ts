@@ -117,6 +117,10 @@ export class DjangoapiService {
     return this.http.get(`${this.apiURL}/productos_disponibles/`);
   }
 
+  updateProducto(id: number, productData: any): Observable<any> {
+    return this.http.put(`${this.apiURL}/api/productos/${id}/`, productData);
+  }
+
 }
 
 

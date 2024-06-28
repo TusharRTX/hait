@@ -70,6 +70,7 @@ export class TodoproductosPage implements OnInit {
       this.updatePaginatedProducts();
     }
   }
+
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',
@@ -129,7 +130,89 @@ export class TodoproductosPage implements OnInit {
   openCategoriesMenu() {
     this.menu.open('first');
   }
-  
+
+  async editProduct(product: any) {
+    const alert = await this.alertController.create({
+      header: 'Editar Producto',
+      inputs: [
+        {
+          name: 'codigo',
+          type: 'text',
+          value: product.codigo,
+          placeholder: 'Código'
+        },
+        {
+          name: 'marca',
+          type: 'text',
+          value: product.marca,
+          placeholder: 'Marca'
+        },
+        {
+          name: 'nombre',
+          type: 'text',
+          value: product.nombre,
+          placeholder: 'Nombre'
+        },
+        {
+          name: 'precio',
+          type: 'number',
+          value: product.precio,
+          placeholder: 'Precio'
+        },
+        {
+          name: 'stock_online',
+          type: 'number',
+          value: product.stock_online,
+          placeholder: 'Stock Online'
+        },
+        {
+          name: 'stock_tienda',
+          type: 'number',
+          value: product.stock_tienda,
+          placeholder: 'Stock Tienda'
+        },
+        {
+          name: 'categoria',
+          type: 'number',
+          value: product.categoria,
+          placeholder: 'Categoría'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary'
+        },
+        {
+          text: 'Guardar',
+          handler: data => {
+            const updatedProduct = {
+              codigo: data.codigo,
+              marca: data.marca,
+              nombre: data.nombre,
+              precio: data.precio,
+              stock_online: data.stock_online,
+              stock_tienda: data.stock_tienda,
+              categoria: data.categoria
+            };
+
+            this.apiService.updateProducto(product.id, updatedProduct).subscribe(
+              response => {
+                this.showToast('Producto actualizado', 'success');
+                this.ngOnInit(); // Refrescar la lista de productos
+              },
+              error => {
+                this.showToast('Error al actualizar el producto', 'danger');
+              }
+            );
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 }
 
 

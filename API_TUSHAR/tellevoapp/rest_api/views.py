@@ -28,12 +28,25 @@ def productos_disponibles(request):
     serializer = ProductoSerializer(productos, many=True)
     productos_data = serializer.data
 
-    # Añadir el nombre de la categoría a cada producto
     for producto in productos_data:
         categoria = Categorias.objects.get(id=producto['categoria'])
         producto['categoria_nombre'] = categoria.nombre
 
     return Response(productos_data)
+
+@api_view(['PUT'])
+def producto_detalle(request, id):
+    try:
+        producto = Producto.objects.get(id=id)
+    except Producto.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = ProductoSerializer(producto, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def registrar_compra_aprobada(request):

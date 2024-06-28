@@ -76,23 +76,23 @@
               <p>Stock Tienda: {{ producto.stock_tienda }}</p>
               <p>Categoría: {{ producto.categoria_nombre }}</p>
               <img [src]="'http://127.0.0.1:8000/' + producto.imagen" alt="{{ producto.nombre }}" />
+              <ion-button expand="full" (click)="editProduct(producto)">Editar</ion-button>
             </ion-card-content>
           </ion-card>
         </ion-col>
       </ion-row>
-    </ion-grid>
-    
-    <div class="pagination-container">
-      <ion-buttons slot="start">
-        <ion-button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</ion-button>
-      </ion-buttons>
-      <div class="pagination-info">
-        Page {{currentPage}} of {{totalPages}}
+      <div class="pagination-container">
+        <ion-buttons slot="start">
+          <ion-button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</ion-button>
+        </ion-buttons>
+        <div class="pagination-info">
+          Page {{currentPage}} of {{totalPages}}
+        </div>
+        <ion-buttons slot="end">
+          <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</ion-button>
+        </ion-buttons>
       </div>
-      <ion-buttons slot="end">
-        <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</ion-button>
-      </ion-buttons>
-    </div>
+    </ion-grid>
 
   <ion-footer>
     <ion-toolbar>
