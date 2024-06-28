@@ -401,7 +401,7 @@
   
   ion-button {
     --background: transparent;
-    --color: white;
+    --color: rgb(0, 0, 0);
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -529,7 +529,7 @@
     font-weight: bold;
   }
   
-  
+
   /* Responsiveness */
   @media (max-width: 768px) {
     .logo-buttons ion-img {
