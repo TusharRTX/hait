@@ -11,7 +11,7 @@ class CompraAprobadaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CompraAprobada
-        fields = ['usuario', 'productos_ids', 'total']
+        fields = ['usuario', 'productos_ids', 'total', 'delivery_method']
 
     def create(self, validated_data):
         productos_ids = validated_data.pop('productos_ids')

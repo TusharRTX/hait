@@ -42,6 +42,7 @@ class CompraAprobada(models.Model):
     usuario = models.ForeignKey('User', on_delete=models.CASCADE, related_name='compras', null=True, blank=True)
     productos = models.ManyToManyField('Producto', through='CompraProducto')
     total = models.DecimalField(max_digits=10, decimal_places=2)
+    delivery_method = models.CharField(max_length=20, choices=[('retiro', 'Retiro en Tienda'), ('despacho', 'Despacho a Domicilio')],default='retiro')
 
     def __str__(self):
         return f'Compra {self.id} por {self.usuario.username if self.usuario else "Invitado"}'

@@ -16,6 +16,7 @@ export class SuccessPage implements OnInit {
   isAuthenticated: boolean = false;
   role: string = ''
   userId?: number;
+  deliveryMethod: string = '';
 
   constructor(private alertController: AlertController,private router: Router,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
@@ -30,9 +31,45 @@ export class SuccessPage implements OnInit {
     });
     this.apiService.getUserId().then(id => {
       this.userId = id;
-      this.registerPurchase();
+      this.showDeliveryMethodAlert(); // Mostrar la alerta al cargar la página
     });
-    this.cartService.clearCart();
+  }
+
+  async showDeliveryMethodAlert() {
+    const alert = await this.alertController.create({
+      header: 'Método de Entrega',
+      message: 'Por favor selecciona el método de entrega',
+      inputs: [
+        {
+          name: 'deliveryMethod',
+          type: 'radio',
+          label: 'Retiro en Tienda',
+          value: 'retiro',
+          checked: true
+        },
+        {
+          name: 'deliveryMethod',
+          type: 'radio',
+          label: 'Despacho a Domicilio',
+          value: 'despacho'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Aceptar',
+          handler: (data) => {
+            if (data) {
+              this.deliveryMethod = data;
+              this.registerPurchase(); // Registrar la compra después de seleccionar el método de entrega
+            } else {
+              this.showDeliveryMethodAlert(); // Volver a mostrar la alerta si no se seleccionó nada
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   async registerPurchase() {
@@ -40,7 +77,8 @@ export class SuccessPage implements OnInit {
     const purchaseData = {
       usuario: this.userId,
       productos_ids: productIds,
-      total: this.total
+      total: this.total,
+      delivery_method: this.deliveryMethod  // Añadir el método de entrega aquí
     };
 
     try {
