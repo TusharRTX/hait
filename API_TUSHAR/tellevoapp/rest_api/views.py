@@ -21,6 +21,20 @@ from django.core.mail import send_mail
 from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
 
+
+@api_view(['GET'])
+def productos_disponibles(request):
+    productos = Producto.objects.filter(categoria__in=[1, 2, 3, 4, 5])
+    serializer = ProductoSerializer(productos, many=True)
+    productos_data = serializer.data
+
+    # Añadir el nombre de la categoría a cada producto
+    for producto in productos_data:
+        categoria = Categorias.objects.get(id=producto['categoria'])
+        producto['categoria_nombre'] = categoria.nombre
+
+    return Response(productos_data)
+
 @api_view(['POST'])
 def registrar_compra_aprobada(request):
     serializer = CompraAprobadaSerializer(data=request.data)

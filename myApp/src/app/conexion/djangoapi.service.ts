@@ -113,6 +113,10 @@ export class DjangoapiService {
       .then(response => response.data);
   }
 
+  getProductosDisponibles(): Observable<any> {
+    return this.http.get(`${this.apiURL}/productos_disponibles/`);
+  }
+
 }
 
 

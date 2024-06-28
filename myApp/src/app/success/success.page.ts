@@ -23,6 +23,7 @@ export class SuccessPage implements OnInit {
   ngOnInit() {
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
+    this.cartService.clearCart();
     this.apiService.isAuthenticated$.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
     });

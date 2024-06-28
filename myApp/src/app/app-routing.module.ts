@@ -41,7 +41,10 @@ const routes: Routes = [
   { path: 'vendedor', loadChildren: () => import('./ACTORES/vendedor/vendedor.module').then(m => m.VendedorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
   { path: 'bodeguero', loadChildren: () => import('./ACTORES/bodeguero/bodeguero.module').then(m => m.BodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
   { path: 'contador', loadChildren: () => import('./ACTORES/contador/contador.module').then(m => m.ContadorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'contador' } },
-
+  {
+    path: 'todoproductos',
+    loadChildren: () => import('./todoproductos/todoproductos.module').then( m => m.TodoproductosPageModule)
+  },
 
 
   // PAGINAS PRINCIPALES (home) cada actor
