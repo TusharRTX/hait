@@ -36,7 +36,7 @@ def aprobar_pedido(request, id):
     try:
         compra = CompraAprobada.objects.get(id=id)
         productos = compra.compraproducto_set.all()
-        productos_list = [{'nombre': p.producto.nombre, 'cantidad': p.cantidad, 'precio': p.producto.precio} for p in productos]
+        productos_list = [{'codigo': p.producto.codigo, 'nombre': p.producto.nombre, 'cantidad': p.cantidad, 'precio': p.producto.precio} for p in productos]
 
         detalle_pedido = DetallePedido.objects.create(
             id_compraaprobada=compra,
@@ -62,7 +62,7 @@ def rechazar_pedido(request, id):
     try:
         compra = CompraAprobada.objects.get(id=id)
         productos = compra.compraproducto_set.all()
-        productos_list = [{'nombre': p.producto.nombre, 'cantidad': p.cantidad, 'precio': p.producto.precio} for p in productos]
+        productos_list = [{'codigo': p.producto.codigo, 'nombre': p.producto.nombre, 'cantidad': p.cantidad, 'precio': p.producto.precio} for p in productos]
 
         detalle_pedido = DetallePedido.objects.create(
             id_compraaprobada=compra,
@@ -82,6 +82,7 @@ def rechazar_pedido(request, id):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except CompraAprobada.DoesNotExist:
         return Response({'error': 'Compra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        
 
 @api_view(['GET'])
 def getPedidosAprobados(request):

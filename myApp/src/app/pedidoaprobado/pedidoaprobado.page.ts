@@ -35,6 +35,25 @@ export class PedidoaprobadoPage implements OnInit {
     this.fetchPedidosAprobados();
   }
 
+  fetchPedidosAprobados() {
+    this.djangoApiService.getPedidosAprobados().subscribe((data: any[]) => {
+        this.pedidosAprobados = data.map(pedido => {
+            pedido.productos = JSON.parse(pedido.productos).map((producto: any) => {
+                return {
+                    codigo: producto.codigo || 'N/A', // Asegurarse de que el campo código siempre exista
+                    nombre: producto.nombre,
+                    cantidad: producto.cantidad,
+                    precio: producto.precio
+                };
+            });
+            return pedido;
+        });
+        console.log('Pedidos aprobados fetched:', this.pedidosAprobados);
+    }, error => {
+        console.error('Error fetching pedidos aprobados:', error);
+    });
+}
+
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',
@@ -71,18 +90,6 @@ export class PedidoaprobadoPage implements OnInit {
         dropdown.style.display = 'none';
       }
     }
-  }
-
-  fetchPedidosAprobados() {
-    this.djangoApiService.getPedidosAprobados().subscribe((data: any[]) => {
-      this.pedidosAprobados = data.map(pedido => {
-        pedido.productos = JSON.parse(pedido.productos);
-        return pedido;
-      });
-      console.log('Pedidos aprobados fetched:', this.pedidosAprobados);
-    }, error => {
-      console.error('Error fetching pedidos aprobados:', error);
-    });
   }
 
   async showToast(message: string, color: string) {

@@ -75,7 +75,7 @@
           <p>Productos:</p>
           <ion-list>
             <ion-item *ngFor="let producto of pedido.productos">
-              <p>{{ producto.producto.nombre }} - {{ producto.cantidad }} unidades - Precio: {{ producto.producto.precio }}</p>
+              <p>Codigo: {{ producto.producto.codigo }} / Nombre: {{ producto.producto.nombre }} / Cantidad: {{ producto.cantidad }} unidades / Precio: {{ producto.producto.precio }}CLP</p>
             </ion-item>
           </ion-list>
           <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="aprobarPedido(pedido.id)">Aprobar</ion-button>
