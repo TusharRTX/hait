@@ -67,6 +67,7 @@ def getPedidos(request):
     serializer = CompraAprobadaSerializer(pedidos, many=True)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 def register(request):
     serializer = UserSerializer(data=request.data)

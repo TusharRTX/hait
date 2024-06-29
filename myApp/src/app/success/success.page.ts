@@ -72,30 +72,38 @@ export class SuccessPage implements OnInit {
 
     await alert.present();
   }
+  
 
   async registerPurchase() {
-    const productIds = this.items.map(item => item.id);
+    const productDetails = this.items.map(item => ({
+        id: item.id,
+        cantidad: item.quantity
+    }));
+    const productIds = productDetails.map(detail => detail.id);
+    const cantidades = productDetails.map(detail => detail.cantidad);
+    
     const purchaseData = {
-      usuario: this.userId,
-      productos_ids: productIds,
-      total: this.total,
-      delivery_method: this.deliveryMethod  // Añadir el método de entrega aquí
+        usuario: this.userId,
+        productos_ids: productIds,
+        cantidades: cantidades,
+        total: this.total,
+        delivery_method: this.deliveryMethod
     };
 
     try {
-      const response = await this.apiService.registerPurchase(purchaseData);
-      console.log('Compra registrada exitosamente', response);
+        const response = await this.apiService.registerPurchase(purchaseData);
+        console.log('Compra registrada exitosamente', response);
     } catch (error) {
-      console.error('Error al registrar la compra', error);
-      const alert = await this.alertController.create({
-        header: 'Error',
-        message: 'Hubo un error al registrar la compra. Intenta nuevamente.',
-        buttons: ['OK']
-      });
-      await alert.present();
+        console.error('Error al registrar la compra', error);
+        const alert = await this.alertController.create({
+            header: 'Error',
+            message: 'Hubo un error al registrar la compra. Intenta nuevamente.',
+            buttons: ['OK']
+        });
+        await alert.present();
     }
-  }
-
+}
+  
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',

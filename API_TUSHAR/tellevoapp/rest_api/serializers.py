@@ -11,18 +11,21 @@ from core.models import Producto, Categorias, User, CompraAprobada, CompraProduc
 # Serializer para la creación de CompraAprobada
 class CompraAprobadaCreateSerializer(serializers.ModelSerializer):
     productos_ids = serializers.ListField(child=serializers.IntegerField(), write_only=True)
+    cantidades = serializers.ListField(child=serializers.IntegerField(), write_only=True)  # Añadimos la lista de cantidades
 
     class Meta:
         model = CompraAprobada
-        fields = ['usuario', 'productos_ids', 'total', 'delivery_method']
+        fields = ['usuario', 'productos_ids', 'cantidades', 'total', 'delivery_method']
 
     def create(self, validated_data):
         productos_ids = validated_data.pop('productos_ids')
+        cantidades = validated_data.pop('cantidades')
         compra = CompraAprobada.objects.create(**validated_data)
-        for producto_id in productos_ids:
+        for producto_id, cantidad in zip(productos_ids, cantidades):
             producto = Producto.objects.get(id=producto_id)
-            CompraProducto.objects.create(compra=compra, producto=producto, cantidad=1)
+            CompraProducto.objects.create(compra=compra, producto=producto, cantidad=cantidad)
         return compra
+
 
 # Serializer para obtener los detalles completos de CompraAprobada
 class ProductoSerializer(serializers.ModelSerializer):
@@ -55,7 +58,6 @@ class CompraAprobadaSerializer(serializers.ModelSerializer):
     class Meta:
         model = CompraAprobada
         fields = ['id', 'usuario', 'total', 'delivery_method', 'productos']
-
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
