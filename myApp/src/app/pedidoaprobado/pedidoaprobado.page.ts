@@ -31,6 +31,10 @@ export class PedidoaprobadoPage implements OnInit {
 
   }
 
+  ionViewWillEnter() {
+    this.fetchPedidosAprobados();
+  }
+
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',
@@ -71,8 +75,7 @@ export class PedidoaprobadoPage implements OnInit {
 
   fetchPedidosAprobados() {
     this.djangoApiService.getPedidosAprobados().subscribe((data: any[]) => {
-      // Convertir el campo productos de cada pedido de JSON string a array de objetos
-      this.pedidosAprobados = data.map((pedido: any) => {
+      this.pedidosAprobados = data.map(pedido => {
         pedido.productos = JSON.parse(pedido.productos);
         return pedido;
       });
@@ -81,7 +84,18 @@ export class PedidoaprobadoPage implements OnInit {
       console.error('Error fetching pedidos aprobados:', error);
     });
   }
+
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color,
+    });
+    toast.present();
+  }
   
 }
+
+
 
 
