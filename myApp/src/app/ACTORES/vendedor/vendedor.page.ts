@@ -20,4 +20,10 @@ export class VendedorPage implements OnInit {
   irAPedidos() {
     this.router.navigate(['/pedidos']);
   }
+
+  irAPedidosAprobados() {
+    this.router.navigate(['/pedidoaprobado']);
+  }
+
+  
 }

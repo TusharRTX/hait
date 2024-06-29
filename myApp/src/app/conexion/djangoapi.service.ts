@@ -126,6 +126,18 @@ export class DjangoapiService {
     return this.http.put(`${this.apiURL}/api/productos/${id}/`, productData);
   }
 
+  aprobarPedido(id: number): Observable<any> {
+    return this.http.post(`${this.apiURL}/aprobar_pedido/${id}/`, {});
+  }
+  
+  rechazarPedido(id: number): Observable<any> {
+    return this.http.post(`${this.apiURL}/rechazar_pedido/${id}/`, {});
+  }
+
+  getPedidosAprobados(): Observable<any> {
+    return this.http.get(`${this.apiURL}/get_pedidos_aprobados/`);
+  }
+
 }
 
 

@@ -1,3 +1,4 @@
+import json
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -26,7 +27,68 @@ from core.models import CompraAprobada
 from .serializers import  CompraAprobadaSerializer
 from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
+from core.models import CompraAprobada, DetallePedido
+from .serializers import DetallePedidoSerializer
 
+
+@api_view(['POST'])
+def aprobar_pedido(request, id):
+    try:
+        compra = CompraAprobada.objects.get(id=id)
+        productos = compra.compraproducto_set.all()
+        productos_list = [{'nombre': p.producto.nombre, 'cantidad': p.cantidad, 'precio': p.producto.precio} for p in productos]
+
+        detalle_pedido = DetallePedido.objects.create(
+            id_compraaprobada=compra,
+            usuario_username=compra.usuario.username,
+            usuario_nombre=compra.usuario.nombre,
+            usuario_apellido=compra.usuario.apellido,
+            usuario_correo=compra.usuario.correo,
+            usuario_telefono=compra.usuario.telefono,
+            usuario_direccion=compra.usuario.direccion,
+            usuario_rut=compra.usuario.rut,
+            pedido_total=compra.total,
+            pedido_delivery_method=compra.delivery_method,
+            pedido_estado='aprobado',
+            productos=json.dumps(productos_list)
+        )
+        serializer = DetallePedidoSerializer(detalle_pedido)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except CompraAprobada.DoesNotExist:
+        return Response({'error': 'Compra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+def rechazar_pedido(request, id):
+    try:
+        compra = CompraAprobada.objects.get(id=id)
+        productos = compra.compraproducto_set.all()
+        productos_list = [{'nombre': p.producto.nombre, 'cantidad': p.cantidad, 'precio': p.producto.precio} for p in productos]
+
+        detalle_pedido = DetallePedido.objects.create(
+            id_compraaprobada=compra,
+            usuario_username=compra.usuario.username,
+            usuario_nombre=compra.usuario.nombre,
+            usuario_apellido=compra.usuario.apellido,
+            usuario_correo=compra.usuario.correo,
+            usuario_telefono=compra.usuario.telefono,
+            usuario_direccion=compra.usuario.direccion,
+            usuario_rut=compra.usuario.rut,
+            pedido_total=compra.total,
+            pedido_delivery_method=compra.delivery_method,
+            pedido_estado='rechazado',
+            productos=json.dumps(productos_list)
+        )
+        serializer = DetallePedidoSerializer(detalle_pedido)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except CompraAprobada.DoesNotExist:
+        return Response({'error': 'Compra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def getPedidosAprobados(request):
+    # Obtener los pedidos que han sido aprobados
+    pedidos = DetallePedido.objects.filter(pedido_estado='aprobado')
+    serializer = DetallePedidoSerializer(pedidos, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def productos_disponibles(request):
@@ -63,7 +125,7 @@ def registrar_compra_aprobada(request):
 
 @api_view(['GET'])
 def getPedidos(request):
-    pedidos = CompraAprobada.objects.all()
+    pedidos = CompraAprobada.objects.exclude(detallepedido__pedido_estado__in=['aprobado', 'rechazado'])
     serializer = CompraAprobadaSerializer(pedidos, many=True)
     return Response(serializer.data)
 

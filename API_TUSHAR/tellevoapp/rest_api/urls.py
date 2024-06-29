@@ -1,6 +1,6 @@
 from django.urls import path
-from rest_api.views import productos_por_marca, register, user_detail,registrar_compra_aprobada, productos_disponibles, producto_detalle, getPedidos
-from .views import getPedidos, producto_detalle, productos_disponibles, register, login, registrar_compra_aprobada, reset_password, user_detail
+from rest_api.views import productos_por_marca, getPedidosAprobados, register, user_detail,registrar_compra_aprobada, productos_disponibles, producto_detalle, getPedidos, aprobar_pedido, rechazar_pedido
+from .views import aprobar_pedido, getPedidos, getPedidosAprobados, producto_detalle, productos_disponibles, rechazar_pedido, register, login, registrar_compra_aprobada, reset_password, user_detail
 from rest_api.views import creacion
 from rest_api.views import login
 from rest_api.views import get_categories
@@ -35,5 +35,8 @@ urlpatterns=[
     path('productos_disponibles/', productos_disponibles, name='productos_disponibles'),
     path('get_pedidos/', getPedidos, name='get_pedidos'),
     path('api/productos/<int:id>/', producto_detalle, name='producto_detalle'),
+    path('aprobar_pedido/<int:id>/', aprobar_pedido, name='aprobar_pedido'),
+    path('rechazar_pedido/<int:id>/', rechazar_pedido, name='rechazar_pedido'),
+    path('get_pedidos_aprobados/', getPedidosAprobados, name='get_pedidos_aprobados'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

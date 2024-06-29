@@ -4,9 +4,9 @@ from core.models import Producto
 from core.models import Categorias
 from core.models import User
 from rest_framework import serializers
-from core.models import CompraAprobada, CompraProducto
+from core.models import CompraAprobada, CompraProducto, DetallePedido
 from rest_framework import serializers
-from core.models import Producto, Categorias, User, CompraAprobada, CompraProducto
+from core.models import Producto, Categorias, User, CompraAprobada, CompraProducto, DetallePedido
 
 # Serializer para la creación de CompraAprobada
 class CompraAprobadaCreateSerializer(serializers.ModelSerializer):
@@ -63,6 +63,13 @@ class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categorias
         fields = ['id', 'nombre']
+
+
+
+class DetallePedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DetallePedido
+        fields = '__all__'        
 
 
 

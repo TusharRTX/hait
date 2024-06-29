@@ -7,19 +7,21 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';  
 
 @Component({
-  selector: 'app-pedidos',
-  templateUrl: './pedidos.page.html',
-  styleUrls: ['./pedidos.page.scss'],
+  selector: 'app-pedidoaprobado',
+  templateUrl: './pedidoaprobado.page.html',
+  styleUrls: ['./pedidoaprobado.page.scss'],
 })
-export class PedidosPage implements OnInit {
-  pedidos: any[] = [];
+export class PedidoaprobadoPage implements OnInit {
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
   role: string = '';
+  pedidosAprobados: any[] = [];
 
   constructor(private alertController: AlertController,private router: Router,private toastController: ToastController, private cartService: CartService,private menu: MenuController,private djangoApiService: DjangoapiService) {}
 
   ngOnInit() {
+    this.fetchPedidosAprobados();
+
     this.djangoApiService.isAuthenticated$.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
     });
@@ -27,16 +29,6 @@ export class PedidosPage implements OnInit {
       this.role = role;
     });
 
-    console.log('Initializing PedidosPage...');
-    this.djangoApiService.getPedidos().subscribe(
-      (data) => {
-        console.log('Pedidos fetched: ', data);
-        this.pedidos = data;
-      },
-      (error) => {
-        console.error('Error fetching pedidos: ', error);
-      }
-    );
   }
 
   async presentLogoutAlert() {
@@ -77,32 +69,19 @@ export class PedidosPage implements OnInit {
     }
   }
 
-  aprobarPedido(id: number) {
-    this.djangoApiService.aprobarPedido(id).subscribe(response => {
-      console.log('Pedido aprobado:', response);
-      this.fetchPedidos(); // Vuelve a obtener la lista de pedidos para actualizar la vista
+  fetchPedidosAprobados() {
+    this.djangoApiService.getPedidosAprobados().subscribe((data: any[]) => {
+      // Convertir el campo productos de cada pedido de JSON string a array de objetos
+      this.pedidosAprobados = data.map((pedido: any) => {
+        pedido.productos = JSON.parse(pedido.productos);
+        return pedido;
+      });
+      console.log('Pedidos aprobados fetched:', this.pedidosAprobados);
     }, error => {
-      console.error('Error al aprobar el pedido:', error);
+      console.error('Error fetching pedidos aprobados:', error);
     });
   }
   
-  rechazarPedido(id: number) {
-    this.djangoApiService.rechazarPedido(id).subscribe(response => {
-      console.log('Pedido rechazado:', response);
-      this.fetchPedidos(); // Vuelve a obtener la lista de pedidos para actualizar la vista
-    }, error => {
-      console.error('Error al rechazar el pedido:', error);
-    });
-  }
-  
-  fetchPedidos() {
-    this.djangoApiService.getPedidos().subscribe(data => {
-      this.pedidos = data;
-      console.log('Pedidos fetched:', data);
-    }, error => {
-      console.error('Error fetching pedidos:', error);
-    });
-  }
-
 }
+
 
