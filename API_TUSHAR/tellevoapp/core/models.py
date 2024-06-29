@@ -55,6 +55,7 @@ class CompraProducto(models.Model):
     def __str__(self):
         return f'{self.cantidad} de {self.producto.nombre} en compra {self.compra.id}'
 
+
 class DetallePedido(models.Model):
     id_compraaprobada = models.IntegerField()
     usuario_username = models.CharField(max_length=150)
