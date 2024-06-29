@@ -1,0 +1,34 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let pedido of pedidos">
+      <ion-card>
+        <ion-card-content>
+          <p>Cliente: {{ pedido.usuario.username }}</p>
+          <p>Nombre: {{ pedido.usuario.nombre }}</p>
+          <p>Apellido: {{ pedido.usuario.apellido }}</p>
+          <p>Correo: {{ pedido.usuario.correo }}</p>
+          <p>Teléfono: {{ pedido.usuario.telefono }}</p>
+          <p>Dirección: {{ pedido.usuario.direccion }}</p>
+          <p>RUT: {{ pedido.usuario.rut }}</p>
+          <p>Total: {{ pedido.total }}</p>
+          <p>Delivery: {{ pedido.delivery_method }}</p>
+          <p>Productos:</p>
+          <ion-list>
+            <ion-item *ngFor="let producto of pedido.productos">
+              <p>{{ producto.producto.nombre }} - {{ producto.cantidad }} unidades - Precio: {{ producto.producto.precio }}</p>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+
+

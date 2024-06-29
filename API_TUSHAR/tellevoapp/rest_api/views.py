@@ -20,6 +20,8 @@ from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
+from core.models import Producto, Categorias, User, CompraAprobada, DetallePedido
+from .serializers import ProductoSerializer, CategoriaSerializer, UserSerializer, CompraAprobadaSerializer
 
 
 @api_view(['GET'])
@@ -47,7 +49,6 @@ def producto_detalle(request, id):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 @api_view(['POST'])
 def registrar_compra_aprobada(request):
     serializer = CompraAprobadaSerializer(data=request.data)
@@ -55,6 +56,15 @@ def registrar_compra_aprobada(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+from core.models import CompraAprobada
+from .serializers import CompraAprobadaSerializer
+
+@api_view(['GET'])
+def getPedidos(request):
+    pedidos = CompraAprobada.objects.all()
+    serializer = CompraAprobadaSerializer(pedidos, many=True)
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def register(request):

@@ -44,7 +44,11 @@ const routes: Routes = [
   {
     path: 'todoproductos',
     loadChildren: () => import('./todoproductos/todoproductos.module').then( m => m.TodoproductosPageModule)
+  },  {
+    path: 'pedidos',
+    loadChildren: () => import('./pedidos/pedidos.module').then( m => m.PedidosPageModule)
   },
+
 
 
   // PAGINAS PRINCIPALES (home) cada actor

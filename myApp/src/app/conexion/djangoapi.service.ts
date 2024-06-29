@@ -30,6 +30,11 @@ export class DjangoapiService {
     }
   }
 
+  getPedidos(): Observable<any> {
+    console.log('Fetching pedidos...');
+    return this.http.get(`${this.apiURL}/get_pedidos/`);
+  }
+
   getUser(): Observable<any> {
     return this.http.get(this.apiURL + '/lista_user')
       .pipe(retry(3));

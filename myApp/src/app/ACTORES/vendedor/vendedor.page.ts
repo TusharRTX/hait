@@ -17,4 +17,7 @@ export class VendedorPage implements OnInit {
     this.router.navigate(['/todoproductos']);
   }
 
+  irAPedidos() {
+    this.router.navigate(['/pedidos']);
+  }
 }

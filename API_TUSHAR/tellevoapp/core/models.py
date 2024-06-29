@@ -54,3 +54,20 @@ class CompraProducto(models.Model):
 
     def __str__(self):
         return f'{self.cantidad} de {self.producto.nombre} en compra {self.compra.id}'
+
+class DetallePedido(models.Model):
+    id_compraaprobada = models.IntegerField()
+    usuario_username = models.CharField(max_length=150)
+    usuario_nombre = models.CharField(max_length=150)
+    usuario_apellido = models.CharField(max_length=150)
+    usuario_correo = models.EmailField()
+    usuario_telefono = models.CharField(max_length=15)
+    usuario_direccion = models.CharField(max_length=255)
+    usuario_rut = models.CharField(max_length=12)
+    pedido_total = models.DecimalField(max_digits=10, decimal_places=2)
+    pedido_delivery_method = models.CharField(max_length=20)
+    pedido_estado = models.CharField(max_length=10)
+    productos = models.TextField()  # Almacenar JSON string con los productos y cantidades
+
+    def __str__(self):
+        return f'Pedido {self.id} de {self.usuario_username}'
