@@ -1,0 +1,25 @@
+<ion-content>
+  <ion-card *ngFor="let pedido of pedidosVendedor">
+    <ion-card-content>
+      <p>Cliente: {{ pedido.usuario_username }}</p>
+      <p>Nombre: {{ pedido.usuario_nombre }}</p>
+      <p>Apellido: {{ pedido.usuario_apellido }}</p>
+      <p>Correo: {{ pedido.usuario_correo }}</p>
+      <p>Teléfono: {{ pedido.usuario_telefono }}</p>
+      <p>Dirección: {{ pedido.usuario_direccion }}</p>
+      <p>RUT: {{ pedido.usuario_rut }}</p>
+      <p>Total: {{ pedido.pedido_total }}</p>
+      <p>Delivery: {{ pedido.pedido_delivery_method }}</p>
+      <p>Estado: {{ pedido.pedido_estado }}</p>
+      <p>Productos:</p>
+      <ion-list *ngFor="let producto of pedido.productos">
+        <ion-item>
+          <p>Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}CLP</p>
+        </ion-item>
+      </ion-list>
+      <p>Estado del Bodeguero: {{ pedido.estado_bodeguero }}</p>
+      <p>Nota del Bodeguero: {{ pedido.nota_bodeguero }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+

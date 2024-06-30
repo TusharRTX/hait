@@ -60,7 +60,11 @@ const routes: Routes = [
   {
     path: 'pedidoestado',
     loadChildren: () => import('./pedidoestado/pedidoestado.module').then( m => m.PedidoestadoPageModule)
+  },  {
+    path: 'pedidosokbodeguero',
+    loadChildren: () => import('./pedidosokbodeguero/pedidosokbodeguero.module').then( m => m.PedidosokbodegueroPageModule)
   },
+
 
 
 

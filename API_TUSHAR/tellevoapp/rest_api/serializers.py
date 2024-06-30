@@ -1,12 +1,12 @@
 from rest_framework import serializers
 from rest_framework import serializers
-from core.models import Producto
+from core.models import PedidoEnviadoVendedor, Producto
 from core.models import Categorias
 from core.models import User
 from rest_framework import serializers
 from core.models import CompraAprobada, CompraProducto, DetallePedido, EstadoPedido
 from rest_framework import serializers
-from core.models import Producto, Categorias, User, CompraAprobada, CompraProducto, DetallePedido, EstadoPedido
+from core.models import Producto, Categorias, User, CompraAprobada, CompraProducto, DetallePedido, EstadoPedido, PedidoEnviadoVendedor
 
 # Serializer para la creación de CompraAprobada
 class CompraAprobadaCreateSerializer(serializers.ModelSerializer):
@@ -69,17 +69,25 @@ class CategoriaSerializer(serializers.ModelSerializer):
 
 
 class DetallePedidoSerializer(serializers.ModelSerializer):
+    estado_bodeguero = serializers.CharField(source='estadopedido.estado', read_only=True, default="No definido")
+    nota_bodeguero = serializers.CharField(source='estadopedido.nota_bodeguero', read_only=True, default="No definido")
+
     class Meta:
         model = DetallePedido
-        fields = '__all__'        
-
+        fields = '__all__'
 
 class EstadoPedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = EstadoPedido
         fields = '__all__'
+        
 
+class PedidoEnviadoVendedorSerializer(serializers.ModelSerializer):
+    estado_pedido = EstadoPedidoSerializer(source='id_estado_pedido', read_only=True)
 
+    class Meta:
+        model = PedidoEnviadoVendedor
+        fields = '__all__'
 
 
 

@@ -29,6 +29,44 @@ from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
 from core.models import CompraAprobada, DetallePedido, EstadoPedido
 from .serializers import DetallePedidoSerializer
+from core.models import PedidoEnviadoVendedor, EstadoPedido
+from .serializers import PedidoEnviadoVendedorSerializer, EstadoPedidoSerializer
+
+@api_view(['POST'])
+def enviar_pedido_vendedor(request, id):
+    try:
+        detalle_pedido = DetallePedido.objects.get(id=id)
+        if detalle_pedido.enviado_a_vendedor:
+            return Response({'error': 'Pedido ya enviado al vendedor'}, status=status.HTTP_400_BAD_REQUEST)
+
+        productos_list = json.loads(detalle_pedido.productos)
+
+        pedido_vendedor = PedidoEnviadoVendedor.objects.create(
+            usuario_username=detalle_pedido.usuario_username,
+            usuario_nombre=detalle_pedido.usuario_nombre,
+            usuario_apellido=detalle_pedido.usuario_apellido,
+            usuario_correo=detalle_pedido.usuario_correo,
+            usuario_telefono=detalle_pedido.usuario_telefono,
+            usuario_direccion=detalle_pedido.usuario_direccion,
+            usuario_rut=detalle_pedido.usuario_rut,
+            pedido_total=detalle_pedido.pedido_total,
+            pedido_delivery_method=detalle_pedido.pedido_delivery_method,
+            pedido_estado=detalle_pedido.pedido_estado,
+            productos=detalle_pedido.productos,
+            nota_bodeguero=detalle_pedido.estadopedido_set.first().nota_bodeguero,
+            estado_bodeguero=detalle_pedido.estadopedido_set.first().estado,
+            enviado_a_vendedor=True,
+            id_estado_pedido=detalle_pedido.estadopedido_set.first()
+        )
+
+        detalle_pedido.enviado_a_vendedor = True
+        detalle_pedido.save()
+
+        serializer = PedidoEnviadoVendedorSerializer(pedido_vendedor)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except DetallePedido.DoesNotExist:
+        return Response({'error': 'DetallePedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['PUT'])
 def update_estado_pedido(request, id):
@@ -145,16 +183,22 @@ from django.db.models import Q
 
 @api_view(['GET'])
 def getPedidosAprobados(request):
-    # Obtener los pedidos que han sido aprobados
-    pedidos_aprobados = DetallePedido.objects.filter(pedido_estado='aprobado')
-    
-    # Filtrar los pedidos que no tienen una entrada en la tabla EstadoPedido
-    pedidos_sin_aprobacion_bodeguero = pedidos_aprobados.filter(
-        ~Q(id__in=EstadoPedido.objects.values_list('id_detallepedido_id', flat=True))
-    )
+    try:
+        pedidos_aprobados = DetallePedido.objects.filter(pedido_estado='aprobado')
+        pedidos_sin_aprobacion_bodeguero = pedidos_aprobados.filter(
+            ~Q(id__in=EstadoPedido.objects.values_list('id_detallepedido_id', flat=True))
+        )
 
-    serializer = DetallePedidoSerializer(pedidos_sin_aprobacion_bodeguero, many=True)
-    return Response(serializer.data)
+        for pedido in pedidos_sin_aprobacion_bodeguero:
+            estado_pedido = EstadoPedido.objects.filter(id_detallepedido_id=pedido.id).first()
+            pedido.estado_bodeguero = estado_pedido.estado if estado_pedido else "No definido"
+            pedido.nota_bodeguero = estado_pedido.nota_bodeguero if estado_pedido else "No definido"
+
+        serializer = DetallePedidoSerializer(pedidos_sin_aprobacion_bodeguero, many=True)
+        return Response(serializer.data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 @api_view(['GET'])
 def productos_disponibles(request):

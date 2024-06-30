@@ -99,3 +99,35 @@ class EstadoPedido(models.Model):
 
     def __str__(self):
         return f'{self.id_detallepedido.id} - {self.estado}' 
+    
+
+
+from core.models import EstadoPedido
+
+class PedidoEnviadoVendedor(models.Model):
+    ESTADO_BODEGUERO_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('aprobado', 'Aprobado'),
+        ('preparado', 'Preparado'),
+        ('despachado', 'Despachado'),
+        ('listo_retiro', 'Listo para Retiro'),
+    ]
+
+    usuario_username = models.CharField(max_length=255)
+    usuario_nombre = models.CharField(max_length=255)
+    usuario_apellido = models.CharField(max_length=255)
+    usuario_correo = models.CharField(max_length=255)
+    usuario_telefono = models.CharField(max_length=255)
+    usuario_direccion = models.CharField(max_length=255)
+    usuario_rut = models.CharField(max_length=255)
+    pedido_total = models.DecimalField(max_digits=10, decimal_places=2)
+    pedido_delivery_method = models.CharField(max_length=255)
+    pedido_estado = models.CharField(max_length=10, choices=[('aprobado', 'Aprobado'), ('rechazado', 'Rechazado')])
+    productos = models.TextField()  # Aquí guardaremos una representación JSON de los productos
+    nota_bodeguero = models.TextField(blank=True, null=True)
+    estado_bodeguero = models.CharField(max_length=16, choices=ESTADO_BODEGUERO_CHOICES)
+    enviado_a_vendedor = models.BooleanField(default=False)
+    id_estado_pedido = models.OneToOneField(EstadoPedido, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.usuario_username} - {self.pedido_estado}'

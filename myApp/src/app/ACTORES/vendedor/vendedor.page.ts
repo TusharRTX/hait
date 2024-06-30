@@ -25,5 +25,9 @@ export class VendedorPage implements OnInit {
     this.router.navigate(['/pedidoaprobado']);
   }
 
+  irAPedidosAprobadosBodeguero() {
+    this.router.navigate(['/pedidosokbodeguero']);
+  }
+
   
 }
