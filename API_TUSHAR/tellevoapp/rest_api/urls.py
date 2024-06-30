@@ -1,6 +1,6 @@
 from django.urls import path
-from rest_api.views import enviar_pedido_vendedor, productos_por_marca, get_estado_pedido, get_detalles_con_estado, aprobar_pedido_bodeguero, getPedidosAprobados, register, user_detail,registrar_compra_aprobada, productos_disponibles, producto_detalle, getPedidos, aprobar_pedido, rechazar_pedido, update_estado_pedido
-from .views import aprobar_pedido, aprobar_pedido_bodeguero, enviar_pedido_vendedor, get_detalles_con_estado, get_estado_pedido, getPedidos, getPedidosAprobados, producto_detalle, productos_disponibles, rechazar_pedido, register, login, registrar_compra_aprobada, reset_password, update_estado_pedido, user_detail
+from rest_api.views import productos_por_marca, get_estado_pedido, get_detalles_con_estado, aprobar_pedido_bodeguero, getPedidosAprobados, register, user_detail,registrar_compra_aprobada, productos_disponibles, producto_detalle, getPedidos, aprobar_pedido, rechazar_pedido, update_estado_pedido
+from .views import aprobar_pedido, aprobar_pedido_bodeguero, get_detalles_con_estado, get_estado_pedido, getPedidos, getPedidosAprobados, producto_detalle, productos_disponibles, rechazar_pedido, register, login, registrar_compra_aprobada, reset_password, update_estado_pedido, user_detail
 from rest_api.views import creacion
 from rest_api.views import login
 from rest_api.views import get_categories
@@ -42,5 +42,4 @@ urlpatterns=[
     path('estado_pedido/<int:id>/', get_estado_pedido, name='get_estado_pedido'),
     path('api/detalles_con_estado/', get_detalles_con_estado, name='get_detalles_con_estado'),
     path('api/update_estado_pedido/<int:id>/', update_estado_pedido, name='update_estado_pedido'),
-    path('api/enviar_pedido_vendedor/<int:id>/', enviar_pedido_vendedor, name='enviar_pedido_vendedor'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -32,42 +32,6 @@ from .serializers import DetallePedidoSerializer
 from core.models import PedidoEnviadoVendedor, EstadoPedido
 from .serializers import PedidoEnviadoVendedorSerializer, EstadoPedidoSerializer
 
-@api_view(['POST'])
-def enviar_pedido_vendedor(request, id):
-    try:
-        detalle_pedido = DetallePedido.objects.get(id=id)
-        if detalle_pedido.enviado_a_vendedor:
-            return Response({'error': 'Pedido ya enviado al vendedor'}, status=status.HTTP_400_BAD_REQUEST)
-
-        productos_list = json.loads(detalle_pedido.productos)
-
-        pedido_vendedor = PedidoEnviadoVendedor.objects.create(
-            usuario_username=detalle_pedido.usuario_username,
-            usuario_nombre=detalle_pedido.usuario_nombre,
-            usuario_apellido=detalle_pedido.usuario_apellido,
-            usuario_correo=detalle_pedido.usuario_correo,
-            usuario_telefono=detalle_pedido.usuario_telefono,
-            usuario_direccion=detalle_pedido.usuario_direccion,
-            usuario_rut=detalle_pedido.usuario_rut,
-            pedido_total=detalle_pedido.pedido_total,
-            pedido_delivery_method=detalle_pedido.pedido_delivery_method,
-            pedido_estado=detalle_pedido.pedido_estado,
-            productos=detalle_pedido.productos,
-            nota_bodeguero=detalle_pedido.estadopedido_set.first().nota_bodeguero,
-            estado_bodeguero=detalle_pedido.estadopedido_set.first().estado,
-            enviado_a_vendedor=True,
-            id_estado_pedido=detalle_pedido.estadopedido_set.first()
-        )
-
-        detalle_pedido.enviado_a_vendedor = True
-        detalle_pedido.save()
-
-        serializer = PedidoEnviadoVendedorSerializer(pedido_vendedor)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    except DetallePedido.DoesNotExist:
-        return Response({'error': 'DetallePedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-
-
 @api_view(['PUT'])
 def update_estado_pedido(request, id):
     try:

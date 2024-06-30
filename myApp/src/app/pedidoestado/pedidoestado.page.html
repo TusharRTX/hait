@@ -80,7 +80,6 @@
         <p>Estado del Bodeguero: {{ pedido.estado_bodeguero }}</p>
         <p>Nota del Bodeguero: {{ pedido.nota_bodeguero }}</p>
         <ion-button (click)="onPedidoSelected(pedido)">Editar</ion-button>
-        <ion-button (click)="enviarALVendedor(pedido.id)" [disabled]="pedido.enviado_a_vendedor">Enviar al Vendedor</ion-button>
       </ion-card-content>
     </ion-card>
 

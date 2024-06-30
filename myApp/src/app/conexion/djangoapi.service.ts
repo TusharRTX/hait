@@ -155,10 +155,6 @@ export class DjangoapiService {
     return this.http.put(`${this.apiURL}/api/update_estado_pedido/${id}/`, data);
   }
 
-  enviarPedidoVendedor(id: number): Observable<any> {
-    return this.http.post(`${this.apiURL}/api/enviar_pedido_vendedor/${id}/`, {});
-  }
-
 }
 
 

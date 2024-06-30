@@ -78,19 +78,6 @@ export class PedidoestadoPage implements OnInit {
     });
     toast.present();
   }
-  
-  enviarALVendedor(id: number) {
-    this.djangoApiService.enviarPedidoVendedor(id).subscribe(
-      (response) => {
-        this.presentToast('Pedido enviado al vendedor exitosamente', 'success');
-        this.LoadPedidos();
-      },
-      (error) => {
-        this.presentToast('Error al enviar el pedido al vendedor', 'danger');
-        console.error(error);
-      }
-    );
-  }
 
       async presentLogoutAlert() {
         const alert = await this.alertController.create({
