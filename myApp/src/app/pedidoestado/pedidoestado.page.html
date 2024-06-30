@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Editar Pedido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Estado del Pedido</ion-label>
+    <ion-select [(ngModel)]="estadoPedido.estado">
+      <ion-select-option value="pendiente">Pendiente</ion-select-option>
+      <ion-select-option value="aprobado">Aprobado</ion-select-option>
+      <ion-select-option value="preparado">Preparado</ion-select-option>
+      <ion-select-option value="despachado">Despachado</ion-select-option>
+      <ion-select-option value="listo_retiro">Listo para Retiro</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Nota del Bodeguero</ion-label>
+    <ion-textarea [(ngModel)]="estadoPedido.nota_bodeguero"></ion-textarea>
+  </ion-item>
+
+  <ion-button expand="full" (click)="guardarEstadoPedido()">Guardar</ion-button>
+</ion-content>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bodeguero',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BodegueroPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  irAPedidosAprobados() {
+    this.router.navigate(['/pedidobodeguero']);
+  }
+
+  irAPedidosEstado() {
+    this.router.navigate(['/pedidoestado']);
   }
 
 }

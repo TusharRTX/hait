@@ -44,13 +44,22 @@ const routes: Routes = [
   {
     path: 'todoproductos',
     loadChildren: () => import('./todoproductos/todoproductos.module').then( m => m.TodoproductosPageModule)
-  },  {
+  },
+  {
     path: 'pedidos',
     loadChildren: () => import('./pedidos/pedidos.module').then( m => m.PedidosPageModule)
   },
   {
     path: 'pedidoaprobado',
-    loadChildren: () => import('./pedidoaprobado/pedidoaprobado.module').then( m => m.PedidoaprobadoPageModule)
+    loadChildren: () => import('./ACTORES/vendedor/pedidoaprobado/pedidoaprobado.module').then( m => m.PedidoaprobadoPageModule)
+  },
+  {
+    path: 'pedidobodeguero',
+    loadChildren: () => import('./pedidobodeguero/pedidobodeguero.module').then( m => m.PedidobodegueroPageModule)
+  },
+  {
+    path: 'pedidoestado',
+    loadChildren: () => import('./pedidoestado/pedidoestado.module').then( m => m.PedidoestadoPageModule)
   },
 
 

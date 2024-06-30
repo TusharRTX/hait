@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DjangoapiService } from '../conexion/djangoapi.service';
-import { CartService } from '../services/cart.service';
+import { DjangoapiService } from '../../../conexion/djangoapi.service';
+import { CartService } from '../../../services/cart.service';
 import { MenuController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';

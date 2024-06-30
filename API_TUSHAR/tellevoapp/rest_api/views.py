@@ -22,15 +22,54 @@ from django.core.mail import send_mail
 from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
 from core.models import Producto, Categorias, User, CompraAprobada, DetallePedido
-from .serializers import ProductoSerializer, CategoriaSerializer, UserSerializer, CompraAprobadaSerializer, CompraAprobadaCreateSerializer
+from .serializers import ProductoSerializer, CategoriaSerializer, UserSerializer, CompraAprobadaSerializer, CompraAprobadaCreateSerializer, EstadoPedidoSerializer
 from core.models import CompraAprobada
 from .serializers import  CompraAprobadaSerializer
 from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
-from core.models import CompraAprobada, DetallePedido
+from core.models import CompraAprobada, DetallePedido, EstadoPedido
 from .serializers import DetallePedidoSerializer
 
+@api_view(['POST'])
+def editar_estado_pedido(request, id):
+    try:
+        estado_pedido = EstadoPedido.objects.get(id=id)
+        estado_pedido.estado = request.data.get('estado', estado_pedido.estado)
+        estado_pedido.nota_bodeguero = request.data.get('nota_bodeguero', estado_pedido.nota_bodeguero)
+        estado_pedido.save()
+        serializer = EstadoPedidoSerializer(estado_pedido)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except EstadoPedido.DoesNotExist:
+        return Response({'error': 'EstadoPedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+def get_estado_pedido(request, id):
+    try:
+        estado_pedido = EstadoPedido.objects.get(id_detallepedido=id)
+        serializer = EstadoPedidoSerializer(estado_pedido)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except EstadoPedido.DoesNotExist:
+        return Response({'error': 'EstadoPedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)    
+    
+@api_view(['POST'])
+def aprobar_pedido_bodeguero(request, id):
+    try:
+        detalle_pedido = DetallePedido.objects.get(id=id)
+        estado = request.data.get('estado', 'pendiente')
+        nota_bodeguero = request.data.get('nota_bodeguero', '')
+
+        estado_pedido = EstadoPedido.objects.create(
+            id_detallepedido=detalle_pedido,
+            estado=estado,
+            nota_bodeguero=nota_bodeguero
+        )
+
+        serializer = EstadoPedidoSerializer(estado_pedido)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except DetallePedido.DoesNotExist:
+        return Response({'error': 'DetallePedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    
+    
 @api_view(['POST'])
 def aprobar_pedido(request, id):
     try:
@@ -84,11 +123,19 @@ def rechazar_pedido(request, id):
         return Response({'error': 'Compra no encontrada'}, status=status.HTTP_404_NOT_FOUND)
         
 
+from django.db.models import Q
+
 @api_view(['GET'])
 def getPedidosAprobados(request):
     # Obtener los pedidos que han sido aprobados
-    pedidos = DetallePedido.objects.filter(pedido_estado='aprobado')
-    serializer = DetallePedidoSerializer(pedidos, many=True)
+    pedidos_aprobados = DetallePedido.objects.filter(pedido_estado='aprobado')
+    
+    # Filtrar los pedidos que no tienen una entrada en la tabla EstadoPedido
+    pedidos_sin_aprobacion_bodeguero = pedidos_aprobados.filter(
+        ~Q(id__in=EstadoPedido.objects.values_list('id_detallepedido_id', flat=True))
+    )
+
+    serializer = DetallePedidoSerializer(pedidos_sin_aprobacion_bodeguero, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])

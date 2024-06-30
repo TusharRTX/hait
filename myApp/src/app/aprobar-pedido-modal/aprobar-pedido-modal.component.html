@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aprobar Pedido</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancelar()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-radio-group [(ngModel)]="estado">
+      <ion-list-header>
+        <ion-label>Estado del Pedido</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let est of estados">
+        <ion-label>{{ est.label }}</ion-label>
+        <ion-radio slot="start" [value]="est.value"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+
+    <ion-item>
+      <ion-label position="stacked">Nota</ion-label>
+      <ion-textarea [(ngModel)]="nota_bodeguero"></ion-textarea>
+    </ion-item>
+  </ion-list>
+
+  <ion-footer>
+    <ion-button expand="full" (click)="aceptar()">Aceptar</ion-button>
+  </ion-footer>
+</ion-content>

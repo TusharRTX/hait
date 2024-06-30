@@ -79,3 +79,23 @@ class DetallePedido(models.Model):
 
     def __str__(self):
         return f"{self.id_compraaprobada.id} - {self.pedido_estado}"
+    
+
+    
+from core.models import DetallePedido
+
+class EstadoPedido(models.Model):
+    ESTADO_CHOICES = [
+        ('pendiente', 'Pendiente'),
+        ('aprobado', 'Aprobado'),
+        ('preparado', 'Preparado'),
+        ('despachado', 'Despachado'),
+        ('listo_retiro', 'Listo para Retiro'),
+    ]
+
+    id_detallepedido = models.OneToOneField(DetallePedido, on_delete=models.CASCADE)
+    estado = models.CharField(max_length=16, choices=ESTADO_CHOICES, default='pendiente')
+    nota_bodeguero = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.id_detallepedido.id} - {self.estado}' 
