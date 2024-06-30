@@ -73,18 +73,24 @@ export class RegistroPage implements OnInit {
 
   async register() {
     const data = {
-      username: this.username,
-      password: this.password,
-      nombre: this.nombre,
-      apellido: this.apellido,
-      correo: this.correo,
-      direccion: this.direccion,
-      rut: this.rut,
-      telefono: this.telefono,
+        username: this.username,
+        password: this.password,
+        nombre: this.nombre,
+        apellido: this.apellido,
+        correo: this.correo,
+        direccion: this.direccion,
+        rut: this.rut,
+        telefono: this.telefono,
     };
-    await this.djangoapiService.register(data);
-    this.router.navigate(['/iniciosesion']);
-  }
 
+    try {
+        await this.djangoapiService.register(data);
+        this.router.navigate(['/iniciosesion']);
+    } catch (error) {
+        console.error('Error during registration:', error);
+        // Muestra un mensaje de error al usuario
+    }
+    
+  }
 
 }

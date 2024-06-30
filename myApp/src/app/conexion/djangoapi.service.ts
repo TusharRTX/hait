@@ -74,8 +74,13 @@ export class DjangoapiService {
   }
 
   async register(data: any) {
-    const response = await axios.post(`${this.apiURL}/register/`, data);
-    return response.data;
+    try {
+        const response = await this.http.post(`${this.apiURL}/register/`, data).toPromise();
+        return response;
+    } catch (error) {
+        console.error('Registration error:', error);
+        throw error;
+    }
   }
 
   async login(data: any) {

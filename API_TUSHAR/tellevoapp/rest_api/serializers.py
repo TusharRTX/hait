@@ -37,7 +37,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'nombre', 'apellido', 'correo', 'direccion', 'rut', 'telefono', 'rol']
-        extra_kwargs = {'password': {'write_only': True}, 'rol': {'read_only': True}}
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'rol': {'read_only': True}
+        }
 
     def create(self, validated_data):
         validated_data['rol'] = 'comprador'  # Asigna el rol "comprador" por defecto

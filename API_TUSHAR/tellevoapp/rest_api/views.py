@@ -189,8 +189,13 @@ def register(request):
     if serializer.is_valid():
         user = serializer.save()
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        return Response({
+            'token': token.key,
+            'username': user.username,
+            'rol': user.rol
+        }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(['POST'])
 def login(request):
