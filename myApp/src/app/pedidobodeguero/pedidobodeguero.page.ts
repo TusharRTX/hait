@@ -3,6 +3,9 @@ import { AlertController, ToastController } from '@ionic/angular';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { ModalController } from '@ionic/angular';
 import { AprobarPedidoModalComponent } from '../aprobar-pedido-modal/aprobar-pedido-modal.component';
+import { MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-pedidobodeguero',
@@ -13,22 +16,27 @@ export class PedidobodegueroPage implements OnInit {
   pedidosAprobados: any[] = [];
   nota_bodeguero: string = '';
   estado: string = '';
+  isDropdownOpen = false;
+  isAuthenticated: boolean = false;
+  role: string = '';
 
-  constructor(
-    private alertController: AlertController,
-    private toastController: ToastController,
-    private djangoApiService: DjangoapiService,
-    private modalController: ModalController
-  ) {}
+  constructor(private modalController: ModalController,private alertController: AlertController,private router: Router,private toastController: ToastController,private menu: MenuController,private djangoApiService: DjangoapiService) {}
 
   ngOnInit() {
     this.fetchPedidosAprobados();
+
+    this.djangoApiService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.djangoApiService.role$.subscribe(role => {
+      this.role = role;
+    });
   }
 
   ionViewWillEnter() {
     this.fetchPedidosAprobados();
   }
-
+  
   fetchPedidosAprobados() {
     this.djangoApiService.getPedidosAprobados().subscribe((data: any[]) => {
       this.pedidosAprobados = data.map(pedido => {
@@ -79,6 +87,43 @@ async aprobarPedido(id: number) {
   }
 }
 
+async presentLogoutAlert() {
+  const alert = await this.alertController.create({
+    header: 'Cerrar sesión',
+    message: '¿Estás seguro de que deseas cerrar sesión?',
+    buttons: [
+      {
+        text: 'Cancelar',
+        role: 'cancel',
+        cssClass: 'secondary',
+      },
+      {
+        text: 'Sí',
+        handler: async () => {
+          await this.djangoApiService.logout();
+          this.router.navigate(['/home']);
+        }
+      }
+    ]
+  });
+  await alert.present();
+}
+
+toggleDropdown(open: boolean) {
+  this.isDropdownOpen = open;
+  const dropdown = document.getElementById('dropdown-menu');
+  const button = document.getElementById('products-category-button');
+  if (dropdown && button) {
+    if (open) {
+      const rect = button.getBoundingClientRect();
+      dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+      dropdown.style.left = `${rect.left}px`;
+      dropdown.style.display = 'block';
+    } else {
+      dropdown.style.display = 'none';
+    }
+  }
+}
 
   async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
