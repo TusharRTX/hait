@@ -72,13 +72,14 @@
         <p>Delivery: {{ pedido.pedido_delivery_method }}</p>
         <p>Estado: {{ pedido.pedido_estado }}</p>
         <p>Productos:</p>
-        <ion-list>
-          <ion-item *ngFor="let producto of pedido.productos">
+        <ion-list *ngFor="let producto of pedido.productos">
+          <ion-item>
             <p>Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}CLP</p>
           </ion-item>
         </ion-list>
         <p>Estado del Bodeguero: {{ pedido.estado }}</p>
         <p>Nota del Bodeguero: {{ pedido.nota_bodeguero }}</p>
+        <ion-button (click)="onPedidoSelected(pedido)">Editar</ion-button>
       </ion-card-content>
     </ion-card>
 

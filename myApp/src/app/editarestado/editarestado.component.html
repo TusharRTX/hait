@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <ion-item>
+    <ion-label>Estado</ion-label>
+    <ion-select formControlName="estado">
+      <ion-select-option *ngFor="let estado of estados" [value]="estado">{{ estado }}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Nota del Bodeguero</ion-label>
+    <ion-textarea formControlName="nota_bodeguero"></ion-textarea>
+  </ion-item>
+  <ion-button expand="full" type="submit">Actualizar</ion-button>
+  <ion-button (click)="closeModal()">Cerrar</ion-button>
+</form>
+
+

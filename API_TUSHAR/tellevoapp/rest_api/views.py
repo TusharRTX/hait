@@ -30,6 +30,19 @@ from .serializers import CompraAprobadaSerializer
 from core.models import CompraAprobada, DetallePedido, EstadoPedido
 from .serializers import DetallePedidoSerializer
 
+@api_view(['PUT'])
+def update_estado_pedido(request, id):
+    try:
+        estado_pedido = EstadoPedido.objects.get(id=id)
+    except EstadoPedido.DoesNotExist:
+        return Response({'error': 'EstadoPedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = EstadoPedidoSerializer(estado_pedido, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['GET'])
 def get_detalles_con_estado(request):
     try:
