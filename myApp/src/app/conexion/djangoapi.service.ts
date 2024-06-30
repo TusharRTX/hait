@@ -142,14 +142,9 @@ export class DjangoapiService {
     return this.http.post(`${this.apiURL}/aprobar_pedido_bodeguero/${id}/`, { estado, nota_bodeguero });
   }
 
-  getEstadoPedido(id: number): Observable<any> {
-    return this.http.get(`${this.apiURL}/estado_pedido/${id}/`);
+  getDetallesConEstado(): Observable<any> {
+    return this.http.get(`${this.apiURL}/api/detalles_con_estado/`);
   }
-  
-  editarEstadoPedido(id: number, estadoPedido: any): Observable<any> {
-    return this.http.post(`${this.apiURL}/editar_estado_pedido/${id}/`, estadoPedido);
-  }  
-
 
 }
 

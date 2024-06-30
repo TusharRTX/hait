@@ -30,17 +30,22 @@ from .serializers import CompraAprobadaSerializer
 from core.models import CompraAprobada, DetallePedido, EstadoPedido
 from .serializers import DetallePedidoSerializer
 
-@api_view(['POST'])
-def editar_estado_pedido(request, id):
+@api_view(['GET'])
+def get_detalles_con_estado(request):
     try:
-        estado_pedido = EstadoPedido.objects.get(id=id)
-        estado_pedido.estado = request.data.get('estado', estado_pedido.estado)
-        estado_pedido.nota_bodeguero = request.data.get('nota_bodeguero', estado_pedido.nota_bodeguero)
-        estado_pedido.save()
-        serializer = EstadoPedidoSerializer(estado_pedido)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    except EstadoPedido.DoesNotExist:
-        return Response({'error': 'EstadoPedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+        estado_pedidos = EstadoPedido.objects.select_related('id_detallepedido').all()
+        detalles_con_estado = []
+
+        for estado_pedido in estado_pedidos:
+            detalle_pedido = estado_pedido.id_detallepedido
+            detalle_data = DetallePedidoSerializer(detalle_pedido).data
+            estado_data = EstadoPedidoSerializer(estado_pedido).data
+            combined_data = {**detalle_data, **estado_data}
+            detalles_con_estado.append(combined_data)
+
+        return Response(detalles_con_estado, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['GET'])
 def get_estado_pedido(request, id):
