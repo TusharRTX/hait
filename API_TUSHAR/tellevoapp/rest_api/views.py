@@ -46,34 +46,21 @@ from .serializers import PedidoFinalSerializer
 def guardar_pedido_final(request):
     try:
         data = request.data
-        data['enviada_a_vendedor'] = True  # Asegúrate de que este campo esté en True
+        data['enviada_a_vendedor'] = True  
 
-        print(f"Datos recibidos: {data}")  # Para depuración
+        print(f"Datos recibidos: {data}")  
         
         serializer = PedidoFinalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            print(f"Errores del serializador: {serializer.errors}")  # Para depuración
+            print(f"Errores del serializador: {serializer.errors}")  
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        print(f"Error: {str(e)}")  # Imprimir el error para depuración
+        print(f"Error: {str(e)}")  
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-# @api_view(['POST'])
-# def guardar_pedido_final(request):
-#     try:
-#         pedido_id = request.data.get('id')
-#         estado_pedido = EstadoPedido.objects.get(id=pedido_id)
-#         estado_pedido.enviada_a_vendedor = True
-#         estado_pedido.save()
-#         return Response({"status": "success"}, status=status.HTTP_200_OK)
-#     except EstadoPedido.DoesNotExist:
-#         return Response({"error": "Pedido no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-#     except Exception as e:
-#         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 @api_view(['POST'])
 def marcar_como_enviado(request, id):
     try:
@@ -100,8 +87,6 @@ def update_estado_pedido(request, id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-
 @api_view(['GET'])
 def get_detalles_con_estado(request):
     try:
@@ -117,10 +102,8 @@ def get_detalles_con_estado(request):
 
         return Response(detalles_con_estado, status=status.HTTP_200_OK)
     except Exception as e:
-        print(f"Error: {str(e)}")  # Imprimir el error para depuración
+        print(f"Error: {str(e)}")  
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
 
 @api_view(['GET'])
 def get_estado_pedido(request, id):
@@ -337,7 +320,7 @@ def reset_password(request):
     user.set_password(new_password)
     user.save()
 
-    # Enviar un correo electrónico confirmando el cambio de contraseña
+    
     send_mail(
         'Cambio de Contraseña',
         'Tu contraseña ha sido cambiada exitosamente.',
@@ -379,7 +362,20 @@ def get_categories(request):
     categories = Producto.objects.values_list('categoria', flat=True).distinct()
     return JsonResponse(list(categories), safe=False)
 
-
+# @api_view(['GET', 'POST'])
+# def creacion(request):
+#     if request.method == 'GET':
+#         productos = Producto.objects.all()
+#         serializer = ProductoSerializer(productos, many=True)
+#         return Response(serializer.data)
+#     elif request.method == 'POST':
+#         data = request.data
+#         file = request.FILES.get('imagen')
+#         serializer = ProductoSerializer(data=data)
+#         if serializer.is_valid():
+#             serializer.save(imagen=file)
+#             return Response(serializer.data, status=201)
+#         return Response(serializer.errors, status=400)
 
 @csrf_exempt
 def getexchangerate(request):

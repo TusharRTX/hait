@@ -26,6 +26,7 @@ from .views import guardar_pedido_final
 urlpatterns=[
     path('register/', register, name='register'),
     path('login/', login, name='login'),
+    path('creacion', creacion, name="creacion"),
     path('user/', user_detail, name='user_detail'),
     path('reset-password/', reset_password, name='reset_password'),
     path('categorias', get_categories, name='categorias'),

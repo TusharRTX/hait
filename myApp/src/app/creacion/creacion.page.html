@@ -86,6 +86,14 @@
       <ion-input [(ngModel)]="productoData.precio" name="precio" required></ion-input>
     </ion-item>
     <ion-item>
+      <ion-label position="floating">Stock Online</ion-label>
+      <ion-input [(ngModel)]="productoData.stock_online" name="stock_online" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Stock Tienda</ion-label>
+      <ion-input [(ngModel)]="productoData.stock_tienda" name="stock_tienda" required></ion-input>
+    </ion-item>
+    <ion-item>
       <input type="file" (change)="onFileSelected($event)" />
     </ion-item>
     <ion-item>

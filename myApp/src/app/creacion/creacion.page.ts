@@ -18,7 +18,9 @@ export class CreacionPage implements OnInit {
     categoria: '',
     marca: '',
     nombre: '',
-    precio: ''
+    precio: '',
+    stock_online: 0,
+    stock_tienda: 0,
   };
   selectedFile: File | null = null;
 
