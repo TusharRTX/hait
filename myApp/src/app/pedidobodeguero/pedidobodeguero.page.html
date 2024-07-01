@@ -47,40 +47,38 @@
   </ion-header>
 
   <ion-buttons class="categories-button-container" slot="end">
-    <ion-button>Pedidos Aprobados </ion-button>
-  
-      <div class="right-side-content">
-        <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
-        <div class="payment-logos">
-          <img src="http://127.0.0.1:8000/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
-        </div>
-      </div>
+    <ion-button routerLink="/pedidobodeguero">Pedidos Aprobados Vendedor</ion-button>
+    <ion-button routerLink="/pedidoestado">Pedidos Bodeguero</ion-button>
     </ion-buttons>
   </div>  
 
   <ion-content>
     <ion-list *ngIf="pedidosAprobados.length > 0">
-      <ion-card *ngFor="let pedido of pedidosAprobados">
-        <ion-card-content>
-          <p>Cliente: {{ pedido.usuario_username }}</p>
-          <p>Nombre: {{ pedido.usuario_nombre }}</p>
-          <p>Apellido: {{ pedido.usuario_apellido }}</p>
-          <p>Correo: {{ pedido.usuario_correo }}</p>
-          <p>Teléfono: {{ pedido.usuario_telefono }}</p>
-          <p>Dirección: {{ pedido.usuario_direccion }}</p>
-          <p>RUT: {{ pedido.usuario_rut }}</p>
-          <p>Total: {{ pedido.pedido_total }}</p>
-          <p>Delivery: {{ pedido.pedido_delivery_method }}</p>
-          <p>Estado: {{ pedido.pedido_estado }}</p>
-          <p>Productos:</p>
-          <ion-list>
-            <ion-item *ngFor="let producto of pedido.productos">
-              <p>Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}CLP</p>
-            </ion-item>
-          </ion-list>
-          <ion-button (click)="aprobarPedido(pedido.id)">Aprobar Pedido</ion-button>
-        </ion-card-content>
-      </ion-card>
+      <ion-item *ngFor="let pedido of pedidosAprobados">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cliente: {{ pedido.usuario_username }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>Nombre:</strong> {{ pedido.usuario_nombre }}</p>
+            <p><strong>Apellido:</strong> {{ pedido.usuario_apellido }}</p>
+            <p><strong>Correo:</strong> {{ pedido.usuario_correo }}</p>
+            <p><strong>Teléfono:</strong> {{ pedido.usuario_telefono }}</p>
+            <p><strong>Dirección:</strong> {{ pedido.usuario_direccion }}</p>
+            <p><strong>RUT:</strong> {{ pedido.usuario_rut }}</p>
+            <p><strong>Total:</strong> {{ pedido.pedido_total }}</p>
+            <p><strong>Delivery:</strong> {{ pedido.pedido_delivery_method }}</p>
+            <p><strong>Estado:</strong> {{ pedido.pedido_estado }}</p>
+            <p><strong>Productos:</strong></p>
+            <ul>
+              <li *ngFor="let producto of pedido.productos">
+                Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }} CLP
+              </li>
+            </ul>
+            <ion-button (click)="aprobarPedido(pedido.id)">Aprobar Pedido</ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
     </ion-list>
     <ion-list *ngIf="pedidosAprobados.length === 0">
       <ion-item>
