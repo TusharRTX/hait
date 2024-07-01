@@ -29,9 +29,27 @@ from core.models import CompraAprobada
 from .serializers import CompraAprobadaSerializer
 from core.models import CompraAprobada, DetallePedido, EstadoPedido
 from .serializers import DetallePedidoSerializer
-from core.models import PedidoEnviadoVendedor, EstadoPedido
-from .serializers import PedidoEnviadoVendedorSerializer, EstadoPedidoSerializer
+from core.models import EstadoPedido
+from .serializers import EstadoPedidoSerializer
+from core.models import DetallePedido, EstadoPedido
+from .serializers import DetallePedidoSerializer, EstadoPedidoSerializer
+from rest_framework.response import Response
+from rest_framework import status
+from core.models import DetallePedido
+from core.models import PedidoFinal
+from .serializers import PedidoFinalSerializer
+import json
+from core.models import PedidoFinal
+from .serializers import PedidoFinalSerializer
 
+@api_view(['POST'])
+def guardar_pedido_final(request):
+    serializer = PedidoFinalSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['PUT'])
 def update_estado_pedido(request, id):
     try:
@@ -60,7 +78,7 @@ def get_detalles_con_estado(request):
 
         return Response(detalles_con_estado, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
 
 @api_view(['GET'])
 def get_estado_pedido(request, id):
@@ -88,7 +106,6 @@ def aprobar_pedido_bodeguero(request, id):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except DetallePedido.DoesNotExist:
         return Response({'error': 'DetallePedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-    
     
 @api_view(['POST'])
 def aprobar_pedido(request, id):

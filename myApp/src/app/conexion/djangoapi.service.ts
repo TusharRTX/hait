@@ -151,6 +151,10 @@ export class DjangoapiService {
     return this.http.get(`${this.apiURL}/api/detalles_con_estado/`);
   }
 
+  guardarPedidoFinal(pedidoFinal: any): Observable<any> {
+    return this.http.post(`${this.apiURL}/guardar_pedido_final/`, pedidoFinal);
+  }
+
   updateEstadoPedido(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiURL}/api/update_estado_pedido/${id}/`, data);
   }

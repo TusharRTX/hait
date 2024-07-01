@@ -24,10 +24,10 @@ export class PedidoestadoPage implements OnInit {
     private toastController: ToastController,
     private menu: MenuController,
     private djangoApiService: DjangoapiService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.LoadPedidos();
+    this.loadPedidos();
     this.djangoApiService.isAuthenticated$.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
     });
@@ -35,8 +35,8 @@ export class PedidoestadoPage implements OnInit {
       this.role = role;
     });
   }
-  
-  LoadPedidos() {
+
+  loadPedidos() {
     this.djangoApiService.getDetallesConEstado().subscribe((data) => {
       this.detallesConEstado = data.map((item: any) => {
         item.productos = JSON.parse(item.productos);
@@ -45,31 +45,29 @@ export class PedidoestadoPage implements OnInit {
       console.log(this.detallesConEstado);
     });
   }
-  
+
   async onPedidoSelected(pedido: any) {
     const modal = await this.modalController.create({
       component: EditarestadoComponent,
-      componentProps: { pedido: pedido }
+      componentProps: { pedido: pedido },
     });
-  
     modal.onDidDismiss().then((result) => {
       if (result.data) {
         this.onEstadoActualizado(result.data);
       }
     });
-  
     return await modal.present();
   }
-  
+
   onEstadoActualizado(updatedPedido: any) {
     const index = this.detallesConEstado.findIndex((p) => p.id === updatedPedido.id);
     if (index !== -1) {
       this.detallesConEstado[index] = updatedPedido;
+      this.presentToast('Estado actualizado exitosamente', 'success');
+      this.loadPedidos(); // Volver a cargar todos los pedidos después de la actualización
     }
-    this.presentToast('Estado actualizado exitosamente', 'success');
-    this.LoadPedidos(); // Volver a cargar todos los pedidos después de la actualización
   }
-  
+
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message,
@@ -79,45 +77,77 @@ export class PedidoestadoPage implements OnInit {
     toast.present();
   }
 
-      async presentLogoutAlert() {
-        const alert = await this.alertController.create({
-          header: 'Cerrar sesión',
-          message: '¿Estás seguro de que deseas cerrar sesión?',
-          buttons: [
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              cssClass: 'secondary',
-            },
-            {
-              text: 'Sí',
-              handler: async () => {
-                await this.djangoApiService.logout();
-                this.router.navigate(['/home']);
-              },
-            },
-          ],
-        });
-        await alert.present();
-      }
-    
-      toggleDropdown(open: boolean) {
-        this.isDropdownOpen = open;
-        const dropdown = document.getElementById('dropdown-menu');
-        const button = document.getElementById('products-category-button');
-        if (dropdown && button) {
-          if (open) {
-            const rect = button.getBoundingClientRect();
-            dropdown.style.top = `${rect.bottom}px`; // adjust positioning
-            dropdown.style.left = `${rect.left}px`;
-            dropdown.style.display = 'block';
-          } else {
-            dropdown.style.display = 'none';
-          }
+  async enviarAlVendedor(pedido: any) {
+    const pedidoFinal = {
+        usuario_username: pedido.usuario_username || '',
+        usuario_nombre: pedido.usuario_nombre || '',
+        usuario_apellido: pedido.usuario_apellido || '',
+        usuario_correo: pedido.usuario_correo || '',
+        usuario_telefono: pedido.usuario_telefono || '',
+        usuario_direccion: pedido.usuario_direccion || '',
+        usuario_rut: pedido.usuario_rut || '',
+        pedido_total: pedido.pedido_total || 0,
+        pedido_delivery_method: pedido.pedido_delivery_method || '',
+        pedido_estado: pedido.pedido_estado || '',
+        productos: JSON.stringify(pedido.productos) || '[]',
+        nota_bodeguero: pedido.nota_bodeguero || '',
+        estado_bodeguero: pedido.estado_bodeguero || ''
+    };
+
+    console.log('Datos que se envían:', pedidoFinal); // Para depuración
+
+    this.djangoApiService.guardarPedidoFinal(pedidoFinal).subscribe(
+        (response) => {
+            this.presentToast('Pedido enviado al vendedor exitosamente', 'success');
+            // Eliminar el pedido del array detallesConEstado
+            this.detallesConEstado = this.detallesConEstado.filter(p => p.id !== pedido.id);
+        },
+        (error) => {
+            this.presentToast('Error al enviar el pedido al vendedor', 'danger');
+            console.error(error);
         }
+    );
+}
+
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            await this.djangoApiService.logout();
+            this.router.navigate(['/home']);
+          },
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
       }
-    
     }
+  }
+}
+
 
 
 
