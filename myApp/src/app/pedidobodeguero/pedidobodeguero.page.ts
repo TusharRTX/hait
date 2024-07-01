@@ -58,34 +58,32 @@ export class PedidobodegueroPage implements OnInit {
   
 
 
-async aprobarPedido(id: number) {
-  const modal = await this.modalController.create({
-      component: AprobarPedidoModalComponent,
-      componentProps: {
-          nota_bodeguero: this.nota_bodeguero,
-          estado: this.estado
-      }
-  });
+  async aprobarPedido(id: number) {
+    const modal = await this.modalController.create({
+        component: AprobarPedidoModalComponent,
+        componentProps: {
+            nota_bodeguero: this.nota_bodeguero,
+            estado: this.estado
+        }
+    });
 
-  await modal.present();
-
-  const { data } = await modal.onWillDismiss();
-  if (data) {
-      console.log('Confirm Ok', data);
-      // Llamar a la función para aprobar el pedido con los datos
-      this.djangoApiService.aprobarPedidoBodeguero(id, data.estado, data.nota_bodeguero).subscribe(
-          response => {
-              console.log('Pedido aprobado:', response);
-              this.fetchPedidosAprobados(); // Actualizar la lista de pedidos
-              this.showToast('Pedido aprobado exitosamente', 'success');
-          },
-          error => {
-              console.error('Error al aprobar el pedido:', error);
-              this.showToast('Error al aprobar el pedido', 'danger');
-          }
-      );
-  }
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    if (data) {
+        this.djangoApiService.aprobarPedidoBodeguero(id, data.estado, data.nota_bodeguero).subscribe(
+            response => {
+                console.log('Pedido aprobado:', response);
+                this.fetchPedidosAprobados(); // Actualizar la lista de pedidos
+                this.showToast('Pedido aprobado exitosamente', 'success');
+            },
+            error => {
+                console.error('Error al aprobar el pedido:', error);
+                this.showToast('Error al aprobar el pedido', 'danger');
+            }
+        );
+    }
 }
+
 
 async presentLogoutAlert() {
   const alert = await this.alertController.create({

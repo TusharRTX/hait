@@ -95,6 +95,7 @@ class EstadoPedido(models.Model):
     id_detallepedido = models.OneToOneField(DetallePedido, on_delete=models.CASCADE)
     estado = models.CharField(max_length=16, choices=ESTADO_CHOICES, default='pendiente')
     nota_bodeguero = models.TextField(blank=True, null=True)
+    enviado = models.BooleanField(default=False) 
 
     def __str__(self):
         return f'{self.id_detallepedido.id} - {self.estado}' 
@@ -116,6 +117,7 @@ class PedidoFinal(models.Model):
     productos = models.TextField()  # Aquí guardaremos una representación JSON de los productos
     nota_bodeguero = models.TextField(blank=True, null=True)
     estado_bodeguero = models.CharField(max_length=255, blank=True, null=True)
+    enviada_a_vendedor = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.usuario_username} - {self.pedido_estado}'

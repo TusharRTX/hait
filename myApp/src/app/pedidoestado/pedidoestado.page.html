@@ -1,29 +1,40 @@
 <ion-content>
-  <ion-card *ngFor="let pedido of detallesConEstado">
-      <ion-card-content>
-          <p>Cliente: {{ pedido.usuario_username }}</p>
-          <p>Nombre: {{ pedido.usuario_nombre }}</p>
-          <p>Apellido: {{ pedido.usuario_apellido }}</p>
-          <p>Correo: {{ pedido.usuario_correo }}</p>
-          <p>Teléfono: {{ pedido.usuario_telefono }}</p>
-          <p>Dirección: {{ pedido.usuario_direccion }}</p>
-          <p>RUT: {{ pedido.usuario_rut }}</p>
-          <p>Total: {{ pedido.pedido_total }}</p>
-          <p>Delivery: {{ pedido.pedido_delivery_method }}</p>
-          <p>Estado: {{ pedido.pedido_estado }}</p>
-          <p>Productos:</p>
-          <ion-list *ngFor="let producto of pedido.productos">
-              <ion-item>
-                  <p>Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}CLP</p>
-              </ion-item>
-          </ion-list>
-          <p>Estado del Bodeguero: {{ pedido.estado_bodeguero }}</p>
-          <p>Nota del Bodeguero: {{ pedido.nota_bodeguero }}</p>
-          <ion-button (click)="onPedidoSelected(pedido)">Editar</ion-button>
-          <ion-button (click)="enviarAlVendedor(pedido)" [disabled]="pedido.enviada_a_vendedor">Enviar al Vendedor</ion-button>
-      </ion-card-content>
-  </ion-card>
-</ion-content>
+    <ion-list>
+      <ion-item *ngFor="let pedido of detallesConEstado">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cliente: {{ pedido.usuario_username }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>Nombre:</strong> {{ pedido.usuario_nombre }}</p>
+            <p><strong>Apellido:</strong> {{ pedido.usuario_apellido }}</p>
+            <p><strong>Correo:</strong> {{ pedido.usuario_correo }}</p>
+            <p><strong>Teléfono:</strong> {{ pedido.usuario_telefono }}</p>
+            <p><strong>Dirección:</strong> {{ pedido.usuario_direccion }}</p>
+            <p><strong>RUT:</strong> {{ pedido.usuario_rut }}</p>
+            <p><strong>Total:</strong> {{ pedido.pedido_total }}</p>
+            <p><strong>Delivery:</strong> {{ pedido.pedido_delivery_method }}</p>
+            <p><strong>Estado:</strong> {{ pedido.pedido_estado }}</p>
+            <p><strong>Productos:</strong></p>
+            <ul>
+              <li *ngFor="let producto of pedido.productos">
+                Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}
+              </li>
+            </ul>
+            <p><strong>Estado del Bodeguero:</strong> {{ pedido.estado_bodeguero }}</p>
+            <p><strong>Nota del Bodeguero:</strong> {{ pedido.nota_bodeguero }}</p>
+            <ion-button expand="block" color="primary" [disabled]="pedido.enviada_a_vendedor" (click)="enviarAlVendedor(pedido)">
+              ENVIAR AL VENDEDOR
+            </ion-button>
+            <ion-button expand="block" color="secondary" (click)="onPedidoSelected(pedido)">
+              EDITAR
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
 
 
 

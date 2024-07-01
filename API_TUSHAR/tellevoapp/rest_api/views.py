@@ -44,24 +44,45 @@ from .serializers import PedidoFinalSerializer
 
 @api_view(['POST'])
 def guardar_pedido_final(request):
-    serializer = PedidoFinalSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+    try:
+        data = request.data
+        data['enviada_a_vendedor'] = True  # Asegúrate de que este campo esté en True
+        serializer = PedidoFinalSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# @api_view(['POST'])
+# def guardar_pedido_final(request):
+#     try:
+#         pedido_id = request.data.get('id')
+#         estado_pedido = EstadoPedido.objects.get(id=pedido_id)
+#         estado_pedido.enviada_a_vendedor = True
+#         estado_pedido.save()
+#         return Response({"status": "success"}, status=status.HTTP_200_OK)
+#     except EstadoPedido.DoesNotExist:
+#         return Response({"error": "Pedido no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+#     except Exception as e:
+#         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(['PUT'])
 def update_estado_pedido(request, id):
     try:
         estado_pedido = EstadoPedido.objects.get(id=id)
     except EstadoPedido.DoesNotExist:
         return Response({'error': 'EstadoPedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
-    
+
     serializer = EstadoPedidoSerializer(estado_pedido, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET'])
 def get_detalles_con_estado(request):
@@ -74,11 +95,15 @@ def get_detalles_con_estado(request):
             detalle_data = DetallePedidoSerializer(detalle_pedido).data
             estado_data = EstadoPedidoSerializer(estado_pedido).data
             combined_data = {**detalle_data, **estado_data}
-            detalles_con_estado.append(combined_data)
+            if not estado_data['enviado']:  # Asegúrate de que el campo está correctamente referenciado
+                detalles_con_estado.append(combined_data)
 
         return Response(detalles_con_estado, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+        print(f"Error: {str(e)}")  # Imprimir el error para depuración
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 @api_view(['GET'])
 def get_estado_pedido(request, id):
@@ -106,6 +131,7 @@ def aprobar_pedido_bodeguero(request, id):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     except DetallePedido.DoesNotExist:
         return Response({'error': 'DetallePedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
     
 @api_view(['POST'])
 def aprobar_pedido(request, id):
