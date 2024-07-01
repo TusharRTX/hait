@@ -61,9 +61,9 @@ export class PedidoestadoPage implements OnInit {
         this.detallesConEstado = data
           .map((item: any) => {
             item.productos = JSON.parse(item.productos);
-            return item as Pedido; // Asegurarse de que item es de tipo Pedido
+            return item;
           })
-          .filter((pedido: Pedido) => !pedido.enviada_a_vendedor); // Filtra pedidos que no han sido enviados
+          .filter((pedido: any) => !pedido.enviado); // Filtra pedidos que no han sido enviados
         console.log(this.detallesConEstado);
       },
       (error) => {
@@ -71,7 +71,8 @@ export class PedidoestadoPage implements OnInit {
       }
     );
   }
-
+  
+  
   async onPedidoSelected(pedido: any) {
     const modal = await this.modalController.create({
       component: EditarestadoComponent,
@@ -102,39 +103,54 @@ export class PedidoestadoPage implements OnInit {
     });
     toast.present();
   }
-
-  async enviarAlVendedor(pedido: Pedido) {
-    const pedidoFinal = {
-        id: pedido.id,  // Asegúrate de incluir el ID aquí
-        usuario_username: pedido.usuario_username || '',
-        usuario_nombre: pedido.usuario_nombre || '',
-        usuario_apellido: pedido.usuario_apellido || '',
-        usuario_correo: pedido.usuario_correo || '',
-        usuario_telefono: pedido.usuario_telefono || '',
-        usuario_direccion: pedido.usuario_direccion || '',
-        usuario_rut: pedido.usuario_rut || '',
-        pedido_total: pedido.pedido_total || 0,
-        pedido_delivery_method: pedido.pedido_delivery_method || '',
-        pedido_estado: pedido.pedido_estado || '',
-        productos: JSON.stringify(pedido.productos) || '[]',
-        nota_bodeguero: pedido.nota_bodeguero || '',
-        estado_bodeguero: pedido.estado_bodeguero || '',
-        enviada_a_vendedor: true // Asegúrate de que este campo esté en True
-    };
-
-    console.log('Datos que se envían:', pedidoFinal); // Para depuración
-    this.djangoApiService.guardarPedidoFinal(pedidoFinal).subscribe(
-        (response) => {
-            this.presentToast('Pedido enviado al vendedor exitosamente', 'success');
-            // Recargar los pedidos después de enviar al vendedor
-            this.LoadPedidos(); // <-- Aquí recargamos los pedidos
-        },
-        (error) => {
-            this.presentToast('Error al enviar el pedido al vendedor', 'danger');
-            console.error(error);
-        }
+  
+  async marcarYEnviar(pedido: any) {
+    // Primero marca el pedido como enviado
+    this.djangoApiService.marcarComoEnviado(pedido.id).subscribe(
+      response => {
+        console.log('Pedido marcado como enviado:', response);
+        // Después de marcar como enviado, envía al vendedor
+        this.enviarAlVendedor(pedido);
+        this.LoadPedidos(); // Recargar la lista de pedidos
+      },
+      error => {
+        console.error('Error al marcar el pedido como enviado:', error);
+      }
     );
-}
+  }
+  
+  async enviarAlVendedor(pedido: any) {
+    const pedidoFinal = {
+      usuario_username: pedido.usuario_username || '',
+      usuario_nombre: pedido.usuario_nombre || '',
+      usuario_apellido: pedido.usuario_apellido || '',
+      usuario_correo: pedido.usuario_correo || '',
+      usuario_telefono: pedido.usuario_telefono || '',
+      usuario_direccion: pedido.usuario_direccion || '',
+      usuario_rut: pedido.usuario_rut || '',
+      pedido_total: pedido.pedido_total || 0,
+      pedido_delivery_method: pedido.pedido_delivery_method || '',
+      pedido_estado: pedido.pedido_estado || '',
+      productos: JSON.stringify(pedido.productos) || '[]',
+      nota_bodeguero: pedido.nota_bodeguero || '',
+      estado_bodeguero: pedido.estado_bodeguero || '',
+      enviada_a_vendedor: true // Asegúrate de que este campo esté en True
+    };
+  
+    console.log('Datos que se envían:', pedidoFinal); // Para depuración
+  
+    this.djangoApiService.guardarPedidoFinal(pedidoFinal).subscribe(
+      response => {
+        this.presentToast('Pedido enviado al vendedor exitosamente', 'success');
+        this.LoadPedidos(); // Recargar los pedidos después de enviar al vendedor
+      },
+      error => {
+        this.presentToast('Error al enviar el pedido al vendedor', 'danger');
+        console.error(error);
+      }
+    );
+  }
+  
 
   async presentLogoutAlert() {
     const alert = await this.alertController.create({

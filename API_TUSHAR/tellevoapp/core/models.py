@@ -100,7 +100,6 @@ class EstadoPedido(models.Model):
     def __str__(self):
         return f'{self.id_detallepedido.id} - {self.estado}' 
     
-
 from django.db import models
 
 class PedidoFinal(models.Model):
@@ -121,5 +120,7 @@ class PedidoFinal(models.Model):
 
     def __str__(self):
         return f'{self.usuario_username} - {self.pedido_estado}'
+
+
 
 

@@ -47,14 +47,20 @@ def guardar_pedido_final(request):
     try:
         data = request.data
         data['enviada_a_vendedor'] = True  # Asegúrate de que este campo esté en True
+
+        print(f"Datos recibidos: {data}")  # Para depuración
+        
         serializer = PedidoFinalSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print(f"Errores del serializador: {serializer.errors}")  # Para depuración
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
+        print(f"Error: {str(e)}")  # Imprimir el error para depuración
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+    
 # @api_view(['POST'])
 # def guardar_pedido_final(request):
 #     try:
@@ -68,6 +74,18 @@ def guardar_pedido_final(request):
 #     except Exception as e:
 #         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@api_view(['POST'])
+def marcar_como_enviado(request, id):
+    try:
+        estado_pedido = EstadoPedido.objects.get(id=id)
+        estado_pedido.enviado = True
+        estado_pedido.save()
+        return Response({'status': 'Enviado actualizado'}, status=status.HTTP_200_OK)
+    except EstadoPedido.DoesNotExist:
+        return Response({'error': 'EstadoPedido no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 
 @api_view(['PUT'])
 def update_estado_pedido(request, id):
@@ -95,8 +113,7 @@ def get_detalles_con_estado(request):
             detalle_data = DetallePedidoSerializer(detalle_pedido).data
             estado_data = EstadoPedidoSerializer(estado_pedido).data
             combined_data = {**detalle_data, **estado_data}
-            if not estado_data['enviado']:  # Asegúrate de que el campo está correctamente referenciado
-                detalles_con_estado.append(combined_data)
+            detalles_con_estado.append(combined_data)
 
         return Response(detalles_con_estado, status=status.HTTP_200_OK)
     except Exception as e:

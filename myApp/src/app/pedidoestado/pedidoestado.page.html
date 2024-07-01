@@ -23,9 +23,7 @@
             </ul>
             <p><strong>Estado del Bodeguero:</strong> {{ pedido.estado_bodeguero }}</p>
             <p><strong>Nota del Bodeguero:</strong> {{ pedido.nota_bodeguero }}</p>
-            <ion-button expand="block" color="primary" [disabled]="pedido.enviada_a_vendedor" (click)="enviarAlVendedor(pedido)">
-              ENVIAR AL VENDEDOR
-            </ion-button>
+            <ion-button (click)="marcarYEnviar(pedido)">Marcar y Enviar</ion-button>
             <ion-button expand="block" color="secondary" (click)="onPedidoSelected(pedido)">
               EDITAR
             </ion-button>
