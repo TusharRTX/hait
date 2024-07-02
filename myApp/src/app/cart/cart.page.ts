@@ -106,6 +106,11 @@ export class CartPage implements OnInit {
   }
 
   checkout(currency: string) {
+    if (!this.isAuthenticated) {
+      this.presentAlert('No estás autenticado', 'Por favor, inicia sesión para continuar.');
+      return;
+    }
+  
     const items = this.items.map(item => ({
       id: item.id,
       quantity: item.quantity,
@@ -113,10 +118,9 @@ export class CartPage implements OnInit {
       unit_price: currency === 'USD' ? item.precio / this.dollarValue : item.precio,
       currency_id: currency
     }));
-
+  
     this.cartService.checkout(items, this.stockSource).subscribe(
       response => {
-        // Handle success response
         if (response.init_point) {
           window.location.href = response.init_point;
         } else {
@@ -124,10 +128,19 @@ export class CartPage implements OnInit {
         }
       },
       error => {
-        // Handle error response
         console.error('Payment initiation failed', error);
       }
     );
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+  
+    await alert.present();
   }
 
   toggleDropdown(open: boolean) {

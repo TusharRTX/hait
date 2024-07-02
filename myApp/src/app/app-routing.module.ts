@@ -24,7 +24,7 @@ const routes: Routes = [
   {path: 'equipos', loadChildren: () => import('./equipos/equipos.module').then( m => m.EquiposPageModule)},
   {path: 'tornillos', loadChildren: () => import('./tornillos/tornillos.module').then( m => m.TornillosPageModule)},
   {path: 'medicion', loadChildren: () => import('./medicion/medicion.module').then( m => m.MedicionPageModule)},
-  {path: 'cart', loadChildren: () => import('./cart/cart.module').then( m => m.CartPageModule), canActivate: [AuthGuard], data: { requiredRoles: ['comprador', 'vendedor', 'bodeguero', 'contador'] }},
+  {path: 'cart', loadChildren: () => import('./cart/cart.module').then( m => m.CartPageModule)},
 
   // marcas Online
   { path: 'MARCAS/mamut', loadChildren: () => import('./MARCAS/mamut/mamut.module').then(m => m.MAMUTPageModule) },
