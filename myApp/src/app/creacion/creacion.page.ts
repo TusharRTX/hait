@@ -3,6 +3,7 @@ import { DjangoapiService } from '../conexion/djangoapi.service';
 import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';  
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-creacion',
@@ -17,14 +18,15 @@ export class CreacionPage implements OnInit {
     codigo: '',
     categoria: '',
     marca: '',
+    otra_marca: '',
     nombre: '',
-    precio: '',
+    precio: 0,
     stock_online: 0,
     stock_tienda: 0,
   };
   selectedFile: File | null = null;
 
-  constructor(private alertController: AlertController,private router: Router,private djangoApi: DjangoapiService, private navCtrl: NavController) { }
+  constructor(private toastController: ToastController,private alertController: AlertController,private router: Router,private djangoApi: DjangoapiService, private navCtrl: NavController) { }
 
   ngOnInit() {
 
@@ -79,20 +81,40 @@ export class CreacionPage implements OnInit {
     this.selectedFile = event.target.files[0];
   }
 
+  checkMarca() {
+    if (this.productoData.marca !== 'OTRO') {
+      this.productoData.otra_marca = '';
+    }
+  }
+  
   crearProducto() {
     if (this.selectedFile) {
       this.djangoApi.crearProducto(this.productoData, this.selectedFile).subscribe(
         (response) => {
+          this.presentToast('Producto registrado exitosamente.', 'success');
           console.log('Registro exitoso:', response);
         },
         (error) => {
+          this.presentToast('Error al registrar el producto.', 'danger');
           console.error('Error en el registro:', error);
         }
       );
     } else {
+      this.presentToast('Por favor, selecciona un archivo.', 'warning');
       console.error('No file selected');
     }
   }
+
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      color: color,
+      duration: 2000,
+    });
+    toast.present();
+  }
+
+
 }
 
 

@@ -61,54 +61,67 @@
     </ion-buttons>
   </div>  
 
-
-<ion-content>
-<ion-content [fullscreen]="false">
-  <div id="container">
-    <ion-item>
-      <ion-label position="floating">Codigo</ion-label>
-      <ion-input [(ngModel)]="productoData.codigo" name="codigo" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Categoria</ion-label>
-      <ion-input [(ngModel)]="productoData.categoria" name="categoria" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Marca</ion-label>
-      <ion-input [(ngModel)]="productoData.marca" name="marca" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input [(ngModel)]="productoData.nombre" name="nombre" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Precio</ion-label>
-      <ion-input [(ngModel)]="productoData.precio" name="precio" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Stock Online</ion-label>
-      <ion-input [(ngModel)]="productoData.stock_online" name="stock_online" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Stock Tienda</ion-label>
-      <ion-input [(ngModel)]="productoData.stock_tienda" name="stock_tienda" required></ion-input>
-    </ion-item>
-    <ion-item>
-      <input type="file" (change)="onFileSelected($event)" />
-    </ion-item>
-    <ion-item>
-      <ion-button fill="outline" color="primary" (click)="crearProducto()">Registrar Porducto</ion-button>
-    </ion-item>
-    <div style="flex: 1; min-width: 200px; background-color: #c20f0f; color: white; margin-left: 20px; padding: 10px;">
-      <h3 style="color: rgb(8, 8, 8);">ANTES DE AGREGAR UN PRODUCTO</h3>
-      <ul>
-        <li>Nota 1: Las categorias solo se ingresa el numero de ella, a continuación las mencionaré</li>
-        <li>Nota 2: Categorias: 1)equipos  2)herramientas  3)materiales  4)tornillos  5)medicion</li>
-        <li>Nota 3:                       En la Imagen solo se aceptan PNG Transparentes 620x480</li>
-      </ul>
+  <ion-content>
+  <ion-content>
+    <div class="register-container">
+      <h2 class="register-title">Registrar Producto</h2>
+      <form (submit)="crearProducto()">
+        <ion-item>
+          <ion-label position="floating">Código</ion-label>
+          <ion-input [(ngModel)]="productoData.codigo" name="codigo" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Categoría</ion-label>
+          <ion-select [(ngModel)]="productoData.categoria" name="categoria" required>
+            <ion-select-option value="1">Equipos</ion-select-option>
+            <ion-select-option value="2">Herramientas</ion-select-option>
+            <ion-select-option value="3">Materiales</ion-select-option>
+            <ion-select-option value="4">Tornillos</ion-select-option>
+            <ion-select-option value="5">Medición</ion-select-option>
+            <ion-select-option value="6">Fotosextra</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Marca</ion-label>
+          <ion-select [(ngModel)]="productoData.marca" name="marca" required (ionChange)="checkMarca()">
+            <ion-select-option value="MAMUT">MAMUT</ion-select-option>
+            <ion-select-option value="IMPORPER">IMPORPER</ion-select-option>
+            <ion-select-option value="STANLEY">STANLEY</ion-select-option>
+            <ion-select-option value="VINILIT">VINILIT</ion-select-option>
+            <ion-select-option value="ARAUCO">ARAUCO</ion-select-option>
+            <ion-select-option value="REDLINE">REDLINE</ion-select-option>
+            <ion-select-option value="BAUKER">BAUKER</ion-select-option>
+            <ion-select-option value="OTRO">OTRO</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="productoData.marca === 'OTRO'">
+          <ion-label position="floating">Otra Marca</ion-label>
+          <ion-input [(ngModel)]="productoData.otra_marca" name="otra_marca"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="productoData.nombre" name="nombre" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Precio</ion-label>
+          <ion-input [(ngModel)]="productoData.precio" name="precio" type="number" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Stock Online</ion-label>
+          <ion-input [(ngModel)]="productoData.stock_online" name="stock_online" type="number" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Stock Tienda</ion-label>
+          <ion-input [(ngModel)]="productoData.stock_tienda" name="stock_tienda" type="number" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <input type="file" (change)="onFileSelected($event)" />
+        </ion-item>
+        <ion-button expand="full" type="submit" class="custom-button">Registrar Producto</ion-button>
+      </form>
     </div>
-  </div>
  </ion-content>
+
   <ion-footer>
     <ion-toolbar>
       <div class="footer-container">
