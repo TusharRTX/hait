@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';  
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-registro',
@@ -20,8 +21,8 @@ export class RegistroPage implements OnInit {
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
   role: string = '';
-
-  constructor(private alertController: AlertController,private djangoapiService: DjangoapiService, private router: Router) { }
+ 
+  constructor(private toastController: ToastController,private alertController: AlertController,private djangoapiService: DjangoapiService, private router: Router) { }
 
   ngOnInit() {
 
@@ -73,24 +74,34 @@ export class RegistroPage implements OnInit {
 
   async register() {
     const data = {
-        username: this.username,
-        password: this.password,
-        nombre: this.nombre,
-        apellido: this.apellido,
-        correo: this.correo,
-        direccion: this.direccion,
-        rut: this.rut,
-        telefono: this.telefono,
+      username: this.username,
+      password: this.password,
+      nombre: this.nombre,
+      apellido: this.apellido,
+      correo: this.correo,
+      direccion: this.direccion,
+      rut: this.rut,
+      telefono: this.telefono,
     };
-
+  
     try {
-        await this.djangoapiService.register(data);
-        this.router.navigate(['/iniciosesion']);
+      await this.djangoapiService.register(data);
+      this.router.navigate(['/iniciosesion']);
+      this.showToast('Registro de usuario exitoso', 'success');
     } catch (error) {
-        console.error('Error during registration:', error);
-        // Muestra un mensaje de error al usuario
+      this.showToast('Error en el registro: estas credenciales ya están usadas', 'danger');
+      console.error('Error during registration:', error);
     }
-    
+  }
+  
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color,
+      position: 'top'
+    });
+    toast.present();
   }
 
 }

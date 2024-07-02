@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DjangoapiService } from '../conexion/djangoapi.service';
-
+import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';  
 
 @Component({
@@ -16,7 +16,7 @@ export class RecuperarPage implements OnInit {
   isAuthenticated: boolean = false;
   role: string = ''
 
-  constructor(private alertController: AlertController,private djangoapiService: DjangoapiService, private router: Router) { }
+  constructor(private toastController: ToastController,private alertController: AlertController,private djangoapiService: DjangoapiService, private router: Router) { }
 
   ngOnInit() {
 
@@ -71,12 +71,24 @@ export class RecuperarPage implements OnInit {
       username_or_email: this.usernameOrEmail,
       new_password: this.newPassword,
     };
+  
     try {
       await this.djangoapiService.resetPassword(data);
       this.router.navigate(['/iniciosesion']);
+      this.showToast('Contraseña actualizada correctamente', 'success');
     } catch (error) {
+      this.showToast('Error al actualizar la contraseña, revisar nombre de usuario', 'danger');
       console.error('Error resetting password:', error);
     }
+  }
+  
+  async showToast(message: string, color: string) {
+    const toast = document.createElement('ion-toast');
+    toast.message = message;
+    toast.duration = 2000;
+    toast.color = color;
+    document.body.appendChild(toast);
+    await toast.present();
   }
 
 }

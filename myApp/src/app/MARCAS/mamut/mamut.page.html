@@ -47,10 +47,10 @@
   </ion-header>
   
   <ion-buttons class="categories-button-container" slot="end">
-    <ion-button id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
+    <ion-button routerLink="/home" id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
       Productos por Categoría
     </ion-button>
-    <ion-button>Productos por Marca</ion-button>
+    <ion-button routerLink="/home">Productos por Marca</ion-button>
   
       <div class="right-side-content">
         <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>

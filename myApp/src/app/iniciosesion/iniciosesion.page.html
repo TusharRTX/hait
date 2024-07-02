@@ -47,10 +47,10 @@
   </ion-header>
 
   <ion-buttons class="categories-button-container" slot="end">
-    <ion-button id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
+    <ion-button routerLink="/home" id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
       Productos por Categoría
     </ion-button>
-    <ion-button>Productos por Marca</ion-button>
+    <ion-button routerLink="/home">Productos por Marca</ion-button>
   
       <div class="right-side-content">
         <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
@@ -61,19 +61,29 @@
     </ion-buttons>
   </div>  
 
-<ion-content>
-
-  <form (submit)="login()">
-    <ion-item>
-      <ion-label position="floating">Username</ion-label>
-      <ion-input [(ngModel)]="username" name="username"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
-    </ion-item>
-    <ion-button expand="full" type="submit" class="custom-button">Iniciar Sesión</ion-button>
-  </form>
+  <ion-content>
+    <div class="login-container">
+      <h2 class="login-title">Inicio de sesion</h2>
+      <form (submit)="login()">
+        <ion-item>
+          <ion-label position="floating">Nombre Usuario</ion-label>
+          <ion-input [(ngModel)]="username" name="username"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input [(ngModel)]="password" name="password" type="password"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-checkbox slot="start"></ion-checkbox>
+          <ion-label>Recuérdame</ion-label>
+          <a slot="end" class="forgot-password" (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
+        </ion-item>
+        <ion-button expand="full" type="submit" class="custom-button">INICIAR</ion-button>
+      </form>
+      <div class="create-account">
+        <a (click)="createAccount()">Crear Cuenta</a>
+      </div>
+    </div>
 
   <ion-footer>
     <ion-toolbar>
