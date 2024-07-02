@@ -11,7 +11,7 @@ const routes: Routes = [
   },
 
   // EXTRAS
-  {path: 'creacion', loadChildren: () => import('./creacion/creacion.module').then( m => m.CreacionPageModule)},
+  {path: 'creacion', loadChildren: () => import('./creacion/creacion.module').then( m => m.CreacionPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
   {path: 'iniciosesion', loadChildren: () => import('./iniciosesion/iniciosesion.module').then( m => m.IniciosesionPageModule)},
   {path: 'registro', loadChildren: () => import('./registro/registro.module').then( m => m.RegistroPageModule)},
   {path: 'banco', loadChildren: () => import('./banco/banco.module').then( m => m.BancoPageModule)},
@@ -41,35 +41,14 @@ const routes: Routes = [
   { path: 'vendedor', loadChildren: () => import('./ACTORES/vendedor/vendedor.module').then(m => m.VendedorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
   { path: 'bodeguero', loadChildren: () => import('./ACTORES/bodeguero/bodeguero.module').then(m => m.BodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
   { path: 'contador', loadChildren: () => import('./ACTORES/contador/contador.module').then(m => m.ContadorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'contador' } },
-  {
-    path: 'todoproductos',
-    loadChildren: () => import('./todoproductos/todoproductos.module').then( m => m.TodoproductosPageModule)
-  },
-  {
-    path: 'pedidos',
-    loadChildren: () => import('./pedidos/pedidos.module').then( m => m.PedidosPageModule)
-  },
-  {
-    path: 'pedidoaprobado',
-    loadChildren: () => import('./ACTORES/vendedor/pedidoaprobado/pedidoaprobado.module').then( m => m.PedidoaprobadoPageModule)
-  },
-  {
-    path: 'pedidobodeguero',
-    loadChildren: () => import('./pedidobodeguero/pedidobodeguero.module').then( m => m.PedidobodegueroPageModule)
-  },
-  {
-    path: 'pedidoestado',
-    loadChildren: () => import('./pedidoestado/pedidoestado.module').then( m => m.PedidoestadoPageModule)
-  },
-  {
-    path: 'pedidosokbodeguero',
-    loadChildren: () => import('./pedidosokbodeguero/pedidosokbodeguero.module').then( m => m.PedidosokbodegueroPageModule)
-  },
-
-
-
-
-  // PAGINAS PRINCIPALES (home) cada actor
+  
+  
+  { path: 'todoproductos', loadChildren: () => import('./todoproductos/todoproductos.module').then( m => m.TodoproductosPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
+  { path: 'pedidos', loadChildren: () => import('./pedidos/pedidos.module').then( m => m.PedidosPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
+  { path: 'pedidoaprobado', loadChildren: () => import('./ACTORES/vendedor/pedidoaprobado/pedidoaprobado.module').then( m => m.PedidoaprobadoPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
+  { path: 'pedidobodeguero', loadChildren: () => import('./pedidobodeguero/pedidobodeguero.module').then( m => m.PedidobodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
+  { path: 'pedidoestado', loadChildren: () => import('./pedidoestado/pedidoestado.module').then( m => m.PedidoestadoPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
+  { path: 'pedidosokbodeguero', loadChildren: () => import('./pedidosokbodeguero/pedidosokbodeguero.module').then( m => m.PedidosokbodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
 
 ];
 

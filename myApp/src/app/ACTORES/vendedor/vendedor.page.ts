@@ -37,6 +37,10 @@ export class VendedorPage implements OnInit {
     this.router.navigate(['/pedidos']);
   }
 
+  irArecuperar() {
+    this.router.navigate(['/recuperar']);
+  }
+
   irAPedidosAprobados() {
     this.router.navigate(['/pedidoaprobado']);
   }
