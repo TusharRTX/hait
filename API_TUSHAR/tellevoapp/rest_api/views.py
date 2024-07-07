@@ -15,8 +15,8 @@ from django.conf import settings
 import requests
 import mercadopago
 import os
-from core.models import Producto, Categorias, User
-from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer
+from core.models import Producto, Categorias, User, Voucher
+from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer, VoucherSerializer
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from core.models import CompraAprobada
@@ -40,7 +40,44 @@ from core.models import PedidoFinal
 from .serializers import PedidoFinalSerializer
 import json
 from core.models import PedidoFinal
-from .serializers import PedidoFinalSerializer
+from .serializers import PedidoFinalSerializer    
+from django.contrib.auth import get_user_model
+from core.models import User
+User = get_user_model()
+
+
+@api_view(['POST'])
+def generate_voucher(request):
+    items = request.data.get('items')
+    total = request.data.get('total')
+    user_data = request.data.get('user')
+
+    if not items or not total or not user_data:
+        return Response({'error': 'Faltan datos requeridos'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        user = User.objects.get(id=user_data['id'])
+        voucher = Voucher.objects.create(
+            items=items,
+            total=total,
+            user=user
+        )
+        return Response({'voucher_id': voucher.voucher_id}, status=status.HTTP_201_CREATED)
+    except User.DoesNotExist:
+        return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+@api_view(['GET'])
+def get_voucher(request, voucher_id):
+    try:
+        voucher = Voucher.objects.get(voucher_id=voucher_id)
+        serializer = VoucherSerializer(voucher)
+        return Response(serializer.data)
+    except Voucher.DoesNotExist:
+        return Response({'error': 'Voucher not found'}, status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['POST'])
 def guardar_pedido_final(request):
@@ -205,8 +242,6 @@ def getPedidosAprobados(request):
         return Response(serializer.data)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-
 @api_view(['GET'])
 def productos_disponibles(request):
     productos = Producto.objects.filter(categoria__in=[1, 2, 3, 4, 5])
@@ -218,7 +253,6 @@ def productos_disponibles(request):
         producto['categoria_nombre'] = categoria.nombre
 
     return Response(productos_data)
-
 @api_view(['PUT'])
 def producto_detalle(request, id):
     try:
@@ -231,7 +265,6 @@ def producto_detalle(request, id):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['POST'])
 def registrar_compra_aprobada(request):
     serializer = CompraAprobadaCreateSerializer(data=request.data)
@@ -239,7 +272,6 @@ def registrar_compra_aprobada(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET'])
 def getPedidos(request):
     pedidos = CompraAprobada.objects.exclude(detallepedido__pedido_estado__in=['aprobado', 'rechazado'])
@@ -271,7 +303,9 @@ def login(request):
         return Response({
             'token': token.key,
             'rol': user.rol,
-            'user_id': user.id  # Incluye el user_id en la respuesta
+            'nombre': user.nombre,  # Incluye el nombre
+            'apellido': user.apellido,  # Incluye el apellido
+            'user_id': user.id # Incluye el user_id en la respuesta
         })
     return Response({'error': 'Invalid Credentials'}, status=400)
 
@@ -439,6 +473,25 @@ def create_payment_preference(request):
 
     return JsonResponse(preference)
 
+@api_view(['POST'])
+def actualizar_stock(request):
+    items = request.data.get('items')
+    stock_source = request.data.get('stock_source')
+
+    for item in items:
+        product_id = item['id']
+        quantity = item['quantity']
+        try:
+            product = Producto.objects.get(id=product_id)
+            if stock_source == "online":
+                product.stock_online -= quantity
+            else:
+                product.stock_tienda -= quantity
+            product.save()
+        except Producto.DoesNotExist:
+            return Response({'error': 'Producto no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+    return Response({'status': 'Stock actualizado correctamente'}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def productos_por_marca(request, marca):
@@ -448,7 +501,6 @@ def productos_por_marca(request, marca):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Producto.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
 
 
 

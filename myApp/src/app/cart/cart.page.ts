@@ -133,6 +133,56 @@ export class CartPage implements OnInit {
     );
   }
 
+  onStockSourceChange(event: any) {
+    this.stockSource = event.detail.value; // Update stockSource variable on selection change
+  }
+  
+  generateVoucher() {
+    if (!this.isAuthenticated) {
+      alert('No estás autenticado, por favor inicia sesión para continuar.');
+      return;
+    }
+  
+    const user = this.djangoApi.userSubject.getValue();
+    console.log('User:', user);
+  
+    const voucherData = {
+      items: this.items.map(item => ({
+        id: item.id,
+        quantity: item.quantity,
+        title: item.nombre,
+        unit_price: item.precio
+      })),
+      total: this.total,
+      user: {
+        id: user.id,
+        nombre: user.nombre,
+        apellido: user.apellido
+      }
+    };
+  
+    console.log('Sending voucher data:', voucherData);
+  
+    this.djangoApi.generateVoucher(voucherData).subscribe(
+      response => {
+        console.log('Received response:', response);
+        if (response.voucher_id) {
+          this.router.navigate(['/success'], { state: { voucherId: response.voucher_id } });
+        } else {
+          console.error('Voucher ID not returned', response);
+        }
+      },
+      error => {
+        console.error('Voucher generation failed', error);
+      }
+    );
+  }
+  
+  
+  
+  
+  
+
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: header,

@@ -3,6 +3,7 @@ from rest_framework import serializers
 from core.models import Producto
 from core.models import Categorias
 from core.models import User, PedidoFinal
+from core.models import Voucher
 from rest_framework import serializers
 from core.models import CompraAprobada, CompraProducto, DetallePedido, EstadoPedido, PedidoFinal
 from rest_framework import serializers
@@ -90,7 +91,14 @@ class EstadoPedidoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+from core.models import Voucher
 
+class VoucherSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    
+    class Meta:
+        model = Voucher
+        fields = '__all__'
 
 
 

@@ -93,7 +93,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Comprar desde:</ion-label>
-          <ion-select [(ngModel)]="stockSource">
+          <ion-select [(ngModel)]="stockSource" (ionChange)="onStockSourceChange($event)">
             <ion-select-option value="online">Stock Online</ion-select-option>
             <ion-select-option *ngIf="role === 'vendedor'" value="tienda">Stock en Tienda</ion-select-option>
           </ion-select>
@@ -101,10 +101,14 @@
         <div class="summary-buttons">
           <ion-button expand="block" color="primary" (click)="clearCart()">Vaciar Carrito</ion-button>
           <ion-button expand="block" color="secondary" (click)="checkout('CLP')">Pagar en CLP</ion-button>
-          <ion-button expand="block" color="tertiary" (click)="checkout('USD')">Pagar en USD</ion-button>          
+          <ion-button expand="block" color="tertiary" (click)="checkout('USD')">Pagar en USD</ion-button>    
+          <ion-button *ngIf="role === 'vendedor' && stockSource === 'tienda'" expand="block" color="tertiary" (click)="generateVoucher()">Generar Voucher</ion-button> 
         </div>
       </div>
     </div>
+
+
+    
 
    <ion-footer>
     <ion-toolbar>

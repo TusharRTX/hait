@@ -90,6 +90,7 @@ export class CartService {
   checkout(items: any[], stockSource: string): Observable<any> {
     return this.mercadopagoService.createPaymentPreference(items, stockSource);
   }
+  
 }
 
 

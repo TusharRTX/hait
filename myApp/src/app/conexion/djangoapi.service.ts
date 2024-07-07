@@ -14,6 +14,8 @@ export class DjangoapiService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   private roleSubject = new BehaviorSubject<string>('');
   public role$ = this.roleSubject.asObservable();
+  public userSubject = new BehaviorSubject<any>(null);
+  public user$ = this.userSubject.asObservable();
   apiURL = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient, public storage: Storage) {
@@ -27,6 +29,8 @@ export class DjangoapiService {
     if (token) {
       const role = await this.storage.get('rol');
       this.roleSubject.next(role);
+      const user = await this.storage.get('user');
+      this.userSubject.next(user);
     }
   }
 
@@ -88,8 +92,18 @@ export class DjangoapiService {
     await this.storage.set('token', response.data.token);
     await this.storage.set('rol', response.data.rol);
     await this.storage.set('user_id', response.data.user_id);
+    await this.storage.set('user', { 
+      id: response.data.user_id,
+      nombre: response.data.nombre,
+      apellido: response.data.apellido 
+    });
     this.isAuthenticatedSubject.next(true);
     this.roleSubject.next(response.data.rol);
+    this.userSubject.next({
+      id: response.data.user_id,
+      nombre: response.data.nombre,
+      apellido: response.data.apellido
+    });
     return response.data;
   }
 
@@ -110,6 +124,7 @@ export class DjangoapiService {
     await this.storage.remove('token');
     await this.storage.remove('rol');
     await this.storage.remove('user_id');
+    await this.storage.remove('user');
     this.isAuthenticatedSubject.next(false);
     this.roleSubject.next('');
   }
@@ -162,6 +177,23 @@ export class DjangoapiService {
   marcarComoEnviado(id: number): Observable<any> {
     return this.http.post(`${this.apiURL}/marcar_como_enviado/${id}/`, {});
   }
+
+  generateVoucher(voucherData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}/generate_voucher/`, voucherData);
+  }
+
+  getVoucher(voucherId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/voucher/${voucherId}/`);
+  }
+
+  // actualizarStock(items: any[], stockSource: string): Observable<any> {
+  //   const data = {
+  //     items: items,
+  //     stock_source: stockSource
+  //   };
+  
+  //   return this.http.post(`${this.apiURL}/actualizar_stock/`, data);
+  // }
 
 }
 
