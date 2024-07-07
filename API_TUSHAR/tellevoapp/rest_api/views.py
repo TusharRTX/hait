@@ -51,7 +51,7 @@ def generate_voucher(request):
     items = request.data.get('items')
     total = request.data.get('total')
     user_data = request.data.get('user')
-
+    
     if not items or not total or not user_data:
         return Response({'error': 'Faltan datos requeridos'}, status=status.HTTP_400_BAD_REQUEST)
     try:
@@ -66,9 +66,6 @@ def generate_voucher(request):
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-
 
 @api_view(['GET'])
 def get_voucher(request, voucher_id):

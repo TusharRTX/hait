@@ -167,7 +167,7 @@ export class CartPage implements OnInit {
       response => {
         console.log('Received response:', response);
         if (response.voucher_id) {
-          this.router.navigate(['/success'], { state: { voucherId: response.voucher_id } });
+          this.router.navigate(['/successvoucher'], { state: { voucherId: response.voucher_id } });
         } else {
           console.error('Voucher ID not returned', response);
         }
@@ -176,11 +176,15 @@ export class CartPage implements OnInit {
         console.error('Voucher generation failed', error);
       }
     );
+    this.djangoApi.actualizarStock(this.items, this.stockSource).subscribe(
+      response => {
+        console.log('Stock actualizado correctamente:', response);
+      },
+      error => {
+        console.error('Error al actualizar el stock:', error);
+      }
+    ); 
   }
-  
-  
-  
-  
   
 
   async presentAlert(header: string, message: string) {
