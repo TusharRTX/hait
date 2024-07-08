@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
-import { CartService } from '../services/cart.service';
-import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';  
-import { jsPDF } from 'jspdf';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { DjangoapiService } from '../conexion/djangoapi.service';
+import { CartService } from '../services/cart.service';
+import { jsPDF } from 'jspdf';  // Asegúrate de tener esta importación
+
 @Component({
   selector: 'app-success',
   templateUrl: './success.page.html',
@@ -15,17 +15,36 @@ export class SuccessPage implements OnInit {
   total: number = 0;
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
-  role: string = ''
-  userId?: number;
+  role: string = '';
+  userId: number;
   deliveryMethod: string = '';
-  voucherId!: number;
+  voucherId: number;
 
-  constructor(private alertController: AlertController,private router: Router,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
+  constructor(
+    private route: ActivatedRoute,
+    private alertController: AlertController,
+    private router: Router,
+    private apiService: DjangoapiService,
+    private cartService: CartService
+  ) {
+    this.userId = 0;  
+    this.voucherId = 0;  
+  }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      // Obtener el voucherId del local storage
+      const storedVoucherId = localStorage.getItem('voucherId');
+      this.voucherId = storedVoucherId ? parseInt(storedVoucherId, 10) : 0;
+      if (this.voucherId) {
+        this.LoadVoucher();
+      } else {
+        console.error('No voucherId found');
+      }
+    });
+
     this.items = this.cartService.getItems();
     this.total = this.cartService.getTotal();
-    this.voucherId = history.state.voucherId;
     this.cartService.clearCart();
     this.apiService.isAuthenticated$.subscribe(isAuth => {
       this.isAuthenticated = isAuth;
@@ -35,8 +54,19 @@ export class SuccessPage implements OnInit {
     });
     this.apiService.getUserId().then(id => {
       this.userId = id;
-      this.showDeliveryMethodAlert(); // Mostrar la alerta al cargar la página
     });
+    this.showDeliveryMethodAlert();
+  }
+
+  LoadVoucher() {
+    this.apiService.getVoucher(this.voucherId).subscribe(
+      response => {
+        console.log('Voucher loaded:', response);
+      },
+      error => {
+        console.error('Failed to load voucher:', error);
+      }
+    );
   }
 
   downloadVoucher() {
@@ -48,13 +78,13 @@ export class SuccessPage implements OnInit {
       doc.setFontSize(12);
       doc.text(`Voucher ID: ${voucher.voucher_id}`, 10, 30);
       doc.text(`Voucher Emitido por: ${voucher.user.nombre} ${voucher.user.apellido}`, 10, 40);
-      doc.text('----------------------------------------', 10, 50);
+      doc.text('------------------------------', 10, 50);
   
       voucher.items.forEach((item: any, index: number) => {
-        doc.text(`${item.title}    Cantidad: ${item.quantity}    Precio Unitario: ${item.unit_price}`, 10, 60 + index * 10);
+        doc.text(`${item.title}  Cantidad: ${item.quantity}  Precio Unitario: ${item.unit_price}`, 10, 60 + index * 10);
       });
   
-      doc.text('----------------------------------------', 10, 60 + voucher.items.length * 10);
+      doc.text('------------------------------', 10, 60 + voucher.items.length * 10);
       doc.text(`Total: ${voucher.total}`, 10, 70 + voucher.items.length * 10);
   
       doc.save('voucher.pdf');

@@ -111,6 +111,8 @@ export class CartPage implements OnInit {
       return;
     }
   
+    const user = this.djangoApi.userSubject.getValue();
+  
     const items = this.items.map(item => ({
       id: item.id,
       quantity: item.quantity,
@@ -119,19 +121,47 @@ export class CartPage implements OnInit {
       currency_id: currency
     }));
   
-    this.cartService.checkout(items, this.stockSource).subscribe(
+    const voucherData = {
+      items: items,
+      total: this.total,
+      user: {
+        id: user.id,
+        nombre: user.nombre,
+        apellido: user.apellido
+      }
+    };
+
+    this.djangoApi.generateVoucher(voucherData).subscribe(
       response => {
-        if (response.init_point) {
-          window.location.href = response.init_point;
+        console.log('Received response:', response);
+        if (response.voucher_id) {
+          // Proceder con el checkout si la generación del voucher es exitosa
+          this.cartService.checkout(items, this.stockSource).subscribe(
+            checkoutResponse => {
+              if (checkoutResponse.init_point) {
+                // Guardar el voucherId en el local storage para accederlo después
+                localStorage.setItem('voucherId', response.voucher_id.toString());
+                window.location.href = checkoutResponse.init_point;
+              } else {
+                console.error('No init_point in response', checkoutResponse);
+              }
+            },
+            error => {
+              console.error('Payment initiation failed', error);
+            }
+          );
         } else {
-          console.error('No init_point in response', response);
+          console.error('Voucher ID not returned', response);
         }
       },
       error => {
-        console.error('Payment initiation failed', error);
+        console.error('Voucher generation failed', error);
       }
     );
   }
+  
+  
+  
 
   onStockSourceChange(event: any) {
     this.stockSource = event.detail.value; // Update stockSource variable on selection change
