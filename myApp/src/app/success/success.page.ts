@@ -73,20 +73,48 @@ export class SuccessPage implements OnInit {
     this.apiService.getVoucher(this.voucherId).subscribe(voucher => {
       const doc = new jsPDF();
   
+      // Agregar el logo
+      const logoUrl = 'http://127.0.0.1:8000/media/productos/ferremas_logo.png';
+      doc.addImage(logoUrl, 'PNG', 10, 10, 22, 20);
+  
+      // Agregar título
       doc.setFontSize(20);
-      doc.text('Comprobante de Venta', 10, 20);
+      doc.text('Comprobante de Venta', 10, 40);
+  
+      // Agregar fecha y hora de creación
+      const createdAt = new Date(voucher.created_at);
+      const date = createdAt.toLocaleDateString();
+      const time = createdAt.toLocaleTimeString();
       doc.setFontSize(12);
-      doc.text(`Voucher ID: ${voucher.voucher_id}`, 10, 30);
-      doc.text(`Voucher Emitido por: ${voucher.user.nombre} ${voucher.user.apellido}`, 10, 40);
-      doc.text('------------------------------', 10, 50);
+      doc.text(`Fecha: ${date}`, 10, 50);
+      doc.text(`Hora: ${time}`, 50, 50);
+  
+      // Agregar detalles del voucher
+      doc.setFontSize(12);
+      doc.text(`Voucher ID: ${voucher.voucher_id}`, 10, 60);
+      doc.text(`Voucher Emitido por: ${voucher.user.nombre} ${voucher.user.apellido}`, 10, 70);
+      doc.text('---------------------------------------------', 10, 80);
+  
+      // Agregar detalles de los items
+      let startY = 90;
+      doc.text('Producto', 10, startY);
+      doc.text('Cantidad', 80, startY);
+      doc.text('Precio Unitario', 150, startY);
   
       voucher.items.forEach((item: any, index: number) => {
-        doc.text(`${item.title}  Cantidad: ${item.quantity}  Precio Unitario: ${item.unit_price}`, 10, 60 + index * 10);
+        const y = startY + 10 + (index * 10);
+        doc.text(item.title, 10, y);
+        doc.text(item.quantity.toString(), 80, y);
+        doc.text(parseFloat(item.unit_price).toFixed(2).toString(), 150, y);
       });
   
-      doc.text('------------------------------', 10, 60 + voucher.items.length * 10);
-      doc.text(`Total: ${voucher.total}`, 10, 70 + voucher.items.length * 10);
+      // Agregar total
+      const total = parseFloat(voucher.total);
+      const finalY = startY + 10 + (voucher.items.length * 10);
+      doc.text('---------------------------------------------', 10, finalY);
+      doc.text(`Total: ${total.toFixed(2)}`, 10, finalY + 10);
   
+      // Guardar el PDF
       doc.save('voucher.pdf');
     });
   }
