@@ -52,6 +52,10 @@ const routes: Routes = [
     path: 'successvoucher',
     loadChildren: () => import('./successvoucher/successvoucher.module').then( m => m.SuccessvoucherPageModule)
   },
+  {
+    path: 'voucher',
+    loadChildren: () => import('./voucher/voucher.module').then( m => m.VoucherPageModule)
+  },
 
 
 ];

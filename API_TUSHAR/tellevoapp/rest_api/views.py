@@ -44,6 +44,19 @@ from .serializers import PedidoFinalSerializer
 from django.contrib.auth import get_user_model
 from core.models import User
 User = get_user_model()
+import datetime
+
+@api_view(['GET'])
+def get_vouchers(request):
+    date_str = request.GET.get('date')
+    try:
+        date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+    except ValueError:
+        return Response({'error': 'Fecha no válida'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    vouchers = Voucher.objects.filter(created_at__date=date)
+    serializer = VoucherSerializer(vouchers, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])

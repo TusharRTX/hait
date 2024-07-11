@@ -186,6 +186,10 @@ export class DjangoapiService {
     return this.http.get<any>(`${this.apiURL}/voucher/${voucherId}/`);
   }
 
+  getVouchers(date: string): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/vouchers/?date=${date}`);
+  }
+
   actualizarStock(items: any[], stockSource: string): Observable<any> {
     const data = {
       items: items,
