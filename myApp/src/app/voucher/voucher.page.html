@@ -25,9 +25,12 @@
             <p>{{ item.title }} - Cantidad: {{ item.quantity }} - Precio Unitario: {{ item.unit_price }}</p>
           </ion-item>
         </ion-list>
+        <!-- Mostrar el botón solo si el rol del usuario no es 'vendedor' -->
+        <ion-button *ngIf="voucher.user.rol !== 'vendedor'">Enviar a correo</ion-button>
       </ion-card-content>
     </ion-card>
   </ion-list>
 </ion-content>
+
 
 

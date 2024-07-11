@@ -27,6 +27,6 @@ export class VoucherPage implements OnInit {
       );
     }
   }
-  
 }
+
 

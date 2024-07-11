@@ -53,7 +53,7 @@ def get_vouchers(request):
         date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
     except ValueError:
         return Response({'error': 'Fecha no válida'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
     vouchers = Voucher.objects.filter(created_at__date=date)
     serializer = VoucherSerializer(vouchers, many=True)
     return Response(serializer.data)
