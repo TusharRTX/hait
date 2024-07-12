@@ -45,20 +45,6 @@
       </div>
     </ion-toolbar>
   </ion-header>
-
-  <ion-buttons class="categories-button-container" slot="end">
-    <ion-button routerLink="/home" id="products-category-button" (mouseover)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false) ">
-      Productos por Categoría
-    </ion-button>
-    <ion-button routerLink="/home">Productos por Marca</ion-button>
-  
-      <div class="right-side-content">
-        <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
-        <div class="payment-logos">
-          <img src="http://127.0.0.1:8000/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
-        </div>
-      </div>
-    </ion-buttons>
   </div>   
 
   <ion-content>
@@ -76,7 +62,14 @@
       <ion-button (click)="fetchVouchers()">Buscar</ion-button>
     </ion-item>
   
-    <ion-list>
+    <!-- Mostrar animación de carga -->
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando...</p>
+    </div>
+  
+    <!-- Mostrar vouchers cuando estén cargados -->
+    <ion-list *ngIf="!isLoading">
       <ion-card *ngFor="let voucher of vouchers">
         <ion-card-header>
           <img
