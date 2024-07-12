@@ -80,7 +80,7 @@ export class VoucherPage implements OnInit {
         voucher.enviado_info.enviado_at = response.enviado_at; // Actualiza la fecha de envío con la respuesta de la API
         voucher.enviado_info.enviado_at_formatted = this.formatDate(response.enviado_at);
         console.log('Voucher marcado como enviado:', response);
-        this.presentToast('Pedido enviado al cliente');
+        this.presentToast('Voucher enviado al cliente');
       },
       error => {
         console.error('Error marking voucher as sent:', error);

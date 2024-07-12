@@ -16,7 +16,8 @@ export class DjangoapiService {
   public role$ = this.roleSubject.asObservable();
   public userSubject = new BehaviorSubject<any>(null);
   public user$ = this.userSubject.asObservable();
-  apiURL = 'http://127.0.0.1:8000/api';
+  // apiURL = 'http://127.0.0.1:8000/api';
+  apiURL = 'https://8f68b14p-8000.brs.devtunnels.ms/api';
 
   constructor(private http: HttpClient, public storage: Storage) {
     this.init();

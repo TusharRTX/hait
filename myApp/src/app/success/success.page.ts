@@ -74,7 +74,7 @@ export class SuccessPage implements OnInit {
       const doc = new jsPDF();
   
       // Agregar el logo
-      const logoUrl = 'http://127.0.0.1:8000/media/productos/ferremas_logo.png';
+      const logoUrl = 'https://8f68b14p-8000.brs.devtunnels.ms/media/productos/ferremas_logo.png';
       doc.addImage(logoUrl, 'PNG', 10, 10, 22, 20);
   
       // Agregar título
