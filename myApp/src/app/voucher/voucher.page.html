@@ -1,20 +1,27 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Vouchers</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <ion-item>
+  <ion-item lines="none" class="ion-text-center">
+    <h2>Comprobantes Emitidos</h2>
+  </ion-item>
+
+  <ion-item class="calendar-item">
     <ion-label>Fecha</ion-label>
-    <ion-datetime displayFormat="YYYY-MM-DD" [(ngModel)]="selectedDate"></ion-datetime>
+    <ion-datetime
+      display-format="YYYY-MM-DD"
+      [(ngModel)]="selectedDate"
+      presentation="date"
+    ></ion-datetime>
     <ion-button (click)="fetchVouchers()">Buscar</ion-button>
   </ion-item>
 
   <ion-list>
     <ion-card *ngFor="let voucher of vouchers">
       <ion-card-header>
-        <ion-card-title>Voucher ID: {{ voucher.voucher_id }}</ion-card-title>
+        <img
+          src="http://127.0.0.1:8000/media/productos/ferremas_logo.png"
+          alt="Logo"
+          class="logo"
+        />
+        <ion-card-title>Comprobante de Venta: {{ voucher.voucher_id }}</ion-card-title>
         <ion-card-subtitle>Emitido por: {{ voucher.user.nombre }} {{ voucher.user.apellido }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
@@ -25,12 +32,25 @@
             <p>{{ item.title }} - Cantidad: {{ item.quantity }} - Precio Unitario: {{ item.unit_price }}</p>
           </ion-item>
         </ion-list>
-        <!-- Mostrar el botón solo si el rol del usuario no es 'vendedor' -->
-        <ion-button *ngIf="voucher.user.rol !== 'vendedor'">Enviar a correo</ion-button>
+        <p *ngIf="voucher.user.rol !== 'vendedor'">Correo: {{ voucher.user.correo }}</p>
+        <ion-button *ngIf="voucher.user.rol !== 'vendedor'" (click)="enviarCorreo(voucher)" [disabled]="voucher.enviado_info.enviado">
+          {{ voucher.enviado_info.enviado ? 'Boleta enviada' : 'Enviar a correo' }}
+        </ion-button>
+        <p *ngIf="voucher.enviado_info.enviado">Fecha de envío: {{ voucher.enviado_info.enviado_at_formatted }}</p>
+        <p class="nota">No válido como boleta</p>
       </ion-card-content>
     </ion-card>
   </ion-list>
 </ion-content>
+
+
+
+
+
+
+
+
+
 
 
 

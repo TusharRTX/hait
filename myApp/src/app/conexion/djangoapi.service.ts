@@ -190,6 +190,10 @@ export class DjangoapiService {
     return this.http.get<any>(`${this.apiURL}/vouchers/?date=${date}`);
   }  
 
+  markVoucherAsSent(voucherId: number): Observable<any> {
+    return this.http.post(`${this.apiURL}/api/mark_voucher_as_sent/${voucherId}/`, {});
+  }  
+  
   actualizarStock(items: any[], stockSource: string): Observable<any> {
     const data = {
       items: items,

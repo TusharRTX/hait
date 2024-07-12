@@ -15,8 +15,8 @@ from django.conf import settings
 import requests
 import mercadopago
 import os
-from core.models import Producto, Categorias, User, Voucher
-from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer, VoucherSerializer
+from core.models import Producto, Categorias, User, Voucher, VoucherEnviado
+from .serializers import CategoriaSerializer, ProductoSerializer, UserSerializer, VoucherEnviadoSerializer, VoucherSerializer
 from django.contrib.auth import authenticate
 from django.core.mail import send_mail
 from core.models import CompraAprobada
@@ -43,6 +43,7 @@ from core.models import PedidoFinal
 from .serializers import PedidoFinalSerializer    
 from django.contrib.auth import get_user_model
 from core.models import User
+from .serializers import VoucherSerializer, VoucherEnviadoSerializer
 User = get_user_model()
 import datetime
 
@@ -55,8 +56,26 @@ def get_vouchers(request):
         return Response({'error': 'Fecha no válida'}, status=status.HTTP_400_BAD_REQUEST)
 
     vouchers = Voucher.objects.filter(created_at__date=date)
+    for voucher in vouchers:
+        voucher_enviado, created = VoucherEnviado.objects.get_or_create(voucher=voucher)
+        if created:
+            voucher_enviado.enviado = False
+            voucher_enviado.save()
+
     serializer = VoucherSerializer(vouchers, many=True)
     return Response(serializer.data)
+
+@api_view(['POST'])
+def mark_voucher_as_sent(request, voucher_id):
+    try:
+        voucher_enviado = VoucherEnviado.objects.get(voucher_id=voucher_id)
+        voucher_enviado.enviado = True
+        voucher_enviado.enviado_at = datetime.datetime.now()
+        voucher_enviado.save()
+        serializer = VoucherEnviadoSerializer(voucher_enviado)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except VoucherEnviado.DoesNotExist:
+        return Response({'error': 'VoucherEnviado not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -74,6 +93,7 @@ def generate_voucher(request):
             total=total,
             user=user
         )
+        VoucherEnviado.objects.create(voucher=voucher)
         return Response({'voucher_id': voucher.voucher_id}, status=status.HTTP_201_CREATED)
     except User.DoesNotExist:
         return Response({'error': 'Usuario no encontrado'}, status=status.HTTP_404_NOT_FOUND)

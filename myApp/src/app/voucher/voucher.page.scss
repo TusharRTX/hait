@@ -1,0 +1,56 @@
+.calendar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .calendar-item ion-button {
+    margin-top: 10px;
+  }
+  
+  ion-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  ion-card-title,
+  ion-card-subtitle {
+    text-align: center;
+  }
+  
+  .logo {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  
+  ion-card {
+    margin-bottom: 20px;
+  }
+  
+  .nota {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  ion-button[disabled] {
+    --background: #d3d3d3; /* Gris */
+    --color: #ffffff; /* Blanco */
+  }
+  
+  
+  @media (max-width: 768px) {
+    .calendar-item {
+      flex-direction: column;
+    }
+  
+    .calendar-item ion-label {
+      margin-bottom: 10px;
+    }
+  }
+  

@@ -137,4 +137,12 @@ class Voucher(models.Model):
         return f"Voucher {self.voucher_id} for {self.user.username}"
 
 
+from core.models import Voucher
 
+class VoucherEnviado(models.Model):
+    voucher = models.OneToOneField(Voucher, on_delete=models.CASCADE, primary_key=True)
+    enviado = models.BooleanField(default=False)
+    enviado_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Voucher {self.voucher.voucher_id} enviado: {self.enviado}"

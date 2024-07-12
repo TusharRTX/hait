@@ -91,11 +91,17 @@ class EstadoPedidoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-from core.models import Voucher
+from core.models import Voucher, VoucherEnviado
+
+class VoucherEnviadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VoucherEnviado
+        fields = '__all__'
 
 class VoucherSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    
+    enviado_info = VoucherEnviadoSerializer(source='voucherenviado', read_only=True)
+
     class Meta:
         model = Voucher
         fields = '__all__'
