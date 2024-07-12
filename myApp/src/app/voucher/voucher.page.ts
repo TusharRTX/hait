@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DjangoapiService } from '../conexion/djangoapi.service';
+import { CartService } from '../services/cart.service';
+import { MenuController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';  
 
 @Component({
   selector: 'app-voucher',
@@ -9,12 +14,22 @@ import { DjangoapiService } from '../conexion/djangoapi.service';
 export class VoucherPage implements OnInit {
   selectedDate: string = '';
   vouchers: any[] = [];
+  isDropdownOpen = false;
+  isAuthenticated: boolean = false;
+  role: string = '';
 
-  constructor(private apiService: DjangoapiService) {}
+  constructor(private alertController: AlertController,private router: Router,private toastController: ToastController,private apiService: DjangoapiService,private menu: MenuController) {}
 
   ngOnInit() {
     this.selectedDate = new Date().toISOString().split('T')[0]; // Set default to today's date
     this.fetchVouchers();
+
+    this.apiService.isAuthenticated$.subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+    });
+    this.apiService.role$.subscribe(role => {
+      this.role = role;
+    });
   }
 
   fetchVouchers() {
@@ -59,6 +74,55 @@ export class VoucherPage implements OnInit {
     };
     return new Date(dateString).toLocaleDateString('es-ES', options);
   }
+
+  async presentLogoutAlert() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Sí',
+          handler: async () => {
+            await this.apiService.logout();
+            this.router.navigate(['/home']);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+
+  toggleDropdown(open: boolean) {
+    this.isDropdownOpen = open;
+    const dropdown = document.getElementById('dropdown-menu');
+    const button = document.getElementById('products-category-button');
+    if (dropdown && button) {
+      if (open) {
+        const rect = button.getBoundingClientRect();
+        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.left = `${rect.left}px`;
+        dropdown.style.display = 'block';
+      } else {
+        dropdown.style.display = 'none';
+      }
+    }
+  }
+
+  async showToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color
+    });
+    toast.present();
+  }
+
 }
 
 
