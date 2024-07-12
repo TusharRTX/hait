@@ -41,6 +41,7 @@ const routes: Routes = [
   { path: 'vendedor', loadChildren: () => import('./ACTORES/vendedor/vendedor.module').then(m => m.VendedorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
   { path: 'bodeguero', loadChildren: () => import('./ACTORES/bodeguero/bodeguero.module').then(m => m.BodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
   { path: 'contador', loadChildren: () => import('./ACTORES/contador/contador.module').then(m => m.ContadorPageModule), canActivate: [AuthGuard], data: { requiredRole: 'contador' } },
+  { path: 'voucher', loadChildren: () => import('./voucher/voucher.module').then( m => m.VoucherPageModule), canActivate: [AuthGuard], data: { requiredRole: 'contador' } },
   
   
   { path: 'todoproductos', loadChildren: () => import('./todoproductos/todoproductos.module').then( m => m.TodoproductosPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
@@ -48,14 +49,8 @@ const routes: Routes = [
   { path: 'pedidoaprobado', loadChildren: () => import('./ACTORES/vendedor/pedidoaprobado/pedidoaprobado.module').then( m => m.PedidoaprobadoPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
   { path: 'pedidobodeguero', loadChildren: () => import('./pedidobodeguero/pedidobodeguero.module').then( m => m.PedidobodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
   { path: 'pedidoestado', loadChildren: () => import('./pedidoestado/pedidoestado.module').then( m => m.PedidoestadoPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
-  { path: 'pedidosokbodeguero', loadChildren: () => import('./pedidosokbodeguero/pedidosokbodeguero.module').then( m => m.PedidosokbodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },  {
-    path: 'successvoucher',
-    loadChildren: () => import('./successvoucher/successvoucher.module').then( m => m.SuccessvoucherPageModule)
-  },
-  {
-    path: 'voucher',
-    loadChildren: () => import('./voucher/voucher.module').then( m => m.VoucherPageModule)
-  },
+  { path: 'pedidosokbodeguero', loadChildren: () => import('./pedidosokbodeguero/pedidosokbodeguero.module').then( m => m.PedidosokbodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
+  { path: 'successvoucher', loadChildren: () => import('./successvoucher/successvoucher.module').then( m => m.SuccessvoucherPageModule)},
 
 
 ];
