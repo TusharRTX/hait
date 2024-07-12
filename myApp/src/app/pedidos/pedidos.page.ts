@@ -17,6 +17,7 @@ export class PedidosPage implements OnInit {
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
   role: string = '';
+  isLoading: boolean = true;
 
   constructor(private alertController: AlertController,private router: Router,private toastController: ToastController, private cartService: CartService,private menu: MenuController,private djangoApiService: DjangoapiService) {}
 
@@ -43,12 +44,18 @@ export class PedidosPage implements OnInit {
   }
 
   fetchPedidos() {
-    this.djangoApiService.getPedidos().subscribe((data: any[]) => {
-      this.pedidos = data;
-      console.log('Pedidos fetched:', this.pedidos);
-    }, error => {
-      console.error('Error fetching pedidos:', error);
-    });
+    this.isLoading = true;  // Mostrar la animación de carga
+    this.djangoApiService.getPedidos().subscribe(
+      (data: any[]) => {
+        this.pedidos = data;
+        console.log('Pedidos fetched:', this.pedidos);
+        this.isLoading = false;  // Ocultar la animación de carga
+      },
+      error => {
+        console.error('Error fetching pedidos:', error);
+        this.isLoading = false;  // Ocultar la animación de carga
+      }
+    );
   }
 
   async presentLogoutAlert() {

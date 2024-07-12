@@ -54,30 +54,37 @@
   </div>  
 
   <ion-content>
-    <ion-list *ngFor="let pedido of pedidos">
-      <ion-card>
-        <ion-card-content>
-          <p>Cliente: {{ pedido.usuario.username }}</p>
-          <p>Nombre: {{ pedido.usuario.nombre }}</p>
-          <p>Apellido: {{ pedido.usuario.apellido }}</p>
-          <p>Correo: {{ pedido.usuario.correo }}</p>
-          <p>Teléfono: {{ pedido.usuario.telefono }}</p>
-          <p>Dirección: {{ pedido.usuario.direccion }}</p>
-          <p>RUT: {{ pedido.usuario.rut }}</p>
-          <p>Total: {{ pedido.total }}</p>
-          <p>Delivery: {{ pedido.delivery_method }}</p>
-          <p>Estado: {{ pedido.estado }}</p>
-          <p>Productos:</p>
-          <ion-list>
-            <ion-item *ngFor="let producto of pedido.productos">
-              <p>Codigo: {{ producto.producto.codigo }} / Nombre: {{ producto.producto.nombre }} / Cantidad: {{ producto.cantidad }} unidades / Precio: {{ producto.producto.precio }}CLP</p>
-            </ion-item>
-          </ion-list>
-          <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="aprobarPedido(pedido.id)">Aprobar</ion-button>
-          <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="rechazarPedido(pedido.id)">Rechazar</ion-button>
-          <p *ngIf="pedido.estado">Pedido {{ pedido.estado }}</p>
-        </ion-card-content>
-      </ion-card>
+    <div *ngIf="isLoading" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+      <p>Cargando...</p>
+    </div>
+  
+    <ion-list *ngIf="!isLoading">
+      <ion-item *ngFor="let pedido of pedidos">
+        <ion-card>
+          <ion-card-content>
+            <p>Cliente: {{ pedido.usuario.username }}</p>
+            <p>Nombre: {{ pedido.usuario.nombre }}</p>
+            <p>Apellido: {{ pedido.usuario.apellido }}</p>
+            <p>Correo: {{ pedido.usuario.correo }}</p>
+            <p>Teléfono: {{ pedido.usuario.telefono }}</p>
+            <p>Dirección: {{ pedido.usuario.direccion }}</p>
+            <p>RUT: {{ pedido.usuario.rut }}</p>
+            <p>Total: {{ pedido.total }}</p>
+            <p>Delivery: {{ pedido.delivery_method }}</p>
+            <p>Estado: {{ pedido.estado }}</p>
+            <p>Productos:</p>
+            <ion-list>
+              <ion-item *ngFor="let producto of pedido.productos">
+                <p>Codigo: {{ producto.producto.codigo }} / Nombre: {{ producto.producto.nombre }} / Cantidad: {{ producto.cantidad }} unidades / Precio: {{ producto.producto.precio }}CLP</p>
+              </ion-item>
+            </ion-list>
+            <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="aprobarPedido(pedido.id)">Aprobar</ion-button>
+            <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="rechazarPedido(pedido.id)">Rechazar</ion-button>
+            <p *ngIf="pedido.estado">Pedido {{ pedido.estado }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
     </ion-list>
 
   <ion-footer>

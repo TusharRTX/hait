@@ -54,7 +54,12 @@
   </div>  
 
   <ion-content>
-    <ion-grid>
+    <div *ngIf="isLoading" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+      <p>Cargando...</p>
+    </div>
+  
+    <ion-grid *ngIf="!isLoading">
       <ion-row>
         <ion-col size="10" size-md="6" size-lg="2" *ngFor="let producto of productosPaginados">
           <ion-card>

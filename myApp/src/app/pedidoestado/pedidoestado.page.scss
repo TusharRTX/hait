@@ -17,6 +17,20 @@ root {
   }
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 20vh; /* Ajusta este valor según sea necesario */
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+
 .top-bar {
   display: flex;
   align-items: center;

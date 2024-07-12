@@ -36,6 +36,7 @@ export class PedidoestadoPage implements OnInit {
   role: string = '';
   pedidosAprobados: any[] = [];
   selectedPedido: any;
+  isLoading: boolean = true;
 
   constructor(
     private modalController: ModalController,
@@ -56,6 +57,7 @@ export class PedidoestadoPage implements OnInit {
   }
 
   async LoadPedidos() {
+    this.isLoading = true;  // Mostrar la animación de carga
     this.djangoApiService.getDetallesConEstado().subscribe(
       (data: any[]) => {
         this.detallesConEstado = data
@@ -65,9 +67,11 @@ export class PedidoestadoPage implements OnInit {
           })
           .filter((pedido: any) => !pedido.enviado); // Filtra pedidos que no han sido enviados
         console.log(this.detallesConEstado);
+        this.isLoading = false;  // Ocultar la animación de carga
       },
       (error) => {
         console.error('Error fetching detalles con estado:', error);
+        this.isLoading = false;  // Ocultar la animación de carga
       }
     );
   }

@@ -19,6 +19,7 @@ export class PedidobodegueroPage implements OnInit {
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
   role: string = '';
+  isLoading: boolean = true;
 
   constructor(private modalController: ModalController,private alertController: AlertController,private router: Router,private toastController: ToastController,private menu: MenuController,private djangoApiService: DjangoapiService) {}
 
@@ -38,22 +39,28 @@ export class PedidobodegueroPage implements OnInit {
   }
   
   fetchPedidosAprobados() {
-    this.djangoApiService.getPedidosAprobados().subscribe((data: any[]) => {
-      this.pedidosAprobados = data.map(pedido => {
-        pedido.productos = JSON.parse(pedido.productos).map((producto: any) => {
-          return {
-            codigo: producto.codigo || 'N/A', // Asegurarse de que el campo código siempre exista
-            nombre: producto.nombre,
-            cantidad: producto.cantidad,
-            precio: producto.precio
-          };
+    this.isLoading = true;  // Mostrar la animación de carga
+    this.djangoApiService.getPedidosAprobados().subscribe(
+      (data: any[]) => {
+        this.pedidosAprobados = data.map((pedido) => {
+          pedido.productos = JSON.parse(pedido.productos).map((producto: any) => {
+            return {
+              codigo: producto.codigo || 'N/A', // Asegurarse de que el campo código siempre exista
+              nombre: producto.nombre,
+              cantidad: producto.cantidad,
+              precio: producto.precio,
+            };
+          });
+          return pedido;
         });
-        return pedido;
-      });
-      console.log('Pedidos aprobados fetched:', this.pedidosAprobados);
-    }, error => {
-      console.error('Error fetching pedidos aprobados:', error);
-    });
+        console.log('Pedidos aprobados fetched:', this.pedidosAprobados);
+        this.isLoading = false;  // Ocultar la animación de carga
+      },
+      (error) => {
+        console.error('Error fetching pedidos aprobados:', error);
+        this.isLoading = false;  // Ocultar la animación de carga
+      }
+    );
   }
   
 

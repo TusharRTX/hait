@@ -20,6 +20,7 @@ export class TodoproductosPage implements OnInit {
   isDropdownOpen = false;
   isAuthenticated: boolean = false;
   role: string = '';
+  isLoading: boolean = true;
 
   constructor(
     private alertController: AlertController,
@@ -31,17 +32,25 @@ export class TodoproductosPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.apiService.getProductosDisponibles().subscribe(data => {
-      this.productos = data;
-      this.totalPages = Math.ceil(this.productos.length / this.itemsPerPage);
-      this.updatePaginatedProducts();
-    });
+    this.isLoading = true;  // Mostrar la animación de carga
+    this.apiService.getProductosDisponibles().subscribe(
+      (data) => {
+        this.productos = data;
+        this.totalPages = Math.ceil(this.productos.length / this.itemsPerPage);
+        this.updatePaginatedProducts();
+        this.isLoading = false;  // Ocultar la animación de carga
+      },
+      (error) => {
+        console.error('Error fetching productos:', error);
+        this.isLoading = false;  // Ocultar la animación de carga
+      }
+    );
 
-    this.apiService.isAuthenticated$.subscribe(isAuth => {
+    this.apiService.isAuthenticated$.subscribe((isAuth) => {
       this.isAuthenticated = isAuth;
     });
 
-    this.apiService.role$.subscribe(role => {
+    this.apiService.role$.subscribe((role) => {
       this.role = role;
     });
   }

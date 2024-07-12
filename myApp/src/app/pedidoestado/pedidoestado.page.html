@@ -55,7 +55,12 @@
     </div>  
   
     <ion-content>
-      <ion-list>
+      <div *ngIf="isLoading" class="loading-spinner">
+        <ion-spinner></ion-spinner>
+        <p>Cargando...</p>
+      </div>
+    
+      <ion-list *ngIf="!isLoading">
         <ion-item *ngFor="let pedido of detallesConEstado">
           <ion-card>
             <ion-card-header>

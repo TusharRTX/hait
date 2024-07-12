@@ -54,7 +54,12 @@
   </div>  
 
   <ion-content>
-    <ion-list *ngIf="pedidosAprobados.length > 0">
+    <div *ngIf="isLoading" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+      <p>Cargando...</p>
+    </div>
+  
+    <ion-list *ngIf="!isLoading && pedidosAprobados.length > 0">
       <ion-item *ngFor="let pedido of pedidosAprobados">
         <ion-card>
           <ion-card-header>
@@ -81,7 +86,7 @@
         </ion-card>
       </ion-item>
     </ion-list>
-    <ion-list *ngIf="pedidosAprobados.length === 0">
+    <ion-list *ngIf="!isLoading && pedidosAprobados.length === 0">
       <ion-item>
         No hay pedidos por aprobar.
       </ion-item>
