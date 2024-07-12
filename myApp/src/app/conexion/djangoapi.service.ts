@@ -193,6 +193,16 @@ export class DjangoapiService {
   markVoucherAsSent(voucherId: number): Observable<any> {
     return this.http.post(`${this.apiURL}/api/mark_voucher_as_sent/${voucherId}/`, {});
   }  
+
+  getPedidoFinal(): Observable<any> {
+    console.log('Fetching pedidos...');
+    return this.http.get<any>(`${this.apiURL}/api/pedidos/`);
+  }
+
+  markPedidoAsSent(pedidoId: number): Observable<any> {
+    return this.http.post(`${this.apiURL}/mark_pedido_as_sent/${pedidoId}/`, {});
+  }
+  
   
   actualizarStock(items: any[], stockSource: string): Observable<any> {
     const data = {

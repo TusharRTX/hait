@@ -47,6 +47,23 @@ from .serializers import VoucherSerializer, VoucherEnviadoSerializer
 User = get_user_model()
 import datetime
 
+@api_view(['POST'])
+def mark_pedido_as_sent(request, pedido_id):
+    try:
+        pedido = PedidoFinal.objects.get(id=pedido_id)
+        pedido.enviada_a_vendedor = False
+        pedido.save()
+        serializer = PedidoFinalSerializer(pedido)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except PedidoFinal.DoesNotExist:
+        return Response({'error': 'PedidoFinal not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def get_pedidos(request):
+    pedidos = PedidoFinal.objects.all()
+    serializer = PedidoFinalSerializer(pedidos, many=True)
+    return Response(serializer.data)
+    
 @api_view(['GET'])
 def get_vouchers(request):
     date_str = request.GET.get('date')

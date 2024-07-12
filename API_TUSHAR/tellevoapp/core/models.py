@@ -116,7 +116,7 @@ class PedidoFinal(models.Model):
     productos = models.TextField()  # Aquí guardaremos una representación JSON de los productos
     nota_bodeguero = models.TextField(blank=True, null=True)
     estado_bodeguero = models.CharField(max_length=255, blank=True, null=True)
-    enviada_a_vendedor = models.BooleanField(default=False)
+    enviada_a_vendedor = models.BooleanField(default=True)
 
     def __str__(self):
         return f'{self.usuario_username} - {self.pedido_estado}'

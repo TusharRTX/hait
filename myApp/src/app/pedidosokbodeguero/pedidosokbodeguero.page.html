@@ -1,25 +1,174 @@
-<ion-content>
-  <ion-card *ngFor="let pedido of pedidosVendedor">
-    <ion-card-content>
-      <p>Cliente: {{ pedido.usuario_username }}</p>
-      <p>Nombre: {{ pedido.usuario_nombre }}</p>
-      <p>Apellido: {{ pedido.usuario_apellido }}</p>
-      <p>Correo: {{ pedido.usuario_correo }}</p>
-      <p>Teléfono: {{ pedido.usuario_telefono }}</p>
-      <p>Dirección: {{ pedido.usuario_direccion }}</p>
-      <p>RUT: {{ pedido.usuario_rut }}</p>
-      <p>Total: {{ pedido.pedido_total }}</p>
-      <p>Delivery: {{ pedido.pedido_delivery_method }}</p>
-      <p>Estado: {{ pedido.pedido_estado }}</p>
-      <p>Productos:</p>
-      <ion-list *ngFor="let producto of pedido.productos">
-        <ion-item>
-          <p>Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}CLP</p>
-        </ion-item>
-      </ion-list>
-      <p>Estado del Bodeguero: {{ pedido.estado_bodeguero }}</p>
-      <p>Nota del Bodeguero: {{ pedido.nota_bodeguero }}</p>
-    </ion-card-content>
-  </ion-card>
+
+<div id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <div class="top-bar">
+        <ion-buttons slot="start" class="logo-buttons">
+          <ion-img [src]="'http://127.0.0.1:8000/media/productos/ferremas_logo.png'"></ion-img>
+        </ion-buttons>
+        <div class="searchbar-container">
+          <ion-searchbar class="custom-searchbar" placeholder="Buscar productos"></ion-searchbar>
+        </div>
+        <ion-buttons slot="end" class="end-buttons">
+          <ion-button>
+            <ion-icon name="home-outline"></ion-icon>
+            <span [routerLink]="['/home']">Home</span>
+          </ion-button>
+          <ion-button *ngIf="!isAuthenticated" color="primary">
+            <ion-icon name="log-in-outline"></ion-icon>
+            <span [routerLink]="['/iniciosesion']">Iniciar sesión</span>
+          </ion-button>
+          <ion-button *ngIf="!isAuthenticated" color="success">
+            <ion-icon name="person-add-outline"></ion-icon>
+            <span [routerLink]="['/registro']">Registrarse</span>
+          </ion-button>
+          <ion-button>
+            <ion-icon name="cart-outline"></ion-icon>
+            <span [routerLink]="['/cart']">Carrito</span> 
+          </ion-button>
+          <ion-button color="danger" *ngIf="isAuthenticated" (click)="presentLogoutAlert()">
+            <ion-icon name="log-out-outline"></ion-icon>
+            <span>Cerrar sesión</span>
+          </ion-button>
+          <ion-button *ngIf="role === 'comprador'" routerLink="/comprador">
+            Mi Cuenta (Comprador)
+          </ion-button>
+          <ion-button *ngIf="role === 'vendedor'" routerLink="/vendedor">
+            Mi Cuenta (Vendedor)
+          </ion-button>
+          <ion-button *ngIf="role === 'bodeguero'" routerLink="/bodeguero">
+            Mi Cuenta (Bodeguero)
+          </ion-button>
+          <ion-button *ngIf="role === 'contador'" routerLink="/contador">
+            Mi Cuenta (Contador)
+          </ion-button>
+        </ion-buttons>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+  </div>   
+
+  <ion-content>
+    <ion-item>
+      <ion-label>Selecciona un Cliente</ion-label>
+      <ion-select [(ngModel)]="selectedCliente" (ionChange)="onClienteChange()">
+        <ion-select-option value="">Pedidos Pendientes</ion-select-option>
+        <ion-select-option *ngFor="let cliente of clientes" [value]="cliente">{{ cliente }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  
+    <ion-list>
+      <ion-item *ngFor="let pedido of filteredPedidos">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cliente: {{ pedido.usuario_username }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>Nombre:</strong> {{ pedido.usuario_nombre }}</p>
+            <p><strong>Apellido:</strong> {{ pedido.usuario_apellido }}</p>
+            <p><strong>Correo:</strong> {{ pedido.usuario_correo }}</p>
+            <p><strong>Teléfono:</strong> {{ pedido.usuario_telefono }}</p>
+            <p><strong>Dirección:</strong> {{ pedido.usuario_direccion }}</p>
+            <p><strong>RUT:</strong> {{ pedido.usuario_rut }}</p>
+            <p><strong>Total:</strong> {{ pedido.pedido_total }}</p>
+            <p><strong>Delivery:</strong> {{ pedido.pedido_delivery_method }}</p>
+            <p><strong>Estado:</strong> {{ pedido.pedido_estado }}</p>
+            <p><strong>Productos:</strong></p>
+            <ul>
+              <li *ngFor="let producto of pedido.productos">
+                Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}
+              </li>
+            </ul>
+            <p><strong>Estado del Bodeguero:</strong> {{ pedido.estado_bodeguero }}</p>
+            <p><strong>Nota del Bodeguero:</strong> {{ pedido.nota_bodeguero }}</p>
+            <ion-button *ngIf="pedido.enviada_a_vendedor" (click)="enviarPedidoCorreo(pedido)">
+              Enviar a correo
+            </ion-button>
+            <ion-button *ngIf="!pedido.enviada_a_vendedor" disabled color="light">
+              Pedido enviado
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+  
+    <div *ngIf="isLoading" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+      <p>Cargando...</p>
+    </div>
+  <ion-footer>
+    <ion-toolbar>
+      <div class="footer-container">
+        <div class="footer-section logo-section">
+          <img src="http://127.0.0.1:8000/media/productos/ferremas_logo.png" alt="Logo" class="logo">
+          <p>Síguenos en:</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/profile.php?id=61559656572650&mibextid=ZbWKwL" target="_blank">
+              <ion-icon name="logo-facebook"></ion-icon>
+            </a>
+            <a href="https://x.com/FerremasHait?t=5mMbR5RLsYTDPiVHQ-POeQ&s=33" target="_blank">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+            <a href="https://www.instagram.com/ferremashait?igsh=aXliemQ3NjhtaXlx" target="_blank">
+              <ion-icon name="logo-instagram"></ion-icon>
+            </a>
+            <a href="https://www.youtube.com/@ferremas-mf3eg" target="_blank">
+              <ion-icon name="logo-youtube"></ion-icon>
+            </a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Ubicación</h3>
+          <ul>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d848480.2608293112!2d-71.6982604!3d-33.82841229999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663254a46dfba6b%3A0xa434c121def3b3de!2sFerremas!5e0!3m2!1sen!2scl!4v1716211363337!5m2!1sen!2scl" width="150" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </ul>
+        </div>
+        <div class="footer-section product-type">
+          <h3>Tipo de Productos</h3>
+          <ul>
+            <li><a routerLink="/herramientas">Herramientas</a></li>
+            <li><a routerLink="/medicion">Equipos de Medición</a></li>
+            <li><a routerLink="/materiales">Materiales Basicos</a></li>
+            <li><a routerLink="/equipos">Equipos de Seguridad</a></li>
+            <li><a routerLink="/tornillos">Tornillos</a></li>
+          </ul>
+        </div>        
+        <div class="footer-section product-type">
+          <h3>Cuenta/Carrito/Contacto</h3>
+          <ul>
+            <li><a routerLink="/registro">Registrarse</a></li>
+            <li><a routerLink="/iniciosesion">Iniciar Sesion</a></li>
+            <li><a routerLink="/cart">Mi Carrito</a></li>
+            <li><a routerLink="">Contacto</a></li>
+            <li><a routerLink="">Info Adicional</a></li>
+          </ul>
+        </div>
+        <div class="footer-section opening-hours">
+          <h3>Hora de Apertura</h3>
+          <ul>
+            <li>Lunes 10:00 AM – 19:00 PM</li>
+            <li>Martes 10:00 AM – 19:00 PM</li>
+            <li>Miércoles 10:00 AM – 19:00 PM</li>
+            <li>Jueves 10:00 AM – 19:00 PM</li>
+            <li>Viernes 10:00 AM – 19:00 PM</li>
+            <li>Sábado 10:30 AM – 15:00 PM</li>
+            <li>Domingo y Festivos Cerrado</li>
+          </ul>
+        </div>        
+      </div>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>
+
+<div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
+  <ion-list>
+    <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
+    <ion-item routerLink="/materiales" >Materiales Básicos</ion-item>
+    <ion-item routerLink="/equipos">Equipos de Seguridad</ion-item>
+    <ion-item routerLink="/tornillos">Tornillos</ion-item>
+    <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
+  </ion-list>
+</div>
+
+
 
