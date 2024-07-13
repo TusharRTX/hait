@@ -6,6 +6,7 @@ class User(AbstractUser):
         ('comprador', 'Comprador'),
         ('vendedor', 'Vendedor'),
         ('bodeguero', 'Bodeguero'),
+        ('admin', 'Admin'),
         ('contador', 'Contador')
     ]
     nombre = models.CharField(max_length=30)
