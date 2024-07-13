@@ -41,52 +41,83 @@
           <ion-button *ngIf="role === 'contador'" routerLink="/contador">
             Mi Cuenta (Contador)
           </ion-button>
+          <ion-button *ngIf="role === 'admin'" routerLink="/admin">
+            Mi Cuenta (ADMIN)
+          </ion-button>
         </ion-buttons>
       </div>
     </ion-toolbar>
   </ion-header>
 
   <ion-buttons class="categories-button-container" slot="end">
-    <ion-button routerLink="/todoproductos">Todos Los Productos</ion-button>
-    <ion-button routerLink="/pedidos">Pedidos Clientes</ion-button>
-    <ion-button routerLink="/pedidoaprobado">Pedido Aprobado Vendedor</ion-button>
-    <ion-button routerLink="/pedidosokbodeguero">Pedido Finales</ion-button>
-    </ion-buttons>
-  </div>  
+    <ion-button (click)="scrollToSection('categories')" id="products-category-button">Pagina Admin</ion-button>
+    <div class="right-side-content">
+      <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
+      <div class="payment-logos">
+        <img src="https://8f68b14p-8000.brs.devtunnels.ms/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
+      </div>
+    </div>
+  </ion-buttons>
+</div>
 
   <ion-content>
-    <div *ngIf="isLoading" class="loading-spinner">
-      <ion-spinner></ion-spinner>
-      <p>Cargando...</p>
-    </div>
+    <ion-grid>
+      <ion-row>
+        <!-- Primera categoría -->
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Vendedor</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-button routerLink="/todoproductos">Todos Los Productos</ion-button>
+              <ion-button routerLink="/pedidos">Pedidos Clientes Pendientes Aprobación</ion-button>
+              <ion-button routerLink="/pedidoaprobado">Pedidos Aprobados Vendedor a Bodeguero</ion-button>
+              <ion-button routerLink="/pedidosokbodeguero">Pedidos Finales</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
   
-    <ion-list *ngIf="!isLoading">
-      <ion-item *ngFor="let pedido of pedidos">
-        <ion-card>
-          <ion-card-content>
-            <p>Cliente: {{ pedido.usuario.username }}</p>
-            <p>Nombre: {{ pedido.usuario.nombre }}</p>
-            <p>Apellido: {{ pedido.usuario.apellido }}</p>
-            <p>Correo: {{ pedido.usuario.correo }}</p>
-            <p>Teléfono: {{ pedido.usuario.telefono }}</p>
-            <p>Dirección: {{ pedido.usuario.direccion }}</p>
-            <p>RUT: {{ pedido.usuario.rut }}</p>
-            <p>Total: {{ pedido.total }}</p>
-            <p>Delivery: {{ pedido.delivery_method }}</p>
-            <p>Estado: {{ pedido.estado }}</p>
-            <p>Productos:</p>
-            <ion-list>
-              <ion-item *ngFor="let producto of pedido.productos">
-                <p>Codigo: {{ producto.producto.codigo }} / Nombre: {{ producto.producto.nombre }} / Cantidad: {{ producto.cantidad }} unidades / Precio: {{ producto.producto.precio }}CLP</p>
-              </ion-item>
-            </ion-list>
-            <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="aprobarPedido(pedido.id)">Aprobar</ion-button>
-            <ion-button *ngIf="!pedido.estado || pedido.estado === ''" (click)="rechazarPedido(pedido.id)">Rechazar</ion-button>
-            <p *ngIf="pedido.estado">Pedido {{ pedido.estado }}</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-item>
-    </ion-list>
+        <!-- Segunda categoría -->
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Bodeguero</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-button routerLink="/creacion">Crear Producto</ion-button>
+              <ion-button routerLink="/pedidobodeguero">Pedidos Aprobados Vendedor a Bodeguero</ion-button>
+              <ion-button routerLink="/pedidoestado">Pedido Bodega Estado Final</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+  
+        <!-- Tercera categoría -->
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Contador</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-button expand="block" routerLink="/voucher">Ver Vouchers</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+  
+        <!-- Cuarta categoría -->
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Cuenta</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-button expand="block" routerLink="/admin">XD</ion-button>
+              <ion-button expand="block" routerLink="/recuperar">Recuperar Contraseña</ion-button>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
 
   <ion-footer>
     <ion-toolbar>
@@ -150,16 +181,5 @@
       </div>
     </ion-toolbar>
   </ion-footer>
+
 </ion-content>
-
-<div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
-  <ion-list>
-    <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
-    <ion-item routerLink="/materiales" >Materiales Básicos</ion-item>
-    <ion-item routerLink="/equipos">Equipos de Seguridad</ion-item>
-    <ion-item routerLink="/tornillos">Tornillos</ion-item>
-    <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
-  </ion-list>
-</div>
-
-
