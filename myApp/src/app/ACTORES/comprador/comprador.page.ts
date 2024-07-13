@@ -30,10 +30,12 @@ export class CompradorPage implements OnInit {
   }
 
   irArecuperar() {
-    this.router.navigate(['/pedidocliente']);
+    this.router.navigate(['/recuperar']);
   }
 
-
+  irAestadopedido() {
+    this.router.navigate(['/pedidocliente']);
+  }
 
   async presentLogoutAlert() {
     const alert = await this.alertController.create({

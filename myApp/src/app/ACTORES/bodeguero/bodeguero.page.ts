@@ -45,6 +45,10 @@ export class BodegueroPage implements OnInit {
     this.router.navigate(['/creacion']);
   }
 
+  irAestadopedido() {
+    this.router.navigate(['/pedidocliente']);
+  }
+
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
       header: 'Cerrar sesión',

@@ -37,7 +37,9 @@ export class ContadorPage implements OnInit {
     this.router.navigate(['/voucher']);
   }
 
-
+  irAestadopedido() {
+    this.router.navigate(['/pedidocliente']);
+  }
 
   async presentLogoutAlert() {
     const alert = await this.alertController.create({
