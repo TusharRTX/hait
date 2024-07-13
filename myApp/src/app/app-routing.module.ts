@@ -51,7 +51,11 @@ const routes: Routes = [
   { path: 'pedidoestado', loadChildren: () => import('./pedidoestado/pedidoestado.module').then( m => m.PedidoestadoPageModule), canActivate: [AuthGuard], data: { requiredRole: 'bodeguero' } },
   { path: 'pedidosokbodeguero', loadChildren: () => import('./pedidosokbodeguero/pedidosokbodeguero.module').then( m => m.PedidosokbodegueroPageModule), canActivate: [AuthGuard], data: { requiredRole: 'vendedor' } },
   { path: 'successvoucher', loadChildren: () => import('./successvoucher/successvoucher.module').then( m => m.SuccessvoucherPageModule)},
-  { path: 'admin', loadChildren: () => import('./ACTORES/admin/admin.module').then( m => m.AdminPageModule), canActivate: [AuthGuard], data: { requiredRole: 'admin' } },
+  { path: 'admin', loadChildren: () => import('./ACTORES/admin/admin.module').then( m => m.AdminPageModule), canActivate: [AuthGuard], data: { requiredRole: 'admin' } },  {
+    path: 'pedidocliente',
+    loadChildren: () => import('./pedidocliente/pedidocliente.module').then( m => m.PedidoclientePageModule)
+  },
+
 
 
 

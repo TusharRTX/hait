@@ -30,7 +30,7 @@ export class CompradorPage implements OnInit {
   }
 
   irArecuperar() {
-    this.router.navigate(['/recuperar']);
+    this.router.navigate(['/pedidocliente']);
   }
 
 

@@ -1,3 +1,4 @@
+
 <div id="main-content">
   <ion-header>
     <ion-toolbar>
@@ -45,42 +46,53 @@
       </div>
     </ion-toolbar>
   </ion-header>
+  </div>  
 
-  <ion-buttons class="categories-button-container" slot="end">
-    <ion-button (click)="scrollToSection('categories')" id="products-category-button">Pagina Comprador</ion-button>
-    <div class="right-side-content">
-      <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
-      <div class="payment-logos">
-        <img src="https://8f68b14p-8000.brs.devtunnels.ms/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
-      </div>
+  <ion-content>
+    <div *ngIf="isLoading" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+      <p>Cargando...</p>
     </div>
-  </ion-buttons>
-</div>
-
-<ion-content>
-  <div class="shipping-options">
-    <div class="shipping-option">
-      <ion-icon name="car-outline"></ion-icon>
-      <span>Despacho Gratis</span>
-      <span>Por compras superiores a $50.000 en la Región Metropolitana</span>
-    </div>
-    <div class="shipping-option">
-      <ion-icon name="time-outline"></ion-icon>
-      <span>Envío el mismo día</span>
-      <span>Por compras antes de las 12:00 hrs. en la Región Metropolitana</span>
-    </div>
-  </div>
   
-  <div id="categories" class="section">
-    <h2>Opciones de Cuenta</h2>
-    <div class="category-grid">
-      <div id="recuperar" class="category-card" (click)="irArecuperar()">
-        <img src="https://8f68b14p-8000.brs.devtunnels.ms/media/productos/recuperarcontrasena.jpg" alt="recuperar">
-        <h3>Recuperar Contraseña</h3>
-        <p></p>
-      </div>
-    </div>
-  </div>
+    <ion-list *ngIf="!isLoading && detallesConEstado.length > 0">
+      <ion-item lines="none">
+        <ion-label>
+          <h2>Estado en Bodega de mis Pedidos</h2>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngFor="let pedido of detallesConEstado">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Cliente: {{ pedido.usuario_username }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <p><strong>Nombre:</strong> {{ pedido.usuario_nombre }}</p>
+            <p><strong>Apellido:</strong> {{ pedido.usuario_apellido }}</p>
+            <p><strong>Correo:</strong> {{ pedido.usuario_correo }}</p>
+            <p><strong>Teléfono:</strong> {{ pedido.usuario_telefono }}</p>
+            <p><strong>Dirección:</strong> {{ pedido.usuario_direccion }}</p>
+            <p><strong>RUT:</strong> {{ pedido.usuario_rut }}</p>
+            <p><strong>Total:</strong> {{ pedido.pedido_total }}</p>
+            <p><strong>Delivery:</strong> {{ pedido.pedido_delivery_method }}</p>
+            <p><strong>Estado:</strong> {{ pedido.pedido_estado }}</p>
+            <p><strong>Productos:</strong></p>
+            <ul>
+              <li *ngFor="let producto of pedido.productos">
+                Código: {{ producto.codigo }} / Nombre: {{ producto.nombre }} / Cantidad: {{ producto.cantidad }} / Precio: {{ producto.precio }}
+              </li>
+            </ul>
+            <p><strong>Estado del Bodeguero:</strong> {{ pedido.estado_bodeguero }}</p>
+            <p><strong>Nota del Bodeguero:</strong> {{ pedido.nota_bodeguero }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-item>
+    </ion-list>
+  
+    <ion-list *ngIf="!isLoading && detallesConEstado.length === 0">
+      <ion-item>
+        No hay pedidos para mostrar.
+      </ion-item>
+    </ion-list>
 
   <ion-footer>
     <ion-toolbar>
@@ -144,5 +156,5 @@
       </div>
     </ion-toolbar>
   </ion-footer>
-
 </ion-content>
+
