@@ -175,6 +175,11 @@ export class SuccessPage implements OnInit {
         delivery_method: this.deliveryMethod
     };
 
+    console.log('Product Details:', productDetails);
+    console.log('Product IDs:', productIds);
+    console.log('Cantidades:', cantidades);
+    console.log('Purchase Data:', purchaseData);
+
     try {
         const response = await this.apiService.registerPurchase(purchaseData);
         console.log('Compra registrada exitosamente', response);
