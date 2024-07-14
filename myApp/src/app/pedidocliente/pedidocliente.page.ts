@@ -52,7 +52,7 @@ export class PedidoclientePage implements OnInit {
       return;
     }
 
-    this.isLoading = true;  // Mostrar la animación de carga
+    this.isLoading = true;  
     this.djangoApiService.getDetallesConEstado().subscribe(
       (data: any[]) => {
         this.detallesConEstado = data

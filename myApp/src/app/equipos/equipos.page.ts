@@ -30,7 +30,7 @@ export class EquiposPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    const categoryId = 1; // ID de la categoría "equipo"
+    const categoryId = 1; 
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });

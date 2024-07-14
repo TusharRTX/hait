@@ -32,17 +32,17 @@ export class TodoproductosPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.isLoading = true;  // Mostrar la animación de carga
+    this.isLoading = true;  
     this.apiService.getProductosDisponibles().subscribe(
       (data) => {
         this.productos = data;
         this.totalPages = Math.ceil(this.productos.length / this.itemsPerPage);
         this.updatePaginatedProducts();
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       },
       (error) => {
         console.error('Error fetching productos:', error);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       }
     );
 

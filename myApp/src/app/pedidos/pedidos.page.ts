@@ -44,16 +44,16 @@ export class PedidosPage implements OnInit {
   }
 
   fetchPedidos() {
-    this.isLoading = true;  // Mostrar la animación de carga
+    this.isLoading = true;  
     this.djangoApiService.getPedidos().subscribe(
       (data: any[]) => {
         this.pedidos = data;
         console.log('Pedidos fetched:', this.pedidos);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       },
       error => {
         console.error('Error fetching pedidos:', error);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       }
     );
   }

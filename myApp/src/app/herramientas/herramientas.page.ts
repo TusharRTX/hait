@@ -22,7 +22,7 @@ export class HerramientasPage implements OnInit {
   constructor(private alertController: AlertController,private router: Router,private popoverController: PopoverController,private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService) { }
 
   ngOnInit() {
-    const categoryId = 2; // ID de la categoría "equipo"
+    const categoryId = 2; 
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });

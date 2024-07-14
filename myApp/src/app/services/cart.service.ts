@@ -28,7 +28,7 @@ export class CartService {
     const existingItem = this.items.find(item => item.id === product.id);
     let added = false;
 
-    // Obtén el rol del usuario desde el servicio DjangoapiService
+    
     this.djangoapiService.role$.subscribe(role => {
       if (existingItem) {
         if (existingItem.quantity < product.stock_online || role === 'vendedor') {

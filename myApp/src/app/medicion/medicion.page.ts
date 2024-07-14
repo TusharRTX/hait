@@ -23,7 +23,7 @@ export class MedicionPage implements OnInit {
   constructor(private alertController: AlertController,private router: Router,private toastController: ToastController,private apiService: DjangoapiService, private cartService: CartService,private menu: MenuController) { }
 
   ngOnInit() {
-    const categoryId = 5; // ID de la categoría "equipo"
+    const categoryId = 5; 
     this.apiService.getProductsByCategory(categoryId).subscribe(data => {
       this.products = data;
     });

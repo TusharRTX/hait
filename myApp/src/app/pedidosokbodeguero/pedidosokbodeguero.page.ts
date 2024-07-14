@@ -38,7 +38,7 @@ export class PedidosokbodegueroPage implements OnInit {
   }
 
   fetchPedidos() {
-    this.isLoading = true;  // Mostrar la animación de carga
+    this.isLoading = true;  
     this.apiService.getPedidoFinal().subscribe(
       response => {
         this.pedidos = response;
@@ -55,11 +55,11 @@ export class PedidosokbodegueroPage implements OnInit {
         this.clientes = Array.from(new Set(this.pedidos.map(pedido => pedido.usuario_username)));
         // Mostrar solo pedidos enviados al inicio
         this.filteredPedidos = this.pedidos.filter(pedido => pedido.enviada_a_vendedor);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       },
       error => {
         console.error('Error fetching pedidos:', error);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       }
     );
   }

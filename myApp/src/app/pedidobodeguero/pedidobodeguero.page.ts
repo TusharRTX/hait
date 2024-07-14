@@ -39,7 +39,7 @@ export class PedidobodegueroPage implements OnInit {
   }
   
   fetchPedidosAprobados() {
-    this.isLoading = true;  // Mostrar la animación de carga
+    this.isLoading = true;  
     this.djangoApiService.getPedidosAprobados().subscribe(
       (data: any[]) => {
         this.pedidosAprobados = data.map((pedido) => {
@@ -54,11 +54,11 @@ export class PedidobodegueroPage implements OnInit {
           return pedido;
         });
         console.log('Pedidos aprobados fetched:', this.pedidosAprobados);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       },
       (error) => {
         console.error('Error fetching pedidos aprobados:', error);
-        this.isLoading = false;  // Ocultar la animación de carga
+        this.isLoading = false;  
       }
     );
   }
