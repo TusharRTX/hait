@@ -63,6 +63,7 @@ export class CuentasPage implements OnInit {
       console.error('Error fetching users:', error);
     });
   }
+
   updatePaginatedUsers() {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
@@ -133,10 +134,12 @@ export class CuentasPage implements OnInit {
           text: 'Guardar',
           handler: roleData => {
             data.rol = roleData;
+            console.log('Datos enviados:', data); // Añadir un log para verificar los datos
             this.apiService.updateUser(userId, data).subscribe(() => {
               this.showToast('Usuario actualizado', 'success');
               this.loadUsers();  // Refresca la lista de usuarios
             }, error => {
+              console.error('Error en la actualización:', error); // Añadir un log para verificar el error
               this.showToast('Error al actualizar el usuario', 'danger');
             });
           }
