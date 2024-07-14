@@ -72,7 +72,7 @@ export class AdminPage implements OnInit {
           } else {
             console.error(`Element with id ${category} not found`);
           }
-        }, 100); // delay to ensure the products are rendered
+        }, 100); 
       },
       error => console.error('Error fetching products by category:', error)
     );
@@ -85,7 +85,7 @@ export class AdminPage implements OnInit {
     if (dropdown && button) {
       if (open) {
         const rect = button.getBoundingClientRect();
-        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.top = `${rect.bottom}px`; 
         dropdown.style.left = `${rect.left}px`;
         dropdown.style.display = 'block';
       } else {

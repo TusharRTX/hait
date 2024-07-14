@@ -47,6 +47,27 @@ from .serializers import VoucherSerializer, VoucherEnviadoSerializer
 User = get_user_model()
 import datetime
 
+@api_view(['GET'])
+def user_list(request):
+    if request.method == 'GET':
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+@api_view(['PUT'])
+def user_update(request, pk):
+    try:
+        user = User.objects.get(pk=pk)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['POST'])
 def mark_pedido_as_sent(request, pedido_id):
     try:

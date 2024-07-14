@@ -108,7 +108,7 @@ export class VendedorPage implements OnInit {
     if (dropdown && button) {
       if (open) {
         const rect = button.getBoundingClientRect();
-        dropdown.style.top = `${rect.bottom}px`; // adjust positioning
+        dropdown.style.top = `${rect.bottom}px`; 
         dropdown.style.left = `${rect.left}px`;
         dropdown.style.display = 'block';
       } else {

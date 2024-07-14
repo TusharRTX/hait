@@ -203,7 +203,14 @@ export class DjangoapiService {
   markPedidoAsSent(pedidoId: number): Observable<any> {
     return this.http.post(`${this.apiURL}/mark_pedido_as_sent/${pedidoId}/`, {});
   }
-  
+
+  getUsers(): Observable<any> {
+    return this.http.get(`${this.apiURL}/users/`);
+  }
+
+  updateUser(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiURL}/users/${id}/`, data);
+  }
   
   actualizarStock(items: any[], stockSource: string): Observable<any> {
     const data = {

@@ -55,6 +55,10 @@ const routes: Routes = [
     path: 'pedidocliente',
     loadChildren: () => import('./pedidocliente/pedidocliente.module').then( m => m.PedidoclientePageModule)
   },
+  {
+    path: 'cuentas',
+    loadChildren: () => import('./cuentas/cuentas.module').then( m => m.CuentasPageModule)
+  },
 
 
 

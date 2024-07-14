@@ -41,80 +41,55 @@
           <ion-button *ngIf="role === 'contador'" routerLink="/contador">
             Mi Cuenta (Contador)
           </ion-button>
-          <ion-button *ngIf="role === 'admin'" routerLink="/admin">
-            Mi Cuenta (ADMIN)
-          </ion-button>
         </ion-buttons>
       </div>
     </ion-toolbar>
   </ion-header>
 
   <ion-buttons class="categories-button-container" slot="end">
-    <ion-button (click)="scrollToSection('categories')" id="products-category-button">Pagina Admin</ion-button>
-    <div class="right-side-content">
-      <span class="payment-text">En Ferremas tenemos hasta 6 cuotas sin interés y aceptamos:</span>
-      <div class="payment-logos">
-        <img src="https://8f68b14p-8000.brs.devtunnels.ms/media/productos/pagovisa.png" alt="Visa" class="payment-logo">
-      </div>
-    </div>
-  </ion-buttons>
-</div>
+    <ion-button routerLink="/admin">Volver Admin</ion-button>
+    </ion-buttons>
+  </div>  
 
   <ion-content>
-    <ion-grid>
+    <div *ngIf="isLoading" class="loading-spinner">
+      <ion-spinner></ion-spinner>
+      <p>Cargando...</p>
+    </div>
+  
+    <ion-grid *ngIf="!isLoading">
       <ion-row>
-        
-        <ion-col size="12" size-md="6">
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let user of updatePaginatedUsers()">
           <ion-card>
             <ion-card-header>
-              <ion-card-title>Vendedor</ion-card-title>
+              <ion-card-title>{{ user.nombre }} {{ user.apellido }}</ion-card-title>
+              <p>{{ user.username }}</p>
             </ion-card-header>
             <ion-card-content>
-              <ion-button routerLink="/todoproductos">Todos Los Productos</ion-button>
-              <ion-button routerLink="/pedidos">Pedidos Clientes Pendientes Aprobación</ion-button>
-              <ion-button routerLink="/pedidoaprobado">Pedidos Aprobados Vendedor a Bodeguero</ion-button>
-              <ion-button routerLink="/pedidosokbodeguero">Pedidos Finales</ion-button>
+              <p>Correo: {{ user.correo }}</p>
+              <p>Dirección: {{ user.direccion }}</p>
+              <p>RUT: {{ user.rut }}</p>
+              <p>Teléfono: {{ user.telefono }}</p>
+              <p>Rol: {{ user.rol }}</p>
+              <ion-button expand="full" (click)="editUser(user)">Editar</ion-button>
             </ion-card-content>
           </ion-card>
         </ion-col>
+      </ion-row>
   
-        
-        <ion-col size="12" size-md="6">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Bodeguero</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <ion-button routerLink="/creacion">Crear Producto</ion-button>
-              <ion-button routerLink="/pedidobodeguero">Pedidos Aprobados Vendedor a Bodeguero</ion-button>
-              <ion-button routerLink="/pedidoestado">Pedido Bodega Estado Final</ion-button>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-  
-        
-        <ion-col size="12" size-md="6">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Contador</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <ion-button expand="block" routerLink="/voucher">Ver Vouchers</ion-button>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-  
-        
-        <ion-col size="12" size-md="6">
-          <ion-card>
-            <ion-card-header>
-              <ion-card-title>Cuenta</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <ion-button expand="block" routerLink="/cuentas">Gestionar Cuentas</ion-button>
-              <ion-button expand="block" routerLink="/recuperar">Recuperar Contraseña</ion-button>
-            </ion-card-content>
-          </ion-card>
+      <ion-row>
+        <ion-col>
+          <div class="pagination-container">
+            <ion-buttons slot="start">
+              <ion-button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</ion-button>
+            </ion-buttons>
+            <div class="pagination-info">
+              Página {{ currentPage }} de {{ totalPages }}
+            </div>
+            <ion-buttons slot="end">
+              <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</ion-button>
+            </ion-buttons>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -181,5 +156,14 @@
       </div>
     </ion-toolbar>
   </ion-footer>
-
 </ion-content>
+
+<div id="dropdown-menu" class="dropdown-menu" (mouseenter)="toggleDropdown(true)" (mouseleave)="toggleDropdown(false)">
+  <ion-list>
+    <ion-item routerLink="/herramientas">Herramientas Manuales</ion-item>
+    <ion-item routerLink="/materiales" >Materiales Básicos</ion-item>
+    <ion-item routerLink="/equipos">Equipos de Seguridad</ion-item>
+    <ion-item routerLink="/tornillos">Tornillos</ion-item>
+    <ion-item routerLink="/medicion">Equipo de Medición</ion-item>
+  </ion-list>
+</div>
