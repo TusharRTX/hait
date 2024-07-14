@@ -483,8 +483,8 @@ def get_categories(request):
 def getexchangerate(request):
     user = 'mirwanitushar@gmail.com'
     password = 'Tushargamer200_'
-    firstdate = '2024-05-17'
-    lastdate = '2024-05-17'
+    firstdate = '2024-07-12'
+    lastdate = '2024-07-12'
     timeseries = 'F073.TCO.PRE.Z.D'
 
     url = f"https://si3.bcentral.cl/SieteRestWS/SieteRestWS.ashx?user={user}&pass={password}&firstdate={firstdate}&lastdate={lastdate}&timeseries={timeseries}&function=GetSeries"
@@ -515,9 +515,12 @@ def create_payment_preference(request):
             } for item in items
         ],
         "back_urls": {
-            "success": "http://localhost:8100/success",
-            "failure": "http://localhost:8100/failure",
-            "pending": "http://localhost:8100/pending"
+            # "success": "http://localhost:8100/success",
+            # "failure": "http://localhost:8100/failure",
+            # "pending": "http://localhost:8100/pending"
+            "success": "https://8f68b14p-8100.brs.devtunnels.ms/success",
+            "failure": "https://8f68b14p-8100.brs.devtunnels.ms/failure",
+            "pending": "https://8f68b14p-8100.brs.devtunnels.ms/pending"
         },
         "auto_return": "approved"
     }
